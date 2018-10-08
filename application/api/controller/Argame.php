@@ -17,8 +17,6 @@ class Argame extends Base {
 
     //获取游戏素材
     public function getGameMaterials(){
-        $partner_id = input('partner_id');
-        $partner_id = decode($partner_id);
 
         //获取项目
         $projectModel = new Project();
@@ -199,6 +197,16 @@ class Argame extends Base {
         }
         ajaxJsonReturn(1,'扫描成功',array('data' => $userGameUpdate));
 
+    }
+
+    //分享游戏增加游戏次数
+    public function show(){
+        $showTimeModel = Db::table('cn_show_time');
+        $projectModel = new Project();
+        $projectData = $projectModel
+        $data = array(
+            ''
+        );
     }
 
     //分享部件接口

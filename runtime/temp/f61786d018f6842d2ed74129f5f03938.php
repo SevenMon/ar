@@ -1,4 +1,4 @@
-<?php /*a:4:{s:71:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\gamear\index.html";i:1538291016;s:65:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\layout.html";i:1537831920;s:72:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\public\header.html";i:1538291016;s:72:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\public\footer.html";i:1537831944;}*/ ?>
+<?php /*a:4:{s:71:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\gamear\index.html";i:1538990926;s:65:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\layout.html";i:1538966109;s:72:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\public\header.html";i:1538966109;s:72:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\public\footer.html";i:1538966109;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -207,12 +207,12 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>ar扫描参数设置</h2>
+                <h2>ar扫描游戏次数设置</h2>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
                 <br>
-                <form class="form-horizontal form-label-left" action="#">
+                <form class="form-horizontal form-label-left" id="form">
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">每日可玩次数设置<span class="required">*</span>
                         </label>
@@ -225,29 +225,88 @@
                     </div>
                     <div class="form-group">
                         <div class="col-md-8 col-sm-8 col-xs-12 playnumber col-md-offset-2">
+                            <?php if(is_array($list) || $list instanceof \think\Collection || $list instanceof \think\Paginator): $k = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($k % 2 );++$k;?>
+                                <div class="timeitem">
+                                    开始：<input readonly class="controls input-append date form_datetime form-control" name="start_time" id="start_time_<?php echo htmlentities($k); ?>" type="text" value="<?php echo htmlentities($vo['start_time']); ?>" data-date="2018-09-01" data-date-format="yyyy mm dd" data-link-field="dtp_input1">
+                                    结束：<input readonly class="controls input-append date form_datetime form-control" name="end_time" id="end_time_<?php echo htmlentities($k); ?>" type="text" value="<?php echo htmlentities($vo['end_time']); ?>" data-date="2018-09-01" data-date-format="yyyy mm dd" data-link-field="dtp_input1">
+                                    次数：<input class="controls input-append date form_datetime form-control" name="play_number" id="play_number_<?php echo htmlentities($k); ?>" type="number" value="<?php echo htmlentities($vo['play_number']); ?>" >
+                                    <button type="button" class="btn btn-danger" onclick="deleteItem($(this))">删除</button>
+                                </div>
+                            <?php endforeach; endif; else: echo "" ;endif; ?>
                         </div>
                     </div>
                     <div class="ln_solid"></div>
                     <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                             <button class="btn btn-primary" type="button" onclick="window.history.back(-1); ">返回</button>
-                            <button type="submit" class="btn btn-success">保存</button>
+                            <button type="button" class="btn btn-success" id="submit">保存</button>
                         </div>
                     </div>
                 </form>
             </div>
+
+            <div class="x_title">
+                <h2>ar扫描游戏规则编辑</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br>
+                <form class="form-horizontal form-label-left" id="ruleform">
+
+                    <div class="form-group">
+                        <div class="col-md-8 col-sm-8 col-xs-12 playnumber col-md-offset-2">
+                            
+                        </div>
+                    </div>
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button class="btn btn-primary" type="button" onclick="window.history.back(-1); ">返回</button>
+                            <button type="button" class="btn btn-success" id="rulesubmit">保存</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
         </div>
     </div>
 </div>
 <script>
     $(function () {
+        var list = '<?php echo json_encode($list); ?>';
+        list = $.parseJSON( list );
+        for(var key in list){
+            $('#start_time_'+(parseInt(key)+1)).datetimepicker({
+                format: "yyyy-mm-dd",
+                autoclose: true,
+                todayBtn: true,
+                todayHighlight: true,
+                showMeridian: true,
+                pickerPosition: "bottom-left",
+                startView: 2,
+                minView: 2,
+                language: 'zh-CN',
+            });
+            $('#end_time_'+(parseInt(key)+1)).datetimepicker({
+                format: "yyyy-mm-dd",
+                autoclose: true,
+                todayBtn: true,
+                todayHighlight: true,
+                showMeridian: true,
+                pickerPosition: "bottom-left",
+                startView: 2,
+                minView: 2,
+                language: 'zh-CN',
+            });
+        }
+
         $('#adddata').click(function () {
             var count = $('.playnumber').children().length;
 
             var str = '<div class="timeitem">\n' +
-                '开始：<input readonly class="controls input-append date form_datetime form-control" name="start_time[]" id="start_time_'+(count+1)+'" type="text" value="" data-date="2018-09-01" data-date-format="yyyy mm dd" data-link-field="dtp_input1">\n' +
-                '结束：<input readonly class="controls input-append date form_datetime form-control" name="end_time[]" id="end_time_'+(count+1)+'" type="text" value="" data-date="2018-09-01" data-date-format="yyyy mm dd" data-link-field="dtp_input1">\n' +
-                '次数：<input class="controls input-append date form_datetime form-control" name="play_number[]" id="play_number_'+(count+1)+'" type="text" value="" >\n' +
+                '开始：<input readonly class="controls input-append date form_datetime form-control" name="start_time" id="start_time_'+(count+1)+'" type="text" value="" data-date="2018-09-01" data-date-format="yyyy mm dd" data-link-field="dtp_input1">\n' +
+                '结束：<input readonly class="controls input-append date form_datetime form-control" name="end_time" id="end_time_'+(count+1)+'" type="text" value="" data-date="2018-09-01" data-date-format="yyyy mm dd" data-link-field="dtp_input1">\n' +
+                '次数：<input class="controls input-append date form_datetime form-control" name="play_number" id="play_number_'+(count+1)+'" type="number" value="" >\n' +
                 '<button type="button" class="btn btn-danger" onclick="deleteItem($(this))">删除</button>\n' +
                 '</div>';
             $('.playnumber').append(str);
@@ -274,6 +333,93 @@
                 language: 'zh-CN',
             });
         });
+        $('#submit').click(function () {
+            var check = true;
+            //console.log($('#form').serializeArray());
+            var data = $('#form').serializeArray();
+            var tempdate = [];
+            for(var i = 0;i < data.length;i++){
+                if(i % 3 == 0){
+                    tempdate.push({'start_time':data[i]['value'],'end_time':data[i+1]['value']});
+                }
+                if(data[i]['value'] == ''){
+                    $.alert('请补充完整数据！');
+                    check = false;
+                    return false;
+                }
+            }
+            if(!check){
+                return false;
+            }
+            console.log(tempdate);
+
+            var checkx = true;
+            for(var i = 0;i < tempdate.length;i++){
+                //判断开始不能大于结束
+                console.log(tempdate[i]['start_time']);
+                console.log(tempdate[i]['end_time']);
+                if(tempdate[i]['start_time'] >= tempdate[i]['end_time']){
+                    $.alert('开始时间不能大于等于结束时间！');
+                    checkx = false;
+                    return false;
+                }
+
+                for(var j = i - 1;j >= 0;j--){
+                    if(
+                        !((tempdate[j]['start_time'] >= tempdate[i]['start_time']
+                        && tempdate[j]['start_time'] >= tempdate[i]['end_time'])
+                       ||(tempdate[j]['end_time'] <= tempdate[i]['start_time']
+                            && tempdate[j]['end_time'] <= tempdate[i]['end_time']))
+                    ){
+                        $.alert('每个时间段不能与其他时间段重合！');
+                        checkx = false;
+                        return false;
+                    }
+                }
+                if(!checkx){
+                    return false;
+                }
+            }
+            if(!checkx){
+                return false;
+            }
+
+            var url = "<?php echo url('admin/Gamear/ajaxUpdateParam'); ?>";
+            $.ajax({
+                type: 'POST',
+                url: url,
+                dataType: 'json',
+                data:{data:data},
+                success:function(res){
+                    if(res.code == 1){
+                        $.alert({
+                            title: '系统提示',
+                            content: '保存成功',
+                            icon: 'fa fa-comment',
+                            type: 'green',
+                        });
+                    }else {
+                        $.alert({
+                            title: '系统提示',
+                            content: '保存失败',
+                            icon: 'fa fa-comment',
+                            type: 'green',
+                        });
+                    }
+                    console.log(res);
+                },
+                error:function () {
+                    $.alert({
+                        title: '系统提示',
+                        content: '网络错误，请稍后再试！',
+                        icon: 'fa fa-comment',
+                        type: 'green',
+                    });
+                }
+            });
+
+        });
+
     });
     function deleteItem(obj) {
         obj.parent().remove();

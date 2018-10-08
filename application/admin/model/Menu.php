@@ -71,13 +71,13 @@ class Menu extends Model {
                     'css' => '',
                     'display' => '',
                 ],
-                [
+                /*[
                     'label' => '中奖信息',
                     'id' => 'admin_users_lucky',
                     'url' => 'admin_users_lucky',
                     'css' => '',
                     'display' => '',
-                ],
+                ],*/
                 [
                     'label' => '黑名单',
                     'id' => 'admin_users_blacklist',

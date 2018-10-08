@@ -1,0 +1,151 @@
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>页脚自定义</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br />
+                <form id="myform" method="post"   class="form-horizontal form-label-left" data-parsley-validate>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="remark">图片 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="upload one" id="case" data-num="1" data-type="png,jpg" action="{:url('api/Publicapi/brandImgUpload')}" data-value="{$info['img']}"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="number">页脚文字 
+                        </label>
+                        <div class="col-md-3 col-sm-6 col-xs-6">
+                          <input type="text" id="content" value="{$info['content']}" maxlength="100" name="content"  class="form-control col-md-7 col-xs-12">
+                        </div>
+                      </div>
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button type="button" onclick="mysubmit()"  class="btn btn-success">保存</button>
+                            <button type="button" onclick="deletepage(<?php echo intval($info['id']); ?>)"  class="btn btn-success">删除</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+function mysubmit(){
+    var img = $("input[name='upload']").val();
+    <?php if(!empty($info['img'])){ ?>
+    
+    if(typeof(img)=='undefined'){
+        img = '';          
+    }
+    if(img.length<1){
+        img = '';   
+    }  
+    <?php }else{ ?>
+    if(typeof(img)=='undefined'){
+        $.alert("图片必须上传"); 
+        return false;          
+    }
+    if(img.length<1){
+        $.alert("图片必须上传"); 
+        return false;   
+    } 
+    <?php } ?>
+    
+    var content = $('#content').val();
+
+   $.ajax({
+        type: 'POST',
+        url: "/admin/Homes/ajaxchangefoot",
+        data:{ img:img,content:content},  
+        dataType: 'json',
+        success: function (res) {
+                  if(res.code!=1){
+                      $.alert(res.msg);
+                      return false;
+                  }
+                  $.alert({
+                    title: '成功',
+                    content: '编辑成功',
+                    type: 'green',
+                    icon: 'fa fa-check',
+                    buttons: {
+                      ok: {
+                        text: "确定",
+                        btnClass: 'btn-primary',
+                        keys: ['enter'],
+                        action: function(){
+                            window.location.reload();
+
+                        }
+                    },}
+                });                
+        }
+    });       
+
+}
+function deletepage(id){
+  if(id==0){
+    return false;
+  }  
+  $.confirm({
+        title: '确认！',
+        content: '删除后无法恢复，确认删除吗？',
+        type: 'green',
+        buttons: {   
+            ok: {
+                text: "确认",
+                btnClass: 'btn-primary',
+                keys: ['enter'],
+                action: function(){
+                    
+                       $.ajax({
+                            type: 'POST',
+                            url: "/admin/Homes/ajaxdelete",
+                            data:{ id:id},  
+                            dataType: 'json',
+                            success: function (res) {
+                                      if(res.code!=1){
+                                          $.alert(res.msg);
+                                          return false;
+                                      }
+                                      $.alert({
+                                        title: '成功',
+                                        content: ' 删除成功',
+                                        type: 'green',
+                                        icon: 'fa fa-check',
+                                        buttons: {
+                                          ok: {
+                                            text: "确定",
+                                            btnClass: 'btn-primary',
+                                            keys: ['enter'],
+                                            action: function(){
+                                                window.location.reload();
+                
+                                            }
+                                        },}
+                                    });                
+                            }
+                        });  
+                     
+                     
+                }
+            },
+            cancel: {
+                text: "取消",
+            },
+            
+        }
+    });
+   
+}
+$(function() {
+        $("#case").upload();
+
+});
+</script>

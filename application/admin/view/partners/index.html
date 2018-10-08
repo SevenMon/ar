@@ -1,0 +1,52 @@
+<div class="clearfix"></div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>合作商列表</h2>
+                <a type="button" class="navbar-right panel_toolbox btn btn-primary" href="{:url('admin/Partners/addPage')}">添加合作商</a>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>名称</th>
+                        <th>联系电话</th>
+                        <th>AppId</th>
+                        <th>AppSecret</th>
+                        <th>备注</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="list" id="vo" key="k" empty="暂时没有数据" }
+                    <tr>
+                        <th scope="row"><?php echo (($list->currentPage()-1)*$list->listRows() + $k) ?></th>
+                        <td>{$vo.name}</td>
+                        <td>{$vo.phone}</td>
+                        <td>{$vo.appid}</td>
+                        <td>{$vo.appsecret}</td>
+                        <td>{$vo.remark}</td>
+                        <td>
+                            <?php if($vo['status'] == 1){ ?>
+                            <span class="green">启用</span>
+                            <?php }else{ ?>
+                            <span class="red">禁用</span>
+                            <?php } ?>
+                        </td>
+                        <td>
+                            <a href="{:url('admin/Partners/editPage',array('partner_id' => $vo.id))}">编辑</a>
+                            <a href="{:url('admin/Partners/delete',array('partner_id' => $vo.id))}">删除</a>
+                        </td>
+                    </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+            </div>
+            {:$list}
+        </div>
+    </div>
+</div>

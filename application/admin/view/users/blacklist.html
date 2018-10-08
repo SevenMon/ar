@@ -1,0 +1,81 @@
+<div class="clearfix"></div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>黑名单</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>头像</th>
+                        <th>昵称</th>
+                        <th>性别</th>
+                        <th>OpenId</th>
+                        <th>所属合作商</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="list" id="vo" key="k" empty="暂时没有数据" }
+                    <tr id="user_item_{$vo.id}">
+                        <th scope="row"><?php echo (($list->currentPage()-1)*$list->listRows() + $k) ?></th>
+                        <td><img width="60px" src="{$vo.avatar_url}" /></td>
+                        <td>{:urlsafe_b64decode($vo.nickname)}</td>
+                        <td>{$vo.gender}</td>
+                        <td>{$vo.openid}</td>
+                        <th>{:getPartnerInfo($vo.partner_id,'name')}</th>
+                        <td>
+                            <a href="{:url('admin/Users/detail',array('user_id' => $vo.id))}">详情</a> |
+                            <a href="#" onclick="addwhite({$vo.id})">移除黑名单</a>
+                        </td>
+                    </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+            </div>
+            {:$list}
+        </div>
+    </div>
+</div>
+<script>
+    function addwhite(user_id) {
+        var url = "{:url('admin/Users/ajaxAddWhiteLIst')}"+"?user_id="+user_id;
+        $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: 'json',
+            success:function(res){
+                if(res.code == 1){
+                    $('#user_item_'+user_id).remove();
+                    $.alert({
+                        title: '系统提示',
+                        content: '设置成功！',
+                        icon: 'fa fa-comment',
+                        type: 'green',
+                    });
+                }else {
+                    $.alert({
+                        title: '系统提示',
+                        content: '设置失败请稍后再试！',
+                        icon: 'fa fa-comment',
+                        type: 'green',
+                    });
+                }
+                console.log(res);
+            },
+            error:function () {
+                $.alert({
+                    title: '系统提示',
+                    content: '网络错误，请稍后再试！',
+                    icon: 'fa fa-comment',
+                    type: 'green',
+                });
+            }
+        });
+    }
+
+</script>

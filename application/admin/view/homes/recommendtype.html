@@ -1,0 +1,250 @@
+<div class="x_panel">
+    <div class="x_title">
+        <h2>设置分组`{$info['group_name']}`的推荐分类(最多5个)</h2>
+        <ul class="nav navbar-right panel_toolbox">
+            <li><button type="button" class="btn btn-primary" onclick="showadd()">添加</button></li>
+            <li><button type="button" class="btn btn-primary" onclick="window.location.href='/admin/Homes/recommend'">返回</button></li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>商品名称</th>
+                    <th>描述</th>
+                    <th>排序</th>
+                    <th>分类</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach $list as $key=>$val }
+                <tr>
+                    <td style="width: 400px;">{$val.product_name}<br />{$val.product_name1}</td>
+                    <td style="width: 200px;">{$val.content}</td>
+                    <td>{$val.order}</td>
+                    <td>{$val.type_name}</td>
+                    <td>
+                        <a href="javascript:showedit({$val['id']},{$val['order']},{$val['product_type']},{$val['product_id']},{$val['product_id1']},{$val['content']})">编辑</a>
+                        <a href="javascript:deletepage({$val['id']})">删除</a>
+                    </td>
+                </tr>
+                {/foreach}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal fade bs-example-modal-lg" id="addmodel" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal-dialog modal-lg">
+  <div class="modal-content">
+
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+      </button>
+      <h4 class="modal-title" id="myModalLabel">添加推荐分类</h4>
+    </div>
+    <div class="modal-body">
+    <div    class="form-horizontal form-label-left" >
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="number">排序 <span class="required">*</span>
+            </label>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <input type="number" id="order" name="order"  class="form-control col-md-7 col-xs-12">
+            </div>
+          </div>
+     </div>
+    <div    class="form-horizontal form-label-left" >
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="" >分类
+            </label>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+            <select class="form-control" id="select_type" onchange="getproduct(this.value)">
+            <option value="0">请选择分类</option>
+               {foreach $tlist as $key=>$val }
+               <option value="{$val['id']}">{$val['name']}</option>
+               {/foreach}
+              </select>              
+            </div>
+          </div>
+     </div>
+    <div    class="form-horizontal form-label-left" >
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="">左侧商品 <span class="required">*</span>
+            </label>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <select class="form-control" id="leftproduct">
+              </select>
+            </div>
+          </div>
+     </div>
+    <div    class="form-horizontal form-label-left" >
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="">右侧商品 <span class="required">*</span>
+            </label>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <select class="form-control" id="rightproduct">
+              </select>
+            </div>
+          </div>
+     </div>
+    <div    class="form-horizontal form-label-left" >
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="content">描述
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <input type="text" maxlength="100" id="content" name="content"  class="form-control col-md-8 col-xs-12">
+            </div>
+          </div>
+     </div>
+    </div>
+    <div class="modal-footer">
+    <input type="hidden" id="editid" value="0" />
+      <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+      <button type="button" onclick="mysubmit()" class="btn btn-primary">添加</button>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+
+function deletepage(id){
+  $.confirm({
+        title: '确认！',
+        content: '删除后无法恢复，确认删除吗？',
+        type: 'green',
+        buttons: {   
+            ok: {
+                text: "确认",
+                btnClass: 'btn-primary',
+                keys: ['enter'],
+                action: function(){
+                    
+                       $.ajax({
+                            type: 'POST',
+                            url: "/admin/Homes/ajaxdelete",
+                            data:{ id:id},  
+                            dataType: 'json',
+                            success: function (res) {
+                                      if(res.code!=1){
+                                          $.alert(res.msg);
+                                          return false;
+                                      }
+                                      $.alert({
+                                        title: '成功',
+                                        content: ' 删除成功',
+                                        type: 'green',
+                                        icon: 'fa fa-check',
+                                        buttons: {
+                                          ok: {
+                                            text: "确定",
+                                            btnClass: 'btn-primary',
+                                            keys: ['enter'],
+                                            action: function(){
+                                                window.location.reload();
+                
+                                            }
+                                        },}
+                                    });                
+                            }
+                        });  
+                     
+                     
+                }
+            },
+            cancel: {
+                text: "取消",
+            },
+            
+        }
+    });
+   
+}
+function showadd(){
+    $('#editid').val(0);
+    $('#select_type').val(0);
+    $('#content').val('');
+    $('#order').val('');
+    $('#addmodel').modal('show');
+    getproduct(0);
+}
+function showedit(id,order,select_type,pid1,pid2,content){
+    $('#editid').val(id);
+    $('#order').val(order);
+    $('#content').val(content);
+    $('#select_type').val(select_type);
+    getproduct(select_type,pid1,pid2);
+    $('#addmodel').modal('show');
+}
+function getproduct(typeid,pid1=0,pid2=0){
+       $.ajax({
+            type: 'POST',
+            url: "/admin/Homes/ajaxgetproduct",
+            data:{ id:{$info['product_type']},typeid:typeid},  
+            dataType: 'json',
+            success: function (res) {
+                      if(res.code!=1){
+                          $.alert(res.msg);
+                          return false;
+                      }
+                      $('#leftproduct').empty();
+                      $('#rightproduct').empty(); 
+                      $('#leftproduct').append(res.data); 
+                      $('#rightproduct').append(res.data);   
+                      $('#leftproduct').val(pid1);  
+                      $('#rightproduct').val(pid2);          
+            }
+        });  
+                         
+}
+function mysubmit(){
+    var order = $('#order').val();
+    if(order.length<1){
+        $.alert("排序必须填写"); 
+        return false;   
+    } 
+    var leftproduct = $('#leftproduct').val();
+    if((leftproduct)==null){
+        $.alert('左侧商品必须选择');
+        return false;
+    } 
+    var rightproduct = $('#rightproduct').val();
+    if((rightproduct)==null){
+        $.alert('左侧商品必须选择');
+        return false;
+    }        
+    var editid = $('#editid').val();
+    var content = $('#content').val();
+    var select_type = $('#select_type').val();
+   $.ajax({
+        type: 'POST',
+        url: "/admin/Homes/ajaxchangerecommendtype",
+        data:{id:{$info['id']},content:content,editid:editid,rightproduct:rightproduct,leftproduct:leftproduct,order:order,select_type:select_type},  
+        dataType: 'json',
+        success: function (res) {
+                  if(res.code!=1){
+                      $.alert(res.msg);
+                      return false;
+                  }
+                  $.alert({
+                    title: '成功',
+                    content: '操作成功',
+                    type: 'green',
+                    icon: 'fa fa-check',
+                    buttons: {
+                      ok: {
+                        text: "确定",
+                        btnClass: 'btn-primary',
+                        keys: ['enter'],
+                        action: function(){
+                           window.location.reload();
+
+                        }
+                    },}
+                });                
+        }
+    }); 
+}
+</script>

@@ -1,0 +1,179 @@
+<style>
+    #imgconteng td{
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+    }
+    th{
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+    }
+</style>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>修改游戏素材</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br>
+                <form data-parsley-validate="" data-parsley-required-message="不可为空！" class="form-horizontal form-label-left" novalidate="" action="{:url('admin/Materials/edit',array('games_id' => $gameData['id']))}" method="post">
+                    <input type="hidden" name="materail_id" value="{$materailData['id']}" />
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="material">选择部件数量<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control" id="material" name="material">
+                                <option value="1">1件</option>
+                                <option value="2">2件</option>
+                                <option value="3">3件</option>
+                                <option value="4">4件</option>
+                                <option value="5">5件</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">部件图片上传<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>部件序号</th>
+                                    <th>扫描图片</th>
+                                    <th>部件图片</th>
+                                    <th>部件gif图片</th>
+                                </tr>
+                                </thead>
+                                <tbody id="imgcontent">
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">未完成图片<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div data-name="uncomplete" class="upload one" id="uncomplete" data-num="1" data-type="png,jpg" action="{:url('api/Publicapi/game1ImgUpload')}"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">完成图片<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="upload one" id="complete" data-num="1" data-type="png,jpg" action="{:url('api/Publicapi/game1ImgUpload')}"></div>
+                        </div>
+                    </div>
+
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button class="btn btn-primary" type="button" onclick="window.history.back(-1); ">返回</button>
+                            <button type="submit" class="btn btn-success" id="submit">提交</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function() {
+        $("#complete").upload();
+        $("#uncomplete").upload();
+        $('#material').change(function () {
+            var html = '';
+            for(var i = 1; i <= $(this).val();i++){
+                html += '<tr id="imgconteng">\n' +
+                    '<td>部件'+i+'</td>\n' +
+                    '<td>\n' +
+                    '<div style="text-align: center;display: inline-block">\n' +
+                    '<div data-number="'+i+'" data-name="materials_sacn[]" class="upload one" id="materials_sacn_'+i+'" data-num="1" data-type="png,jpg,gif,jpeg" action="{:url(\'api/Publicapi/game1ImgUpload\')}"></div>\n' +
+                    '</div>\n' +
+                    '</td>\n' +
+                    '<td>\n' +
+                    '<div style="text-align: center;display: inline-block">\n' +
+                    '<div data-number="'+i+'"  data-name="materials_img[]" class="upload one" id="materials_img_'+i+'" data-num="1" data-type="png,jpg,gif,jpeg" action="{:url(\'api/Publicapi/game1ImgUpload\')}"></div>\n' +
+                    '</div>\n' +
+                    '</td>\n' +
+                    '<td>\n' +
+                    '<div style="text-align: center;display: inline-block">\n' +
+                    '<div data-number="'+i+'" data-name="materials_gif[]" class="upload one" id="materials_gif_'+i+'" data-num="1" data-type="png,jpg,gif,jpeg" action="{:url(\'api/Publicapi/game1ImgUpload\')}"></div>\n' +
+                    '</div>\n' +
+                    '</td>\n' +
+                    '</tr>';
+            }
+            $('#imgcontent').html(html);
+            for(var i = 1; i <= $(this).val();i++){
+                $("#materials_sacn_"+ i).upload();
+                $("#materials_img_"+ i).upload();
+                $("#materials_gif_"+ i).upload();
+            }
+        });
+        $('#material').change();
+        $('#submit').click(function () {
+            var check = true;
+            $("input[name='materials_sacn[]']").each(function () {
+                if($(this).val() == ''){
+                    $.alert('请补充部件'+$(this).parent().data('number')+'的扫描图');
+                    check = false;
+                    return false;
+                }else {
+                    var path = $(this).val();
+                    var number = $(this).parent().data('number');
+                    //检查扫描图片重复性
+                    $.ajax({
+                        url:"/admin/Materials/ajaxCheckScan",
+                        data:{imgPath:path},
+                        async:false,
+                        dataType:'json',
+                        success:function (rs) {
+                            if(rs.code < 1){
+                                $.alert('部件'+number+'的扫描图与其他扫描图相似，请选取其他扫描图！');
+                                return false;
+                            }
+                        }
+                    });
+                }
+            })
+            if(!check){
+                return false;
+            }
+            $("input[name='materials_img[]']").each(function () {
+                if($(this).val() == ''){
+                    $.alert('请补充部件'+$(this).parent().data('number')+'的部件图片');
+                    check = false;
+                    return false;
+                }
+            })
+            if(!check){
+                return false;
+            }
+            $("input[name='materials_gif[]']").each(function () {
+                if($(this).val() == ''){
+                    $.alert('请补充部件'+$(this).parent().data('number')+'的搜集成功图片');
+                    check = false;
+                    return false;
+                }
+            })
+            if(!check){
+                return false;
+            }
+            if($("input[name='uncomplete']").val() == ''){
+                $.alert('请补充玩偶的初始图片');
+                return false;
+            }
+            if($("input[name='upload']").val() == ''){
+                $.alert('请补充玩偶的搜集完成图片');
+                return false;
+            }
+        });
+    })
+
+</script>

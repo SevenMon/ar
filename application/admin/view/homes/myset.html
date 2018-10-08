@@ -1,0 +1,146 @@
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>我的配置</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br />
+                <form id="myform" method="post" action="/admin/homes/updatemyset"   class="form-horizontal form-label-left" data-parsley-validate>
+                    <div class="form-group">
+                        <label class="control-label col-md-1 col-sm-1 col-xs-12" for="number">菜单名称 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-6 col-xs-6">
+                          <input type="text" id="content" value="{$info['content']}" maxlength="10" name="content"  class="form-control col-md-7 col-xs-12">
+                        </div>
+                      </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-1 col-sm-1 col-xs-12" for="content">输入内容 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-11 col-sm-11 col-xs-11" id="content">            
+                             <textarea type="text/plain" id="editor1">{$info['des_content']}</textarea>              
+                        </div>
+                    </div>                      
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button type="button" onclick="mysubmit()"  class="btn btn-success">保存</button>
+                            <button type="button" onclick="deletepage(<?php echo intval($info['id']); ?>)"  class="btn btn-success">删除</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+var ue = UE.getEditor('editor1', {
+    //authHeight : false
+    toolbars : ueditor_config.senior_toolbars,
+    initialFrameWidth : 800,
+    initialFrameHeight : 300,
+    enableAutoSave : false,
+    saveInterval : 0,
+    autoSyncData : false,
+    //emotionLocalization : true,
+    wordCount : true,
+    elementPathEnabled : false,
+    autoFloatEnabled : true,
+    serverUrl : ueditor_config.server_url
+});
+    
+function mysubmit(){
+    var content = $('#content').val();
+    if(content.length<1){
+        $.alert('菜单名称必须填写');
+        return false;
+    }
+    var editor = ue.getContent();
+   $.ajax({
+        type: 'POST',
+        url: "/admin/Homes/updatemyset",
+        data:{ content:content,editor:editor},  
+        dataType: 'json',
+        success: function (res) {
+                  if(res.code!=1){
+                      $.alert(res.msg);
+                      return false;
+                  }
+                  $.alert({
+                    title: '成功',
+                    content: '设置成功',
+                    type: 'green',
+                    icon: 'fa fa-check',
+                    buttons: {
+                      ok: {
+                        text: "确定",
+                        btnClass: 'btn-primary',
+                        keys: ['enter'],
+                        action: function(){
+                            window.location.reload();
+
+                        }
+                    },}
+                });                
+        }
+    });  
+                     
+}
+function deletepage(id){
+  if(id==0){
+    return false;
+  }  
+  $.confirm({
+        title: '确认！',
+        content: '删除后无法恢复，确认删除吗？',
+        type: 'green',
+        buttons: {   
+            ok: {
+                text: "确认",
+                btnClass: 'btn-primary',
+                keys: ['enter'],
+                action: function(){
+                    
+                       $.ajax({
+                            type: 'POST',
+                            url: "/admin/Homes/ajaxdelete",
+                            data:{ id:id},  
+                            dataType: 'json',
+                            success: function (res) {
+                                      if(res.code!=1){
+                                          $.alert(res.msg);
+                                          return false;
+                                      }
+                                      $.alert({
+                                        title: '成功',
+                                        content: ' 删除成功',
+                                        type: 'green',
+                                        icon: 'fa fa-check',
+                                        buttons: {
+                                          ok: {
+                                            text: "确定",
+                                            btnClass: 'btn-primary',
+                                            keys: ['enter'],
+                                            action: function(){
+                                                window.location.reload();
+                
+                                            }
+                                        },}
+                                    });                
+                            }
+                        });  
+                     
+                     
+                }
+            },
+            cancel: {
+                text: "取消",
+            },
+            
+        }
+    });
+   
+}
+
+</script>

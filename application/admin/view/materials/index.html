@@ -1,0 +1,85 @@
+<style>
+    #imgcontent td{
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+    }
+    th{
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+    }
+</style>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>游戏素材</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br>
+                <div class="form-horizontal form-label-left" novalidate="">
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">部件图片<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>部件序号</th>
+                                    <th>扫描图片</th>
+                                    <th>部件图片</th>
+                                    <th>部件gif图片</th>
+                                </tr>
+                                </thead>
+                                <tbody id="imgcontent">
+                                    <?php for($i = 1;$i <= $materailData['material_num'];++$i){ ?>
+                                    <tr>
+                                        <td>部件{:$i}</td>
+                                        <td>
+                                            <img width="100px" src="{:$materailData['part'.$i]}" />
+                                        </td>
+                                        <td>
+                                            <img width="100px" src="{:$materailData['scan'.$i]}" />
+                                        </td>
+                                        <td>
+                                            <img width="100px" src="{:$materailData['partgif'.$i]}" />
+                                        </td>
+                                    </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">未完成图片<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <img width="100px" src="{:$materailData['uncomplete_pic']}" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">完成图片<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <img width="100px" src="{:$materailData['complete_pic']}" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button class="btn btn-primary" type="button" onclick="window.history.back(-1); ">返回</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+
+</script>

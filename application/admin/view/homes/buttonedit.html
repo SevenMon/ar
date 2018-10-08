@@ -1,0 +1,165 @@
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>编辑首页按钮</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br />
+                <form id="myform" method="post"   class="form-horizontal form-label-left" data-parsley-validate>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="content">名称 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-6 col-xs-6">
+                          <input type="text" maxlength="10" id="content" value="{$info['content']}" name="content" data-parsley-required="true" data-parsley-required-message="名称不能为空" class="form-control col-md-7 col-xs-12">
+                        </div>
+                      </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="remark">图片 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="upload one" id="case" data-num="1" data-type="png,jpg" action="{:url('api/Publicapi/brandImgUpload')}" data-value="{$info['img']}"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="number">排序 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-6 col-xs-6">
+                          <input type="number" id="order" value="{$info['order']}" name="order" data-parsley-required="true" data-parsley-required-message="排序不能为空" class="form-control col-md-7 col-xs-12">
+                        </div>
+                      </div>
+                    <div class="form-group" onchange="changemytype()">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="number">类型 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-6 col-xs-6">
+                          <select class="form-control" id="mytype">
+                            <option value="1" <?php if($info['product_flag']==1){echo('selected="selected"');} ?>>分类</option>
+                            <option value="2" <?php if($info['product_flag']==2){echo('selected="selected"');} ?>>商品</option>
+                          </select>
+                        </div>
+                      </div>
+                    <div class="form-group" id="div_type" style="display:none;">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="number">分类 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-6 col-xs-6">
+                          <select class="form-control" id="select_type">
+                           <?php echo($tinfo); ?>
+                          </select>
+                        </div>
+                      </div>
+                    <div class="form-group" id="div_product" style="display:none;">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="number">商品 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-6 col-xs-6">
+                          <select class="form-control" id="select_product">
+                            <?php echo($cinfo); ?>
+                          </select>
+                        </div>
+                      </div>
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button type="button" onclick="mysubmit()"  class="btn btn-success">保存</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+function mysubmit(){
+    var img = $("input[name='upload']").val();
+    <?php if($info['id']!=0){ ?>
+    
+    if(typeof(img)=='undefined'){
+        img = '';          
+    }
+    if(img.length<1){
+        img = '';   
+    }  
+    <?php }else{ ?>
+    if(typeof(img)=='undefined'){
+        $.alert("图片必须上传"); 
+        return false;          
+    }
+    if(img.length<1){
+        $.alert("图片必须上传"); 
+        return false;   
+    } 
+    <?php } ?>
+    
+    var mytype = $('#mytype').val();
+    if(mytype==1){
+        var select_type = $('#select_type').val();
+        if((select_type)==null){
+            $.alert('分类必须选择');
+            return false;
+        }
+    }else{
+        var select_product = $('#select_product').val();
+        if((select_product)==null){
+            $.alert('产品必须选择');
+            return false;
+        }        
+    } 
+    var order = $('#order').val();
+    var content = $('#content').val();
+     $('#myform').parsley().validate();
+    if (true === $('#myform').parsley().isValid()) {
+       $.ajax({
+            type: 'POST',
+            url: "/admin/Homes/ajaxchangefirst",
+            data:{ id:{$info['id']},img:img,type:mytype,select_type:select_type,select_product:select_product,order:order,catgray:2,content:content},  
+            dataType: 'json',
+            success: function (res) {
+                      if(res.code!=1){
+                          $.alert(res.msg);
+                          return false;
+                      }
+                      $.alert({
+                        title: '成功',
+                        content: '编辑成功',
+                        type: 'green',
+                        icon: 'fa fa-check',
+                        buttons: {
+                          ok: {
+                            text: "确定",
+                            btnClass: 'btn-primary',
+                            keys: ['enter'],
+                            action: function(){
+                                window.location.href='/admin/Homes/button';
+
+                            }
+                        },}
+                    });                
+            }
+        });       
+    } else {
+        return false;
+    }
+}
+$(function() {
+        $("#case").upload(
+           
+        );
+    var mytype = $('#mytype').val();
+    if(mytype==1){
+        $('#div_type').show();
+    }else{
+        $('#div_product').show();
+    }
+});
+function changemytype(){
+    var mytype = $('#mytype').val();
+    if(mytype==1){
+        $('#div_type').show();
+        $('#div_product').hide();
+    }else{
+        $('#div_type').hide();
+        $('#div_product').show();
+    }    
+}
+</script>

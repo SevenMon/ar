@@ -1,0 +1,41 @@
+<div class="clearfix"></div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>商品列表</h2>
+                <a class="navbar-right panel_toolbox btn btn-danger" style="margin-left: 20px" type="button"  href="{:url('admin/Brands/index',array('brand_id' => $brandId))}">返回</a>
+                <a type="button" class="navbar-right panel_toolbox btn btn-primary" href="{:url('admin/Waress/addPage',array('brand_id' => $brandId))}">添加商品</a>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>商品图片</th>
+                        <th>商品名称</th>
+                        <th>商品介绍</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="list" id="vo" key="k" empty="暂时没有数据" }
+                    <tr>
+                        <th scope="row"><?php echo (($list->currentPage()-1)*$list->listRows() + $k) ?></th>
+                        <td><img src="{$vo.pic}" style="width: 80px;" /></td>
+                        <td>{$vo.name}</td>
+                        <td style="max-width: 160px;word-wrap:break-word;">{$vo.introduce}</td>
+                        <td>
+                            <a href="{:url('admin/Waress/editPage',array('wares_id' => $vo.id,'brand_id' => $brandId))}">编辑</a>
+                            <a href="{:url('admin/Waress/delete',array('wares_id' => $vo.id,'brand_id' => $brandId))}">删除</a>
+                        </td>
+                    </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+            </div>
+            {:$list}
+        </div>
+    </div>
+</div>

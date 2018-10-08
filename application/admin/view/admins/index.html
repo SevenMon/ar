@@ -1,0 +1,88 @@
+<div class="x_panel">
+    <div class="x_title">
+        <h2>管理员列表</h2>
+        <a type="button" class="navbar-right panel_toolbox btn btn-primary" href="{:url('admin/admins/add')}">添加管理员</a>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+        <span class="red">备注：重置密码（888888）</span>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>会员账号</th>
+                    <th>状态</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach $list as $key=>$val }
+                <tr>
+                    <td>{$val.username}</td>
+                    <td>
+                        <div class="col-md-6 col-sm-6 col-xs-12" style="padding-top: 6px;">
+                            <input onchange="updateStatus({$val['aid']})" type="checkbox" class="js-switch" <?php if($val['status'] == 1)echo'checked'; ?> name="status" />
+                        </div>
+                    </td>
+                    <td>
+                        {:date('Y-m-d H-i-s',$val['register_time'])}
+                    </td>
+                    <td>
+                        <a href="{:url('admin/admins/updatePasswordPage',['aid' => $val['aid']])}">修改密码</a> |
+                        <a href="#" onclick="resetPassword({$val['aid']})">重置密码</a>
+                    </td>
+                </tr>
+                {/foreach}
+            </tbody>
+        </table>
+    </div>
+    {:$list}
+</div>
+<script>
+    function resetPassword(aid){
+        var url = "{:url('admin/admins/resetPassword')}";
+        $.ajax({
+            type: 'GET',
+            url: "{:url('admin/admins/resetPassword')}",
+            data: {
+                aid: aid
+            },
+            dataType: 'json',
+            success: function (res) {
+                $.alert({
+                    title: '系统提示',
+                    content: '密码重置成功！',
+                    icon: 'fa fa-comment',
+                    type: 'green',
+                });
+            },
+            error:function () {
+                $.alert({
+                    title: '系统提示',
+                    content: '网络错误，请稍后再试！',
+                    icon: 'fa fa-comment',
+                    type: 'green',
+                });
+            }
+        });
+    }
+    function updateStatus(aid) {
+        var url = "{:url('admin/admins/updateStatus')}";
+        $.ajax({
+            type: 'GET',
+            url: "{:url('admin/admins/updateStatus')}",
+            data: {
+                aid: aid
+            },
+            dataType: 'json',
+            error:function () {
+                $.alert({
+                    title: '系统提示',
+                    content: '网络错误，请稍后再试！',
+                    icon: 'fa fa-comment',
+                    type: 'green',
+                });
+            }
+        });
+    }
+</script>

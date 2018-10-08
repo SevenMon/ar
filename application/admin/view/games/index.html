@@ -1,0 +1,63 @@
+<div class="clearfix"></div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>游戏列表</h2>
+                <a type="button" class="navbar-right panel_toolbox btn btn-primary" href="{:url('admin/Games/addPage')}">添加游戏</a>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>名称</th>
+                        <th>游戏类型</th>
+                        <th>状态</th>
+                        <th>素材状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="list" id="vo" key="k" empty="暂时没有数据" }
+                    <tr>
+                        <th scope="row"><?php echo (($list->currentPage()-1)*$list->listRows() + $k) ?></th>
+                        <td>{$vo.title}</td>
+                        <td>
+                            <?php echo(\app\model\GameType::TYPE[$vo['type']]['name']);  ?>
+                        </td>
+                        <td>
+                            <?php if($vo['status'] == 1){ ?>
+                            <span class="green">启用</span>
+                            <?php }else{ ?>
+                            <span class="red">禁用</span>
+                            <?php } ?>
+                        </td>
+                        <td>
+                            <?php if($vo['materialStatus'] == 1){ ?>
+                            <span class="green">已编辑</span>
+                            <?php }else{ ?>
+                            <span class="red">未编辑</span>
+                            <?php } ?>
+                        </td>
+                        <td>
+
+                            {if condition="$vo['materialStatus'] eq 1"}
+                            <a href="{:url('admin/Materials/index',array('games_id' => $vo.id))}">查看游戏素材</a>
+                            {else /}
+                            <a href="{:url('admin/Materials/editPage',array('games_id' => $vo.id))}">编辑游戏素材</a>
+                            {/if}
+
+                            <a href="{:url('admin/Games/editPage',array('games_id' => $vo.id))}">编辑</a>
+                            <a href="{:url('admin/Games/delete',array('games_id' => $vo.id))}">删除</a>
+                        </td>
+                    </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+            </div>
+            {:$list}
+        </div>
+    </div>
+</div>

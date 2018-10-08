@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <title>后台主页</title>
+        <link rel="stylesheet" href="/manage/css/bootstrap.css" />
+        <link rel="stylesheet" href="/manage/css/ui-dialog.css" />
+        <link rel="stylesheet" href="/manage/css/main.css" />
+        <link rel="stylesheet" href="/manage/css/jquery-confirm.min.css"/>
+        <script type="text/javascript" src="/manage/js/jquery-1.11.3.min.js"></script>
+		<script type="text/javascript" src="/manage/js/jquery.validate.min.js"></script>
+		<script type="text/javascript" src="/manage/js/jquery-confirm.min.js"></script>
+</head>
+<body>
+<script language="javascript">
+	$(function($) {
+		$.alert({
+			title: '已开启成功',
+			content: '您已经开启服务！',
+			type: 'green',
+			icon: 'fa fa-check',
+			buttons: {
+				ok: function(){
+					window.close();
+				},
+			}
+		});
+	});	
+</script>
+</body>

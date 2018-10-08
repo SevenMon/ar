@@ -1,0 +1,129 @@
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>修改项目</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br>
+                <form data-parsley-validate="" data-parsley-required="" class="form-horizontal form-label-left" novalidate="" action="{:url('admin/Projects/edit')}" method="post">
+                    <input type="hidden" name="project_id" value="{$projectData['id']}" >
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title">名称 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" name="title" id="title" required="required" class="form-control col-md-7 col-xs-12" value="{$projectData['name']}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="content">项目内容 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <textarea id="content" required="required" class="form-control" name="content">{$projectData['content']}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="gameId">选择游戏<span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                            <select disabled class="form-control" id="gameId" name="gameId">
+                                {volist name="gameList" id="vo" key="k" empty="暂时没有数据" }
+                                <option value="{$vo['id']}" <?php if($projectData['game_id'] == $vo['id'])echo 'selected'; ?> >{$vo['title']}</option>
+                                {/volist}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="partnerId">选择合作商<span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                            <select disabled class="form-control" id="partnerId" name="partnerId">
+                                {volist name="partnerList" id="vo" key="k" empty="暂时没有数据" }
+                                <option value="{$vo['id']}" <?php if($projectData['partner_id'] == $vo['id'])echo 'selected'; ?> >{$vo['name']}</option>
+                                {/volist}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="brandId">根据品牌商选商品 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                            <select class="form-control" id="brandId" name="brandId" onchange="changetype(this.options[this.options.selectedIndex].value)">
+                                {volist name="brandList" id="vo" key="k" empty="暂时没有数据" }
+                                <option value="{$vo['id']}" <?php if($waresData['brand_id'] == $vo['id'])echo 'selected'; ?> >{$vo['name']}</option>
+                                {/volist}
+                            </select>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                            <select class="form-control" id="waresId" name="waresId">
+                                {volist name="waresslist" id="vo" key="k" empty="暂时没有数据" }
+                                <option value="{$vo['id']}" <?php if($waresData['id'] == $vo['id'])echo 'selected'; ?> >{$vo['name']}</option>
+                                {/volist}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!--<div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="content">中奖领取方式 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-6" id="receive_type">
+                            <script id="receive_content" type="text/plain" style="width:1024px;height:500px;">
+
+                            </script>
+                        </div>
+                    </div>-->
+
+
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button class="btn btn-primary" type="button" onclick="window.history.back(-1); ">返回</button>
+                            <button class="btn btn-primary" type="reset">重置</button>
+                            <button type="submit" class="btn btn-success">提交</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    /*var ue = UE.getEditor('receive_content', {
+        //authHeight : false
+        toolbars : ueditor_config.senior_toolbars,
+        initialFrameWidth : 800,
+        initialFrameHeight : 300,
+        enableAutoSave : false,
+        saveInterval : 0,
+        autoSyncData : false,
+        //emotionLocalization : true,
+        wordCount : true,
+        elementPathEnabled : false,
+        autoFloatEnabled : true,
+        serverUrl : ueditor_config.server_url
+    });*/
+    function changetype(brandId) {
+        var url = "{:url('admin/Waress/getListByBrand')}";
+        $.ajax({
+            url:url+ "?brand_id="+brandId,
+            dataType:'json',
+            async:true,
+            success:function(res){
+                var html = '';
+                html += '';
+                if(res.data.length > 0){
+                    for (var i=0;i<res.data.length;i++)
+                    {
+                        html += '<option value="'+res.data[i].id+'">'+res.data[i].name+'</option>';
+                    }
+                }
+                $('#waresId').html(html);
+            }
+        });
+    }
+</script>

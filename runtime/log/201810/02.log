@@ -1,0 +1,403 @@
+---------------------------------------------------------------
+[ 2018-10-02T15:39:47+08:00 ] ::1 GET ar.com/
+[运行时间：0.084797s] [吞吐率：11.79req/s] [内存消耗：3,069.13kb] [文件加载：69]
+[ info ] [ LANG ] /Applications/MAMP/htdocs/ar/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'host' => 'ar.com',
+  'connection' => 'keep-alive',
+  'purpose' => 'prefetch',
+  'upgrade-insecure-requests' => '1',
+  'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2018-10-02T15:39:47+08:00 ] ::1 GET ar.com/Login/index/index.html
+[运行时间：0.043558s] [吞吐率：22.96req/s] [内存消耗：3,036.65kb] [文件加载：69]
+[ info ] [ LANG ] /Applications/MAMP/htdocs/ar/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'host' => 'ar.com',
+  'connection' => 'keep-alive',
+  'purpose' => 'prefetch',
+  'upgrade-insecure-requests' => '1',
+  'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'cookie' => 'PHPSESSID=9cfe46b360f359375b2d8e8000e91cba',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ BEHAVIOR ] Run app\login\behavior\ListenLoginStatus->run @action_begin [ RunTime:0.001039s ]
+[ info ] [ VIEW ] /Applications/MAMP/htdocs/ar/application/login/view/index/index.html [ array (
+  0 => 'erromsg',
+) ]
+---------------------------------------------------------------
+[ 2018-10-02T15:39:48+08:00 ] ::1 GET ar.com/Login/index/index.html
+[运行时间：0.080407s] [吞吐率：12.44req/s] [内存消耗：3,036.48kb] [文件加载：69]
+[ info ] [ LANG ] /Applications/MAMP/htdocs/ar/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'host' => 'ar.com',
+  'connection' => 'keep-alive',
+  'upgrade-insecure-requests' => '1',
+  'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'cookie' => 'PHPSESSID=9cfe46b360f359375b2d8e8000e91cba',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ BEHAVIOR ] Run app\login\behavior\ListenLoginStatus->run @action_begin [ RunTime:0.000674s ]
+[ info ] [ VIEW ] /Applications/MAMP/htdocs/ar/application/login/view/index/index.html [ array (
+  0 => 'erromsg',
+) ]
+---------------------------------------------------------------
+[ 2018-10-02T15:39:54+08:00 ] ::1 POST ar.com/login/index/checklogin.html
+[运行时间：1.281061s] [吞吐率：0.78req/s] [内存消耗：5,099.48kb] [文件加载：82]
+[ info ] [ LANG ] /Applications/MAMP/htdocs/ar/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'host' => 'ar.com',
+  'connection' => 'keep-alive',
+  'content-length' => '30',
+  'cache-control' => 'max-age=0',
+  'origin' => 'http://ar.com',
+  'upgrade-insecure-requests' => '1',
+  'content-type' => 'application/x-www-form-urlencoded',
+  'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'referer' => 'http://ar.com/Login/index/index.html',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'cookie' => 'PHPSESSID=9cfe46b360f359375b2d8e8000e91cba',
+)
+[ info ] [ PARAM ] array (
+  'username' => 'admin',
+  'password' => '888888',
+)
+[ info ] [ BEHAVIOR ] Run app\login\behavior\ListenLoginStatus->run @action_begin [ RunTime:0.000530s ]
+[ info ] [ DB ] INIT mysql
+[ sql ] [ DB ] CONNECT:[ UseTime:0.346022s ] mysql:host=121.196.216.77;dbname=arwawa;charset=utf8mb4
+[ sql ] [ SQL ] SHOW COLUMNS FROM `cn_admin` [ RunTime:0.270866s ]
+[ sql ] [ SQL ] SELECT * FROM `cn_admin` WHERE  `username` = 'admin'  AND `password` = '0d5e6f4206490b5a86273c41dd8c2250' LIMIT 1 [ RunTime:0.336920s ]
+[ sql ] [ EXPLAIN : array (
+  'id' => 1,
+  'select_type' => 'SIMPLE',
+  'table' => 'cn_admin',
+  'type' => 'ALL',
+  'possible_keys' => NULL,
+  'key' => NULL,
+  'key_len' => NULL,
+  'ref' => NULL,
+  'rows' => 2,
+  'extra' => 'Using where',
+) ]
+---------------------------------------------------------------
+[ 2018-10-02T15:39:54+08:00 ] ::1 GET ar.com/admin/index/index.html
+[运行时间：0.056192s] [吞吐率：17.80req/s] [内存消耗：3,780.99kb] [文件加载：80]
+[ info ] [ LANG ] /Applications/MAMP/htdocs/ar/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'host' => 'ar.com',
+  'connection' => 'keep-alive',
+  'cache-control' => 'max-age=0',
+  'upgrade-insecure-requests' => '1',
+  'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'referer' => 'http://ar.com/Login/index/index.html',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'cookie' => 'PHPSESSID=9cfe46b360f359375b2d8e8000e91cba',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] /Applications/MAMP/htdocs/ar/application/admin/view/index/index.html [ array (
+  0 => 'top_menu_active',
+  1 => 'left_menu_active',
+) ]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/ee9739472e19b99ea8385f5b84822ae8.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/ee9739472e19b99ea8385f5b84822ae8.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/ee9739472e19b99ea8385f5b84822ae8.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/ee9739472e19b99ea8385f5b84822ae8.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/ee9739472e19b99ea8385f5b84822ae8.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/ee9739472e19b99ea8385f5b84822ae8.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/ee9739472e19b99ea8385f5b84822ae8.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/ee9739472e19b99ea8385f5b84822ae8.php:140]
+---------------------------------------------------------------
+[ 2018-10-02T15:39:54+08:00 ] ::1 GET ar.com/admin/index/images/favicon.ico
+[运行时间：0.062689s] [吞吐率：15.95req/s] [内存消耗：3,023.85kb] [文件加载：70]
+[ info ] [ LANG ] /Applications/MAMP/htdocs/ar/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'host' => 'ar.com',
+  'connection' => 'keep-alive',
+  'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36',
+  'accept' => 'image/webp,image/apng,image/*,*/*;q=0.8',
+  'referer' => 'http://ar.com/admin/index/index.html',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'cookie' => 'PHPSESSID=9cfe46b360f359375b2d8e8000e91cba',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2018-10-02T15:39:59+08:00 ] ::1 GET ar.com/admin/datas/index.html
+[运行时间：0.060051s] [吞吐率：16.65req/s] [内存消耗：4,020.95kb] [文件加载：82]
+[ info ] [ LANG ] /Applications/MAMP/htdocs/ar/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'host' => 'ar.com',
+  'connection' => 'keep-alive',
+  'upgrade-insecure-requests' => '1',
+  'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'referer' => 'http://ar.com/admin/index/index.html',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'cookie' => 'PHPSESSID=9cfe46b360f359375b2d8e8000e91cba',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] /Applications/MAMP/htdocs/ar/application/admin/view/datas/index.html [ array (
+  0 => 'top_menu_active',
+  1 => 'left_menu_active',
+) ]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/b6c6c03de287aca66f2abac0e9516cbb.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/b6c6c03de287aca66f2abac0e9516cbb.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/b6c6c03de287aca66f2abac0e9516cbb.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/b6c6c03de287aca66f2abac0e9516cbb.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/b6c6c03de287aca66f2abac0e9516cbb.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/b6c6c03de287aca66f2abac0e9516cbb.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/b6c6c03de287aca66f2abac0e9516cbb.php:140]
+---------------------------------------------------------------
+[ 2018-10-02T15:39:59+08:00 ] ::1 GET ar.com/admin/datas/images/favicon.ico
+[运行时间：0.040200s] [吞吐率：24.88req/s] [内存消耗：3,025.03kb] [文件加载：70]
+[ info ] [ LANG ] /Applications/MAMP/htdocs/ar/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'host' => 'ar.com',
+  'connection' => 'keep-alive',
+  'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36',
+  'accept' => 'image/webp,image/apng,image/*,*/*;q=0.8',
+  'referer' => 'http://ar.com/admin/datas/index.html',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'cookie' => 'PHPSESSID=9cfe46b360f359375b2d8e8000e91cba',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2018-10-02T15:40:01+08:00 ] ::1 GET ar.com/admin/users/game.html
+[运行时间：0.055935s] [吞吐率：17.88req/s] [内存消耗：4,043.23kb] [文件加载：82]
+[ info ] [ LANG ] /Applications/MAMP/htdocs/ar/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'host' => 'ar.com',
+  'connection' => 'keep-alive',
+  'upgrade-insecure-requests' => '1',
+  'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'referer' => 'http://ar.com/admin/datas/index.html',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'cookie' => 'PHPSESSID=9cfe46b360f359375b2d8e8000e91cba',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] /Applications/MAMP/htdocs/ar/application/admin/view/users/game.html [ array (
+  0 => 'top_menu_active',
+  1 => 'left_menu_active',
+) ]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/4adc11b7ebb5a0b7eb3abf200d061426.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/4adc11b7ebb5a0b7eb3abf200d061426.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/4adc11b7ebb5a0b7eb3abf200d061426.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/4adc11b7ebb5a0b7eb3abf200d061426.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/4adc11b7ebb5a0b7eb3abf200d061426.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/4adc11b7ebb5a0b7eb3abf200d061426.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/4adc11b7ebb5a0b7eb3abf200d061426.php:140]
+---------------------------------------------------------------
+[ 2018-10-02T15:40:01+08:00 ] ::1 GET ar.com/admin/users/images/favicon.ico
+[运行时间：0.039916s] [吞吐率：25.05req/s] [内存消耗：3,047.23kb] [文件加载：70]
+[ info ] [ LANG ] /Applications/MAMP/htdocs/ar/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'host' => 'ar.com',
+  'connection' => 'keep-alive',
+  'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36',
+  'accept' => 'image/webp,image/apng,image/*,*/*;q=0.8',
+  'referer' => 'http://ar.com/admin/users/game.html',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'cookie' => 'PHPSESSID=9cfe46b360f359375b2d8e8000e91cba',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2018-10-02T15:40:03+08:00 ] ::1 GET ar.com/admin/users/index.html
+[运行时间：1.313932s] [吞吐率：0.76req/s] [内存消耗：5,578.67kb] [文件加载：91]
+[ info ] [ LANG ] /Applications/MAMP/htdocs/ar/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'host' => 'ar.com',
+  'connection' => 'keep-alive',
+  'upgrade-insecure-requests' => '1',
+  'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'referer' => 'http://ar.com/admin/users/game.html',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'cookie' => 'PHPSESSID=9cfe46b360f359375b2d8e8000e91cba',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] /Applications/MAMP/htdocs/ar/application/admin/view/users/index.html [ array (
+  0 => 'top_menu_active',
+  1 => 'left_menu_active',
+  2 => 'list',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.212298s ] mysql:host=121.196.216.77;dbname=arwawa;charset=utf8mb4
+[ sql ] [ SQL ] SHOW COLUMNS FROM `cn_user` [ RunTime:0.122439s ]
+[ sql ] [ SQL ] SELECT COUNT(*) AS tp_count FROM `cn_user` WHERE  `status` = 1 LIMIT 1 [ RunTime:0.147909s ]
+[ sql ] [ EXPLAIN : array (
+  'id' => 1,
+  'select_type' => 'SIMPLE',
+  'table' => 'cn_user',
+  'type' => 'ALL',
+  'possible_keys' => NULL,
+  'key' => NULL,
+  'key_len' => NULL,
+  'ref' => NULL,
+  'rows' => 2,
+  'extra' => 'Using where',
+) ]
+[ sql ] [ SQL ] SELECT * FROM `cn_user` WHERE  `status` = 1 ORDER BY `id` DESC LIMIT 0,10 [ RunTime:0.127103s ]
+[ sql ] [ EXPLAIN : array (
+  'id' => 1,
+  'select_type' => 'SIMPLE',
+  'table' => 'cn_user',
+  'type' => 'index',
+  'possible_keys' => NULL,
+  'key' => 'PRIMARY',
+  'key_len' => '4',
+  'ref' => NULL,
+  'rows' => 2,
+  'extra' => 'Using where',
+) ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `cn_partner` [ RunTime:0.156922s ]
+[ sql ] [ SQL ] SELECT * FROM `cn_partner` WHERE  `id` = 4 LIMIT 1 [ RunTime:0.125006s ]
+[ sql ] [ EXPLAIN : array (
+  'id' => 1,
+  'select_type' => 'SIMPLE',
+  'table' => 'cn_partner',
+  'type' => 'const',
+  'possible_keys' => 'PRIMARY',
+  'key' => 'PRIMARY',
+  'key_len' => '4',
+  'ref' => 'const',
+  'rows' => 1,
+  'extra' => NULL,
+) ]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/839b406f903b2f0398fa237aabfcdc10.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/839b406f903b2f0398fa237aabfcdc10.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/839b406f903b2f0398fa237aabfcdc10.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/839b406f903b2f0398fa237aabfcdc10.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/839b406f903b2f0398fa237aabfcdc10.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/839b406f903b2f0398fa237aabfcdc10.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/839b406f903b2f0398fa237aabfcdc10.php:140]
+---------------------------------------------------------------
+[ 2018-10-02T15:40:04+08:00 ] ::1 GET ar.com/admin/users/game.html
+[运行时间：0.049011s] [吞吐率：20.40req/s] [内存消耗：3,803.88kb] [文件加载：80]
+[ info ] [ LANG ] /Applications/MAMP/htdocs/ar/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'host' => 'ar.com',
+  'connection' => 'keep-alive',
+  'upgrade-insecure-requests' => '1',
+  'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'referer' => 'http://ar.com/admin/users/index.html',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'cookie' => 'PHPSESSID=9cfe46b360f359375b2d8e8000e91cba',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] /Applications/MAMP/htdocs/ar/application/admin/view/users/game.html [ array (
+  0 => 'top_menu_active',
+  1 => 'left_menu_active',
+) ]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/4adc11b7ebb5a0b7eb3abf200d061426.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/4adc11b7ebb5a0b7eb3abf200d061426.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/4adc11b7ebb5a0b7eb3abf200d061426.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/4adc11b7ebb5a0b7eb3abf200d061426.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/4adc11b7ebb5a0b7eb3abf200d061426.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/4adc11b7ebb5a0b7eb3abf200d061426.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/4adc11b7ebb5a0b7eb3abf200d061426.php:140]
+---------------------------------------------------------------
+[ 2018-10-02T15:40:09+08:00 ] ::1 GET ar.com/admin/gamear/index.html
+[运行时间：0.065126s] [吞吐率：15.35req/s] [内存消耗：4,023.66kb] [文件加载：82]
+[ info ] [ LANG ] /Applications/MAMP/htdocs/ar/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'host' => 'ar.com',
+  'connection' => 'keep-alive',
+  'upgrade-insecure-requests' => '1',
+  'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'referer' => 'http://ar.com/admin/users/game.html',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'cookie' => 'PHPSESSID=9cfe46b360f359375b2d8e8000e91cba',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] /Applications/MAMP/htdocs/ar/application/admin/view/gamear/index.html [ array (
+  0 => 'top_menu_active',
+  1 => 'left_menu_active',
+) ]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/333a8d31f4e2d96a5be116ebf8a0dee3.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/333a8d31f4e2d96a5be116ebf8a0dee3.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/333a8d31f4e2d96a5be116ebf8a0dee3.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/333a8d31f4e2d96a5be116ebf8a0dee3.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/333a8d31f4e2d96a5be116ebf8a0dee3.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/333a8d31f4e2d96a5be116ebf8a0dee3.php:140]
+[ error ] [8]未定义数组索引: display[/Applications/MAMP/htdocs/ar/runtime/temp/333a8d31f4e2d96a5be116ebf8a0dee3.php:140]
+---------------------------------------------------------------
+[ 2018-10-02T15:40:09+08:00 ] ::1 GET ar.com/admin/gamear/images/favicon.ico
+[运行时间：0.041210s] [吞吐率：24.27req/s] [内存消耗：3,020.01kb] [文件加载：70]
+[ info ] [ LANG ] /Applications/MAMP/htdocs/ar/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'host' => 'ar.com',
+  'connection' => 'keep-alive',
+  'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36',
+  'accept' => 'image/webp,image/apng,image/*,*/*;q=0.8',
+  'referer' => 'http://ar.com/admin/gamear/index.html',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'cookie' => 'PHPSESSID=9cfe46b360f359375b2d8e8000e91cba',
+)
+[ info ] [ PARAM ] array (
+)

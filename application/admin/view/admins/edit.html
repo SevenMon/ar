@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>修改密码</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br />
+                <form id="demo-form2" method="post" action="{:url('admin/admins/updatePassword')}" data-parsley-validate class="form-horizontal form-label-left">
+                    <input type="hidden" id="id" name="aid" value="{$aid}">
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="oldpassword">旧密码
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input required="required"  type="password" name="oldpassword" id="oldpassword"  class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="password">密码
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input required="required"  type="password" name="password" id="password"  class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button type="submit" class="btn btn-success">提交</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -13,20 +13,17 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    //'hostname'        => 'localhost',
-    'hostname'        => '121.196.216.77',
-    //'hostname'        => 'rm-8vb8qqv2yti20e33t9o.mysql.zhangbei.rds.aliyuncs.com',
+    'hostname'        => 'localhost',
+    //'hostname'        => '121.196.216.77',
     // 数据库名
     'database'        => 'arwawa',
     //'database'        => 'test_leida_net',
     // 用户名
-    //'username'        => 'root',
-    'username'        => 'arwawa',
-    //'username'        => 'testleida',
+    'username'        => 'root',
+    //'username'        => 'arwawa',
     // 密码
-    //'password'        => 'root',
-    'password'        => '552527aA',
-    //'password'        => 'root',
+    'password'        => 'root',
+    //'password'        => '552527aA',
     // 端口
     'hostport'        => '',
     // 连接dsn

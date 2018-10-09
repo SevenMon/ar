@@ -205,7 +205,7 @@ const WebAR = function(interval, recognizeUrl) {
 
 };
 
-const webAR = new WebAR(1000, 'https://www.hihill.cn/api/Argame/scan');
+const webAR = new WebAR(1000, 'https://www.hihill.cn/api/Argame/scan?user_id=MpQaO0O0OiO0O0Ox&partner_id=NpAaO0O0OiO0O0Ox');
 
 document.querySelector('#openCamera').addEventListener('click', function(){
     const videoSetting = {width: 320, height: 240};

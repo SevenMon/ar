@@ -177,7 +177,7 @@ class Argame extends Base {
                 'project_id' => $projectData['id']
             );
             $userGameAddData['part'.$part_num.'_num'] = 1;
-            $userGameData->insertGetId($userGameAddData);
+            $userGameModel->insertGetId($userGameAddData);
         }else{
             $userGameData['part'.$part_num.'_num'] = $userGameData['part'.$part_num.'_num'] + 1;
             //判断是否集齐  先看集齐状态  如果已经集齐了  那就不用管了  可以继续搜集  不过不可以变换状态  只有未集齐状态  在扫描之后如果集齐了  那么变换状态为集齐

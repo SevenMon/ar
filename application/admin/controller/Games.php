@@ -8,6 +8,7 @@ namespace app\admin\controller;
 use app\model\Game;
 use app\model\GameType;
 use think\Db;
+use app\admin\controller\Easyar;
 
 class Games extends Base
 {
@@ -135,6 +136,21 @@ class Games extends Base
         }
         $updateData['status'] = 0;
         $info = $gameData->where('id','=',$gamesId)->update($updateData);
+
+        if($gameData['type'] == 1){
+            //删除扫描图片
+            $gameMaterialModel = Db::table('cn_game_1_material');
+            $materialData = $gameMaterialModel->find($gameData['material_id']);
+            if(!empty($materialData) && $materialData != null){
+                $delete = array();
+                for ($i = 1;$i <= $materialData['material_num'];$i++){
+                    $delete[] = $materialData['scan_id'.$i];
+                }
+                $easyar = new Easyar();
+                $easyar->targetDelete($delete);
+            }
+        }
+
         if(empty($info)){
             $this->error('删除失败！');
         }else{

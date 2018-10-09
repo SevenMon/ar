@@ -1,4 +1,4 @@
-<?php /*a:4:{s:71:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\gamear\index.html";i:1538990926;s:65:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\layout.html";i:1538966109;s:72:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\public\header.html";i:1538966109;s:72:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\public\footer.html";i:1538966109;}*/ ?>
+<?php /*a:4:{s:71:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\gamear\index.html";i:1539051853;s:65:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\layout.html";i:1539051853;s:72:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\public\header.html";i:1539051853;s:72:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\public\footer.html";i:1539051853;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -255,7 +255,7 @@
 
                     <div class="form-group">
                         <div class="col-md-8 col-sm-8 col-xs-12 playnumber col-md-offset-2">
-                            
+
                         </div>
                     </div>
                     <div class="ln_solid"></div>

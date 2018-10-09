@@ -1,4 +1,4 @@
-<?php /*a:4:{s:73:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\partners\index.html";i:1539064784;s:65:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\layout.html";i:1539051853;s:72:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\public\header.html";i:1539051853;s:72:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\public\footer.html";i:1539051853;}*/ ?>
+<?php /*a:4:{s:74:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\waress\add_page.html";i:1539051853;s:65:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\layout.html";i:1539051853;s:72:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\public\header.html";i:1539051853;s:72:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\public\footer.html";i:1539051853;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -184,60 +184,83 @@
 
         <!-- page content -->
         <div class="right_col" role="main">
-            <div class="clearfix"></div>
-<div class="row">
+            <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>合作商列表</h2>
-                <a type="button" class="navbar-right panel_toolbox btn btn-primary" href="<?php echo url('admin/Partners/addPage'); ?>">添加合作商</a>
+                <h2>添加商品</h2>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th>序号</th>
-                        <th>小程序配置合作商id</th>
-                        <th>名称</th>
-                        <th>联系电话</th>
-                        <th>AppId</th>
-                        <th>AppSecret</th>
-                        <th>备注</th>
-                        <th>状态</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php if(is_array($list) || $list instanceof \think\Collection || $list instanceof \think\Paginator): $k = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "暂时没有数据" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($k % 2 );++$k;?>
-                    <tr>
-                        <th scope="row"><?php echo (($list->currentPage()-1)*$list->listRows() + $k) ?></th>
-                        <td><?php echo encode($vo['id']); ?></td>
-                        <td><?php echo htmlentities($vo['name']); ?></td>
-                        <td><?php echo htmlentities($vo['phone']); ?></td>
-                        <td><?php echo htmlentities($vo['appid']); ?></td>
-                        <td><?php echo htmlentities($vo['appsecret']); ?></td>
-                        <td><?php echo htmlentities($vo['remark']); ?></td>
-                        <td>
-                            <?php if($vo['status'] == 1){ ?>
-                            <span class="green">启用</span>
-                            <?php }else{ ?>
-                            <span class="red">禁用</span>
-                            <?php } ?>
-                        </td>
-                        <td>
-                            <a href="<?php echo url('admin/Partners/editPage',array('partner_id' => $vo['id'])); ?>">编辑</a>
-                            <a href="<?php echo url('admin/Partners/delete',array('partner_id' => $vo['id'])); ?>">删除</a>
-                        </td>
-                    </tr>
-                    <?php endforeach; endif; else: echo "暂时没有数据" ;endif; ?>
-                    </tbody>
-                </table>
+                <br>
+                <form id="form" data-parsley-validate="" data-parsley-required-message="不可为空！" class="form-horizontal form-label-left" novalidate="" action="<?php echo url('admin/Waress/add'); ?>" method="post" class="dropzone" >
+                    <input type="hidden" name="brand_id" value="<?php echo htmlentities($brandId); ?>" >
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title">名称 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" name="title" id="title" required="required" class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="remark">图片 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="upload one" id="case" data-num="1" data-type="png,jpg" action="<?php echo url('api/Publicapi/waresImgUpload'); ?>"></div>
+                            <p hidden id="imgmsg" style="color: #E74C3C">不可为空！</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="remark">介绍 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <textarea id="remark" required="required" class="form-control" name="message"></textarea>
+                        </div>
+                    </div>
+
+                    <!--<div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="remark">状态 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12" style="padding-top: 6px;">
+                            <input type="checkbox" class="js-switch" checked name="status" />
+                        </div>
+                    </div>-->
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button class="btn btn-primary" type="button" onclick="window.history.back(-1); ">返回</button>
+                            <button class="btn btn-primary" type="reset">重置</button>
+                            <button type="submit" class="btn btn-success">提交</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <?php echo $list; ?>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(function() {
+        $("#case").upload(
+            //该函数为点击放大镜的回调函数，如没有该函数，则不显示放大镜
+            function(_this, data) {
+                console.log(data)
+            }
+        );
+        $('#form').submit(function () {
+            var info = $("input[name='upload']").val();
+            if(info == ''){
+                $('#imgmsg').show();
+                return false;
+            }else {
+                $('#imgmsg').hide();
+            }
+
+        });
+    })
+</script>
+
         </div>
         <!-- /page content -->
 

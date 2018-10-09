@@ -1,4 +1,4 @@
-<?php /*a:4:{s:74:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\materials\index.html";i:1538966109;s:65:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\layout.html";i:1538966109;s:72:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\public\header.html";i:1538966109;s:72:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\public\footer.html";i:1538966109;}*/ ?>
+<?php /*a:4:{s:74:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\materials\index.html";i:1539065924;s:65:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\layout.html";i:1539051853;s:72:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\public\header.html";i:1539051853;s:72:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\public\footer.html";i:1539051853;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -224,10 +224,10 @@
                                     <tr>
                                         <td>部件<?php echo $i; ?></td>
                                         <td>
-                                            <img width="100px" src="<?php echo $materailData['part'.$i]; ?>" />
+                                            <img width="100px" src="<?php echo $materailData['scan'.$i]; ?>" />
                                         </td>
                                         <td>
-                                            <img width="100px" src="<?php echo $materailData['scan'.$i]; ?>" />
+                                            <img width="100px" src="<?php echo $materailData['part'.$i]; ?>" />
                                         </td>
                                         <td>
                                             <img width="100px" src="<?php echo $materailData['partgif'.$i]; ?>" />

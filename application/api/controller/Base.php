@@ -2,6 +2,7 @@
 namespace app\api\controller;
 use app\model\Partner;
 use think\Controller;
+use app\model\User;
 
 
 class Base extends Controller

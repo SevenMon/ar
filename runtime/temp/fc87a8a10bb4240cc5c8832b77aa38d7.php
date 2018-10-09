@@ -1,4 +1,4 @@
-<?php /*a:4:{s:73:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\partners\index.html";i:1539064784;s:65:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\layout.html";i:1539051853;s:72:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\public\header.html";i:1539051853;s:72:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\public\footer.html";i:1539051853;}*/ ?>
+<?php /*a:4:{s:78:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\materials\edit_page.html";i:1539051853;s:65:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\layout.html";i:1539051853;s:72:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\public\header.html";i:1539051853;s:72:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\public\footer.html";i:1539051853;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -184,60 +184,185 @@
 
         <!-- page content -->
         <div class="right_col" role="main">
-            <div class="clearfix"></div>
+            <style>
+    #imgconteng td{
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+    }
+    th{
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+    }
+</style>
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>合作商列表</h2>
-                <a type="button" class="navbar-right panel_toolbox btn btn-primary" href="<?php echo url('admin/Partners/addPage'); ?>">添加合作商</a>
+                <h2>修改游戏素材</h2>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th>序号</th>
-                        <th>小程序配置合作商id</th>
-                        <th>名称</th>
-                        <th>联系电话</th>
-                        <th>AppId</th>
-                        <th>AppSecret</th>
-                        <th>备注</th>
-                        <th>状态</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php if(is_array($list) || $list instanceof \think\Collection || $list instanceof \think\Paginator): $k = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "暂时没有数据" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($k % 2 );++$k;?>
-                    <tr>
-                        <th scope="row"><?php echo (($list->currentPage()-1)*$list->listRows() + $k) ?></th>
-                        <td><?php echo encode($vo['id']); ?></td>
-                        <td><?php echo htmlentities($vo['name']); ?></td>
-                        <td><?php echo htmlentities($vo['phone']); ?></td>
-                        <td><?php echo htmlentities($vo['appid']); ?></td>
-                        <td><?php echo htmlentities($vo['appsecret']); ?></td>
-                        <td><?php echo htmlentities($vo['remark']); ?></td>
-                        <td>
-                            <?php if($vo['status'] == 1){ ?>
-                            <span class="green">启用</span>
-                            <?php }else{ ?>
-                            <span class="red">禁用</span>
-                            <?php } ?>
-                        </td>
-                        <td>
-                            <a href="<?php echo url('admin/Partners/editPage',array('partner_id' => $vo['id'])); ?>">编辑</a>
-                            <a href="<?php echo url('admin/Partners/delete',array('partner_id' => $vo['id'])); ?>">删除</a>
-                        </td>
-                    </tr>
-                    <?php endforeach; endif; else: echo "暂时没有数据" ;endif; ?>
-                    </tbody>
-                </table>
+                <br>
+                <form data-parsley-validate="" data-parsley-required-message="不可为空！" class="form-horizontal form-label-left" novalidate="" action="<?php echo url('admin/Materials/edit',array('games_id' => $gameData['id'])); ?>" method="post">
+                    <input type="hidden" name="materail_id" value="<?php echo htmlentities($materailData['id']); ?>" />
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="material">选择部件数量<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control" id="material" name="material">
+                                <option value="1">1件</option>
+                                <option value="2">2件</option>
+                                <option value="3">3件</option>
+                                <option value="4">4件</option>
+                                <option value="5">5件</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">部件图片上传<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>部件序号</th>
+                                    <th>扫描图片</th>
+                                    <th>部件图片</th>
+                                    <th>部件gif图片</th>
+                                </tr>
+                                </thead>
+                                <tbody id="imgcontent">
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">未完成图片<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div data-name="uncomplete" class="upload one" id="uncomplete" data-num="1" data-type="png,jpg" action="<?php echo url('api/Publicapi/game1ImgUpload'); ?>"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">完成图片<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="upload one" id="complete" data-num="1" data-type="png,jpg" action="<?php echo url('api/Publicapi/game1ImgUpload'); ?>"></div>
+                        </div>
+                    </div>
+
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button class="btn btn-primary" type="button" onclick="window.history.back(-1); ">返回</button>
+                            <button type="submit" class="btn btn-success" id="submit">提交</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <?php echo $list; ?>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(function() {
+        $("#complete").upload();
+        $("#uncomplete").upload();
+        $('#material').change(function () {
+            var html = '';
+            for(var i = 1; i <= $(this).val();i++){
+                html += '<tr id="imgconteng">\n' +
+                    '<td>部件'+i+'</td>\n' +
+                    '<td>\n' +
+                    '<div style="text-align: center;display: inline-block">\n' +
+                    '<div data-number="'+i+'" data-name="materials_sacn[]" class="upload one" id="materials_sacn_'+i+'" data-num="1" data-type="png,jpg,gif,jpeg" action="<?php echo url('api/Publicapi/game1ImgUpload'); ?>"></div>\n' +
+                    '</div>\n' +
+                    '</td>\n' +
+                    '<td>\n' +
+                    '<div style="text-align: center;display: inline-block">\n' +
+                    '<div data-number="'+i+'"  data-name="materials_img[]" class="upload one" id="materials_img_'+i+'" data-num="1" data-type="png,jpg,gif,jpeg" action="<?php echo url('api/Publicapi/game1ImgUpload'); ?>"></div>\n' +
+                    '</div>\n' +
+                    '</td>\n' +
+                    '<td>\n' +
+                    '<div style="text-align: center;display: inline-block">\n' +
+                    '<div data-number="'+i+'" data-name="materials_gif[]" class="upload one" id="materials_gif_'+i+'" data-num="1" data-type="png,jpg,gif,jpeg" action="<?php echo url('api/Publicapi/game1ImgUpload'); ?>"></div>\n' +
+                    '</div>\n' +
+                    '</td>\n' +
+                    '</tr>';
+            }
+            $('#imgcontent').html(html);
+            for(var i = 1; i <= $(this).val();i++){
+                $("#materials_sacn_"+ i).upload();
+                $("#materials_img_"+ i).upload();
+                $("#materials_gif_"+ i).upload();
+            }
+        });
+        $('#material').change();
+        $('#submit').click(function () {
+            var check = true;
+            $("input[name='materials_sacn[]']").each(function () {
+                if($(this).val() == ''){
+                    $.alert('请补充部件'+$(this).parent().data('number')+'的扫描图');
+                    check = false;
+                    return false;
+                }else {
+                    var path = $(this).val();
+                    var number = $(this).parent().data('number');
+                    //检查扫描图片重复性
+                    $.ajax({
+                        url:"/admin/Materials/ajaxCheckScan",
+                        data:{imgPath:path},
+                        async:false,
+                        dataType:'json',
+                        success:function (rs) {
+                            if(rs.code < 1){
+                                $.alert('部件'+number+'的扫描图与其他扫描图相似，请选取其他扫描图！');
+                                return false;
+                            }
+                        }
+                    });
+                }
+            })
+            if(!check){
+                return false;
+            }
+            $("input[name='materials_img[]']").each(function () {
+                if($(this).val() == ''){
+                    $.alert('请补充部件'+$(this).parent().data('number')+'的部件图片');
+                    check = false;
+                    return false;
+                }
+            })
+            if(!check){
+                return false;
+            }
+            $("input[name='materials_gif[]']").each(function () {
+                if($(this).val() == ''){
+                    $.alert('请补充部件'+$(this).parent().data('number')+'的搜集成功图片');
+                    check = false;
+                    return false;
+                }
+            })
+            if(!check){
+                return false;
+            }
+            if($("input[name='uncomplete']").val() == ''){
+                $.alert('请补充玩偶的初始图片');
+                return false;
+            }
+            if($("input[name='upload']").val() == ''){
+                $.alert('请补充玩偶的搜集完成图片');
+                return false;
+            }
+        });
+    })
+
+</script>
         </div>
         <!-- /page content -->
 

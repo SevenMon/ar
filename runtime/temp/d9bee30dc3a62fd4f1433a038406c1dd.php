@@ -1,4 +1,4 @@
-<?php /*a:4:{s:73:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\partners\index.html";i:1539064784;s:65:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\layout.html";i:1539051853;s:72:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\public\header.html";i:1539051853;s:72:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\public\footer.html";i:1539051853;}*/ ?>
+<?php /*a:4:{s:76:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\projects\add_page.html";i:1539051853;s:65:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\layout.html";i:1539051853;s:72:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\public\header.html";i:1539051853;s:72:"C:\phpStudy\PHPTutorial\WWW\ar\application\admin\view\public\footer.html";i:1539051853;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -184,60 +184,136 @@
 
         <!-- page content -->
         <div class="right_col" role="main">
-            <div class="clearfix"></div>
-<div class="row">
+            <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>合作商列表</h2>
-                <a type="button" class="navbar-right panel_toolbox btn btn-primary" href="<?php echo url('admin/Partners/addPage'); ?>">添加合作商</a>
+                <h2>添加项目</h2>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th>序号</th>
-                        <th>小程序配置合作商id</th>
-                        <th>名称</th>
-                        <th>联系电话</th>
-                        <th>AppId</th>
-                        <th>AppSecret</th>
-                        <th>备注</th>
-                        <th>状态</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php if(is_array($list) || $list instanceof \think\Collection || $list instanceof \think\Paginator): $k = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "暂时没有数据" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($k % 2 );++$k;?>
-                    <tr>
-                        <th scope="row"><?php echo (($list->currentPage()-1)*$list->listRows() + $k) ?></th>
-                        <td><?php echo encode($vo['id']); ?></td>
-                        <td><?php echo htmlentities($vo['name']); ?></td>
-                        <td><?php echo htmlentities($vo['phone']); ?></td>
-                        <td><?php echo htmlentities($vo['appid']); ?></td>
-                        <td><?php echo htmlentities($vo['appsecret']); ?></td>
-                        <td><?php echo htmlentities($vo['remark']); ?></td>
-                        <td>
-                            <?php if($vo['status'] == 1){ ?>
-                            <span class="green">启用</span>
-                            <?php }else{ ?>
-                            <span class="red">禁用</span>
-                            <?php } ?>
-                        </td>
-                        <td>
-                            <a href="<?php echo url('admin/Partners/editPage',array('partner_id' => $vo['id'])); ?>">编辑</a>
-                            <a href="<?php echo url('admin/Partners/delete',array('partner_id' => $vo['id'])); ?>">删除</a>
-                        </td>
-                    </tr>
-                    <?php endforeach; endif; else: echo "暂时没有数据" ;endif; ?>
-                    </tbody>
-                </table>
+                <br>
+                <form data-parsley-validate="" data-parsley-required="" class="form-horizontal form-label-left" novalidate="" action="<?php echo url('admin/Projects/add'); ?>" method="post">
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title">名称 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" name="title" id="title" required="required" class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="content">项目内容 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <textarea id="content" required="required" class="form-control" name="content"></textarea>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="gameId">选择游戏<span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                            <select class="form-control" id="gameId" name="gameId">
+                                <?php if(is_array($gameList) || $gameList instanceof \think\Collection || $gameList instanceof \think\Paginator): $k = 0; $__LIST__ = $gameList;if( count($__LIST__)==0 ) : echo "暂时没有数据" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($k % 2 );++$k;?>
+                                <option value="<?php echo htmlentities($vo['id']); ?>"><?php echo htmlentities($vo['title']); ?></option>
+                                <?php endforeach; endif; else: echo "暂时没有数据" ;endif; ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="partnerId">选择合作商<span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                            <select class="form-control" id="partnerId" name="partnerId">
+                                <?php if(is_array($partnerList) || $partnerList instanceof \think\Collection || $partnerList instanceof \think\Paginator): $k = 0; $__LIST__ = $partnerList;if( count($__LIST__)==0 ) : echo "暂时没有数据" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($k % 2 );++$k;?>
+                                <option value="<?php echo htmlentities($vo['id']); ?>"><?php echo htmlentities($vo['name']); ?></option>
+                                <?php endforeach; endif; else: echo "暂时没有数据" ;endif; ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="brandId">根据品牌商选商品 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                            <select class="form-control" id="brandId" name="brandId" onchange="changetype(this.options[this.options.selectedIndex].value)">
+                                <?php if(is_array($brandList) || $brandList instanceof \think\Collection || $brandList instanceof \think\Paginator): $k = 0; $__LIST__ = $brandList;if( count($__LIST__)==0 ) : echo "暂时没有数据" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($k % 2 );++$k;?>
+                                <option value="<?php echo htmlentities($vo['id']); ?>"><?php echo htmlentities($vo['name']); ?></option>
+                                <?php endforeach; endif; else: echo "暂时没有数据" ;endif; ?>
+                            </select>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                            <select class="form-control" id="waresId" name="waresId">
+                                <?php if(is_array($waresslist) || $waresslist instanceof \think\Collection || $waresslist instanceof \think\Paginator): $k = 0; $__LIST__ = $waresslist;if( count($__LIST__)==0 ) : echo "暂时没有数据" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($k % 2 );++$k;?>
+                                <option value="<?php echo htmlentities($vo['id']); ?>"><?php echo htmlentities($vo['name']); ?></option>
+                                <?php endforeach; endif; else: echo "暂时没有数据" ;endif; ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!--<div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="content">中奖领取方式 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-6" id="receive_type">
+                            <script id="receive_content" type="text/plain" style="width:1024px;height:500px;">
+
+                            </script>
+                        </div>
+                    </div>-->
+
+
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button class="btn btn-primary" type="button" onclick="window.history.back(-1); ">返回</button>
+                            <button class="btn btn-primary" type="reset">重置</button>
+                            <button type="submit" class="btn btn-success">提交</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <?php echo $list; ?>
         </div>
     </div>
 </div>
+<script>
+    /*var ue = UE.getEditor('receive_content', {
+        //authHeight : false
+        toolbars : ueditor_config.senior_toolbars,
+        initialFrameWidth : 800,
+        initialFrameHeight : 300,
+        enableAutoSave : false,
+        saveInterval : 0,
+        autoSyncData : false,
+        //emotionLocalization : true,
+        wordCount : true,
+        elementPathEnabled : false,
+        autoFloatEnabled : true,
+        serverUrl : ueditor_config.server_url
+    });*/
+    function changetype(brandId) {
+        var url = "<?php echo url('admin/Waress/getListByBrand'); ?>";
+        $.ajax({
+            url:url+ "?brand_id="+brandId,
+            dataType:'json',
+            async:true,
+            success:function(res){
+                var html = '';
+                html += '';
+                if(res.data.length > 0){
+                    for (var i=0;i<res.data.length;i++)
+                    {
+                        html += '<option value="'+res.data[i].id+'">'+res.data[i].name+'</option>';
+                    }
+                }
+                $('#waresId').html(html);
+            }
+        });
+    }
+</script>
         </div>
         <!-- /page content -->
 

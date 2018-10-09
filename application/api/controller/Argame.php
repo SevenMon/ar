@@ -31,7 +31,7 @@ class Argame extends Base {
         //获取游戏获取部件的情况
         $where = array();
         $where[] = array('user_id','=',$this->userId);
-        $where[] = array('project','=',$projectData['id']);
+        $where[] = array('project_id','=',$projectData['id']);
         $userGameModel = Db::table('cn_user_game_ar_data');
         $userGameData = $userGameModel->where($where)->find();
         if(empty($userGameData)){
@@ -203,9 +203,9 @@ class Argame extends Base {
     public function show(){
         $showTimeModel = Db::table('cn_show_time');
         $projectModel = new Project();
-        $projectData = $projectModel
+        //$projectData = $projectModel
         $data = array(
-            ''
+
         );
     }
 

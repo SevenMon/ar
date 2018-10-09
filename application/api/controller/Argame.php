@@ -4,6 +4,7 @@
 
 namespace app\api\controller;
 
+use app\model\Code;
 use app\model\Game;
 use app\model\Project;
 use app\model\Show;
@@ -51,12 +52,12 @@ class Argame extends Base {
         if(empty($gameMaterialData) || $gameMaterialData == null || $gameMaterialData['status'] != 1){
             ajaxJsonReturn(-3,'游戏没有设置相应的素材，请设置好素材在进行游戏',array());
         }
-        ajaxJsonReturn(1,'获取成功',array('data' => $gameMaterialData,'userGameData'=>$userGameData));
+        ajaxJsonReturn(0,'获取成功',array('data' => $gameMaterialData,'userGameData'=>$userGameData));
     }
 
     //获取用户游戏信息
     public function getUserGameData(){
-        //判断用户今日  已经玩的次数 和总共有多少次  TODO 没有算上分享的
+        //判断用户今日  已经玩的次数 和总共有多少次
         //获取项目
         $projectModel = new Project();
         $where = array();
@@ -73,7 +74,6 @@ class Argame extends Base {
         $where[] = array('create_time','>',date('Y-m-d 00:00:00',time()));
         $where[] = array('create_time','<',date('Y-m-d 23:59:59',time()));
         $todayPlayNum = $playDataModel->where($where)->count();
-
         $playNumParamModel = Db::table('cn_game_ar_param');
         $where = array();
         $where[] = array('start_time','<=',date('Y-m-d',time()));
@@ -82,20 +82,28 @@ class Argame extends Base {
         if(empty($paramData) || $paramData == null){
             $allPlayNum = 0;
         }else{
-            $allPlayNum = $paramData['play_number'];
+            //加上分享的次数
+            $showTimeModel = Db::table('cn_show_time');
+            $where = array();
+            $where[] = array('user_id','=',$this->userId);
+            $where[] = array('project_id','=',$projectData['id']);
+            $where[] = array('create_time','>',date('Y-m-d 00:00:00',time()));
+            $where[] = array('create_time','<',date('Y-m-d 23:59:59',time()));
+            $count = $showTimeModel->where($where)->count();
+            $allPlayNum = $paramData['play_number'] + $count;
         }
 
         //获取游戏获取部件的情况
         $where = array();
         $where[] = array('user_id','=',$this->userId);
-        $where[] = array('project','=',$projectData['id']);
+        $where[] = array('project_id','=',$projectData['id']);
         $userGameModel = Db::table('cn_user_game_ar_data');
         $userGameData = $userGameModel->where($where)->find();
         if(empty($userGameData)){
             $userGameData = array();
         }
 
-        ajaxJsonReturn(1,'获取成功',array(
+        ajaxJsonReturn(0,'获取成功',array(
             'todayPlayNUm' => $todayPlayNum,
             'allPlayNum' => $allPlayNum,
             'userGameData' => $userGameData
@@ -105,6 +113,11 @@ class Argame extends Base {
 
     //扫描验证接口
     public function scan(){
+        //判断是否有可玩次数
+        $playTime = $this->getPlayTime();
+        if($playTime['allPlayNum'] != 0 && $playTime['todayPlayNum'] >= $playTime['allPlayNum']){
+            ajaxJsonReturn(-9,'今日次数已经用完不能再次进行游戏',array());
+        }
         $easyar = new Easyar();
         $result = $easyar->check();
         if($result['statusCode'] != 0){
@@ -169,7 +182,7 @@ class Argame extends Base {
         $where[] = array('user_id','=',$this->userId);
         $where[] = array('project_id','=',$projectData['id']);
 
-        $userGameModel = Db::table('cn_user_game_ar_data');
+        $userGameModel = new UserGameArData();
         $userGameData = $userGameModel->where($where)->find();
         if(empty($userGameData) || $userGameData == null){
             $userGameAddData = array(
@@ -203,11 +216,22 @@ class Argame extends Base {
     //分享游戏增加游戏次数
     public function show(){
         $showTimeModel = Db::table('cn_show_time');
+        //获取项目
         $projectModel = new Project();
-        //$projectData = $projectModel
+        $where = array();
+        $where[] = array('partner_id','=',$this->partnerId);
+        $where[] = array('status','=',1);
+        $projectData = $projectModel->where($where)->find();
         $data = array(
-
+            'project_id' => $projectData['id'],
+            'user_id' => $this->userId
         );
+        $info = $showTimeModel->insertGetId($data);
+        if(empty($info)){
+            ajaxJsonReturn(-1,'分享失败',array());
+        }else{
+            ajaxJsonReturn(0,'分享成功',array());
+        }
     }
 
     //分享部件接口
@@ -220,18 +244,24 @@ class Argame extends Base {
         if(empty($data) || $data['part'.$part_num.'_num'] == 0){
             ajaxJsonReturn(-2,'分享部件不存在',array());
         }
-        $data = array(
+        $updateData['part'.$part_num.'_num'] = --$data['part'.$part_num.'_num'];
+        if($updateData['part'.$part_num.'_num'] == 0){
+            $updateData['is_complete'] = 0;
+            $data['is_complete'] = 0;
+        }
+        $userGameDataModel->where('id','=',$data['id'])->update($updateData);
+        $datas = array(
             'part_num' => $part_num,
             'type' => 1,
             'start_user_id' => $this->userId,
             'project_id' =>$data['project_id']
         );
         $showModel = new Show();
-        $show_id = $showModel->insertGetId($data);
+        $show_id = $showModel->insertGetId($datas);
         if(empty($show_id)){
             ajaxJsonReturn(-1,'分享失败',array());
         }else{
-            ajaxJsonReturn(1,'分享成功',array('show_id'=>$show_id));
+            ajaxJsonReturn(0,'分享成功',array('show_id'=>$show_id,'userGameData' => $data));
         }
     }
 
@@ -247,24 +277,20 @@ class Argame extends Base {
             ajaxJsonReturn(-2,'分享类型错误',array());
         }
         if($showData['status'] == 1){
-            ajaxJsonReturn(-4,'已经被其他用户领取',array());
+            ajaxJsonReturn(-7,'已经领取过',array());
         }
-        $userModel = new User();
-        $userInfo = $userModel->find($showData['start_user_id']);
-        $userGameDataModel = new UserGameArData();
+        if(strtotime($showData['create_time']) > time() - 60*60*24*3){
+            ajaxJsonReturn(-4,'已经过期无法领取',array());
+        }
+
+        /*$userModel = new User();
+        $userInfo = $userModel->find($showData['start_user_id']);*/
         //自己的游戏数据
         $userGameDataModel = new UserGameArData();
         $selfData = $userGameDataModel->getUserData($this->userInfo);
         if($selfData['project_id'] != $showData['project_id']){
             ajaxJsonReturn(-5,'该给予部件的分享已经过期！');
         }
-
-        $showUserdata = $userGameDataModel->getUserData($userInfo);
-        if($showUserdata['part'.$showData['part_num'].'_num'] < 1){
-            ajaxJsonReturn(-3,'用户已经使用了该部件',array());
-        }
-        //改变分享人部件数量
-        $showUserUpdateinfo = $userGameDataModel->where('id','=',$showUserdata['id'])->update(array('part'.$showData['part_num'].'_num' => ($showUserdata['part'.$showData['part_num'].'_num']-1)));
         //改变分享数据的状态
         $showUpdateInfo = $showModel->where('id','=',$show_id)->update(array('status' => 1,'end_user_id' => $this->userId));
         //改变被分享人部件数量 并且判断是否已经收集完成 并改变状态
@@ -288,19 +314,16 @@ class Argame extends Base {
         $update = array(
             'part'.$showData['part_num'].'_num' => $selfData['part'.$showData['part_num'].'_num']
         );
-        if($check){
+        if($check && $selfData['is_complete'] == 0){
             $update['is_complete'] = 1;
+            $selfData['is_complete'] = 1;
         }
         $selfUserUpdateInfo = $userGameDataModel->where('id','=',$selfData['id'])->update($update);
-
         if(empty($selfUserUpdateInfo)){
             ajaxJsonReturn(-7,'获取部件失败',array());
         }else{
-            ajaxJsonReturn(1,'获取部件成功',array());
+            ajaxJsonReturn(0,'获取部件成功',array('data'=> $selfData));
         }
-
-
-
     }
 
     //索要部件分享接口
@@ -320,7 +343,7 @@ class Argame extends Base {
         if(empty($show_id)){
             ajaxJsonReturn(-1,'分享失败',array());
         }else{
-            ajaxJsonReturn(1,'分享成功',array('show_id'=>$show_id));
+            ajaxJsonReturn(0,'分享成功',array('show_id'=>$show_id));
         }
     }
 
@@ -338,6 +361,7 @@ class Argame extends Base {
         if($showData['status'] == 1){
             ajaxJsonReturn(-3,'已经确认过给予部件',array());
         }
+        Db::startTrans();
         //自己的游戏数据
         $userGameDataModel = new UserGameArData();
         $selfData = $userGameDataModel->getUserData($this->userInfo);
@@ -390,8 +414,10 @@ class Argame extends Base {
         $showUserUpdateInfo = $userGameDataModel->where('id','=',$showUserData['id'])->update($update);
 
         if(empty($showUserUpdateInfo)){
+            Db::rollback();
             ajaxJsonReturn(-6,'给予部件失败',array());
         }else{
+            Db::commit();
             ajaxJsonReturn(1,'给予部件成功',array());
         }
 
@@ -404,14 +430,20 @@ class Argame extends Base {
 
     //发送验证码接口
     public function sendcode(){
+        $userGameArDataModel = new UserGameArData();
+        $userGameData = $userGameArDataModel->getUserData($this->userInfo);
+        if($userGameData['is_complete'] != 2){
+            ajaxJsonReturn(-1,'搜集状态错误',array());
+        }
         $phone = input('phone');
         $txsms = new Txsms();
         $code = rand(1000,9999);
         //mysql存储并且验证
-        $codeModel = Db::table('cn_code');
+        $codeModel = new Code();
         $where = array();
         $where[] = array('phone','=',$phone);
         $data = $codeModel->where($where)->find();
+        Db::startTrans();
         if(empty($data) || $data == null){
             $addData = array(
                 'phone' => $phone,
@@ -426,23 +458,32 @@ class Argame extends Base {
                 ajaxJsonReturn(-1,'该手机号最多可以发送十次');
             }
             if(time() - $data['create_time'] < 60){
-                ajaxJsonReturn(-2,'60秒内不可重复发送短信，剩余'.(60 - time() - $data['create_time']),array('overplus_time' => 60 - time() - $data['create_time']));
+                ajaxJsonReturn(-2,'60秒内不可重复发送短信，剩余'.(60 - (time() - $data['create_time'])),array('overplus_time' => 60 - (time() - $data['create_time'])));
             }
-            $updateData = array(
-                'code' => $code,
-                'create_time' => time(),
-                'time' => $data['time'] + 1,
-            );
+            $updateData['code'] = $code;
+            if(date('Y-m-d',$data['create_time']) == date('Y-m-d',time())){
+                $updateData['time'] = $data['time'] + 1;
+            }else{
+                $updateData['time'] = 1;
+            }
+            $updateData['create_time'] = time();
             $codeModel->where($where)->update($updateData);
         }
-        $txsms->sendSingleTemplateSms($phone,204282,array($code),'行云时空',array('code'=> $code));
+        $info = $txsms->sendSingleTemplateSms($phone,array($code),204282,'行云时空');
+        if($info->result == 0){
+            Db::commit();
+            ajaxJsonReturn(0,'发送成功',array('code'=>$code));
+        }else{
+            Db::rollback();
+            ajaxJsonReturn(-1,'发送失败',array());
+        }
     }
 
     //校验验证码接口 并进行兑奖操作
     public function confirmcode(){
         $phone = input('phone');
         $code = input('code');
-        $codeModel = Db::table('cn_code');
+        $codeModel = new Code();
         $where = array();
         $where[] = array('phone','=',$phone);
         $where[] = array('code','=',$code);
@@ -467,15 +508,20 @@ class Argame extends Base {
             'is_complete' => 3
         );
         //获取游戏获取部件的情况
+        Db::startTrans();
+        //
+        $codeModel->where('id','=',$data['id'])->update(array('status' => 1));
         $where = array();
         $where[] = array('user_id','=',$this->userId);
-        $where[] = array('project','=',$projectData['id']);
+        $where[] = array('project_id','=',$projectData['id']);
         $userGameModel = Db::table('cn_user_game_ar_data');
         $info = $userGameModel->where($where)->update($update);
         if(empty($info)){
+            Db::rollback();
             ajaxJsonReturn(-1,'兑奖失败',array());
         }else{
-            ajaxJsonReturn(1,'兑奖成功',array());
+            Db::commit();
+            ajaxJsonReturn(0,'兑奖成功',array());
         }
     }
 
@@ -494,7 +540,7 @@ class Argame extends Base {
         //获取游戏获取部件的情况
         $where = array();
         $where[] = array('user_id','=',$this->userId);
-        $where[] = array('project','=',$projectData['id']);
+        $where[] = array('project_id','=',$projectData['id']);
         $userGameModel = Db::table('cn_user_game_ar_data');
         $userGameData = $userGameModel->where($where)->find();
         if(empty($userGameData) || $userGameData['is_complete'] != 1){
@@ -513,14 +559,57 @@ class Argame extends Base {
         if(empty($info)){
             ajaxJsonReturn(-1,'合成失败',array());
         }else{
-            ajaxJsonReturn(1,'合成成功',array());
+            ajaxJsonReturn(0,'合成成功',array());
         }
 
     }
 
+    public function ajaxGetPlayTime(){
+        $data = $this->getPlayTime();
+        ajaxJsonReturn(1,'获取成功',array('data' => $data));
+    }
+
     //获取剩余次数
     public function getPlayTime(){
-
+        //判断用户今日  已经玩的次数 和总共有多少次
+        //获取项目
+        $projectModel = new Project();
+        $where = array();
+        $where[] = array('partner_id' ,'=' ,$this->userInfo['partner_id']);
+        $where[] = array('status','=',1);
+        $projectData = $projectModel->where($where)->find();
+        if(empty($projectData) || $projectData == null || $projectData['status'] != 1){
+            ajaxJsonReturn(-1,'该合作商还没有开启项目，不能进入游戏',array());
+        }
+        $playDataModel = Db::table('cn_play_game_ar_data');
+        $where = array();
+        $where[] = array('user_id','=',$this->userId);
+        $where[] = array('project','=',$projectData['id']);
+        $where[] = array('create_time','>',date('Y-m-d 00:00:00',time()));
+        $where[] = array('create_time','<',date('Y-m-d 23:59:59',time()));
+        $todayPlayNum = $playDataModel->where($where)->count();
+        $playNumParamModel = Db::table('cn_game_ar_param');
+        $where = array();
+        $where[] = array('start_time','<=',date('Y-m-d',time()));
+        $where[] = array('end_time','>=',date('Y-m-d',time()));
+        $paramData = $playNumParamModel->where($where)->order('play_number desc')->find();
+        if(empty($paramData) || $paramData == null){
+            $allPlayNum = 0;
+        }else{
+            //加上分享的次数
+            $showTimeModel = Db::table('cn_show_time');
+            $where = array();
+            $where[] = array('user_id','=',$this->userId);
+            $where[] = array('project_id','=',$projectData['id']);
+            $where[] = array('create_time','>',date('Y-m-d 00:00:00',time()));
+            $where[] = array('create_time','<',date('Y-m-d 23:59:59',time()));
+            $count = $showTimeModel->where($where)->count();
+            $allPlayNum = $paramData['play_number'] + $count;
+        }
+        return array(
+            'todayPlayNum' => $todayPlayNum,
+            'allPlayNum' => $allPlayNum,
+        );
     }
 
 }

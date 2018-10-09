@@ -21,12 +21,18 @@ class UserGameArData extends Model {
 
         //获取游戏获取部件的情况
         $where = array();
-        $where[] = array('user_id','=',$this->userId);
+        $where[] = array('user_id','=',$userInfo['id']);
         $where[] = array('project_id','=',$projectData['id']);
         $userGameModel = Db::table('cn_user_game_ar_data');
         $userGameData = $userGameModel->where($where)->find();
         if(empty($userGameData)){
-            $userGameData = array();
+            //如果为空添加一条空信息
+            $userGameAddData = array(
+                'user_id' => $userInfo['id'],
+                'project_id' => $projectData['id']
+            );
+            $id = $userGameModel->insertGetId($userGameAddData);
+            $userGameData = $userGameModel->find($id);
         }
         return $userGameData;
     }

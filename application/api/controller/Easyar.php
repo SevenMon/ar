@@ -18,7 +18,7 @@ class Easyar {
         // step 1: 获取浏览器上传的图片数据
         $image = $this->getHttpData();
         if (!$image){
-            return $this->showMsg(-1, '未发送图片数据');
+            return $this->showMsg(-5, '未发送图片数据');
         }
 
         // step 2: 将图片数据发送云识别服务
@@ -32,15 +32,15 @@ class Easyar {
         $str = $this->httpPost('http://'.config('easyar.Client').'/search', json_encode($params));
 
         if (!$str) {
-            return $this->showMsg(-2, '网络错误');
+            return $this->showMsg(-6, '网络错误');
         }
 
         // step 3: 解析识别结果，返回给浏览器使用
         $obj = json_decode($str);
         if (!$obj || (isset($obj->status) && $obj->status == 500)) {
-            return $this->showMsg(-2, '网络错误');
+            return $this->showMsg(-6, '网络错误');
         } else if ($obj->statusCode != 0) {
-            return $this->showMsg(-3, '未识别到目标');
+            return $this->showMsg(-7, '未识别到目标');
         } else {
             return $this->showMsg(0, $obj->result->target);
         }

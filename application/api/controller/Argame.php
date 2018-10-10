@@ -49,7 +49,14 @@ class Argame extends Base {
         //游戏素材
         $gameMaterial = Db::table('cn_game_'.$gameData['type'].'_material');
         $gameMaterialData = $gameMaterial->find($gameData['material_id']);
-        if(empty($gameMaterialData) || $gameMaterialData == null || $gameMaterialData['status'] != 1){
+        for($i = 1;$i <= $gameMaterialData['material_num'];$i++){
+		$gameMaterialData['part'.$i] = 'https://www.hihill.cn'.$gameMaterialData['part'.$i];
+		$gameMaterialData['scan'.$i] = 'https://www.hihill.cn'.$gameMaterialData['scan'.$i];
+		$gameMaterialData['partfif'.$i] = 'https://www.hihill.cn'.$gameMaterialData['partgif'.$i];
+	}
+	$gameMaterialData['complete_pic']='https://www.hihill.cn'.$gameMaterialData['complete_pic'];
+ $gameMaterialData['uncomplete_pic']='https://www.hihill.cn'.$gameMaterialData['uncomplete_pic'];
+	if(empty($gameMaterialData) || $gameMaterialData == null || $gameMaterialData['status'] != 1){
             ajaxJsonReturn(-3,'游戏没有设置相应的素材，请设置好素材在进行游戏',array());
         }
         ajaxJsonReturn(0,'获取成功',array('data' => $gameMaterialData,'userGameData'=>$userGameData));
@@ -57,6 +64,7 @@ class Argame extends Base {
 
     //获取用户游戏信息
     public function getUserGameData(){
+
         //判断用户今日  已经玩的次数 和总共有多少次
         //获取项目
         $projectModel = new Project();
@@ -566,7 +574,7 @@ class Argame extends Base {
 
     public function ajaxGetPlayTime(){
         $data = $this->getPlayTime();
-        ajaxJsonReturn(1,'获取成功',array('data' => $data));
+        ajaxJsonReturn(0,'获取成功',array('data' => $data));
     }
 
     //获取剩余次数

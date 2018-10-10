@@ -16,27 +16,25 @@
     .timeitem .btn{
         margin-bottom: 5px;
     }
+    .notice{
+        color: red!important;
+        font-size: 15px!important;
+    }
+    .addbutton{
+        margin: 3px 0 0 0!important;
+    }
 </style>
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>ar扫描游戏次数设置</h2>
+                <h2>ar扫描游戏次数设置&nbsp;&nbsp;<span class="notice">默认情况下，用户可以无限次扫描进行收集,可按时间添加可玩次数设置！</span></h2>
+                <button type="button" class="btn btn-primary btn-xs addbutton" id="adddata">添加</button>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
                 <br>
                 <form class="form-horizontal form-label-left" id="form">
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">每日可玩次数设置<span class="required">*</span>
-                        </label>
-                        <div class="col-md-8 col-sm-8 col-xs-12">
-                            <div class="defaultnumber">
-                                <span class="red">默认情况下，用户可以无限次扫描进行收集,可按时间添加可玩次数设置！</span>
-                                <button type="button" class="btn btn-primary btn-xs" id="adddata">添加</button>
-                            </div>
-                        </div>
-                    </div>
                     <div class="form-group">
                         <div class="col-md-8 col-sm-8 col-xs-12 playnumber col-md-offset-2">
                             {volist name="list" id="vo" key="k" }
@@ -51,37 +49,46 @@
                     </div>
                     <div class="ln_solid"></div>
                     <div class="form-group">
-                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-2">
                             <button class="btn btn-primary" type="button" onclick="window.history.back(-1); ">返回</button>
                             <button type="button" class="btn btn-success" id="submit">保存</button>
                         </div>
                     </div>
                 </form>
             </div>
-
+        </div>
+        <div class="x_panel">
             <div class="x_title">
-                <h2>ar扫描游戏规则编辑</h2>
+                <h2>ar扫描游戏规则编辑</h2>&nbsp;&nbsp;
+                <button type="button" class="btn btn-primary btn-xs addbutton" id="addrule">添加</button>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
                 <br>
                 <form class="form-horizontal form-label-left" id="ruleform">
-
-                    <div class="form-group">
-                        <div class="col-md-8 col-sm-8 col-xs-12 playnumber col-md-offset-2">
-
-                        </div>
+                    <div id="ruleContent">
+                        {volist name="ruleList" id="vo" key="k" }
+                        <div class="form-group">
+                            <label class="control-label col-md-2 col-sm-2 col-xs-12 ruletitle">
+                                规则{:$k}
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" name="rule" required="required" class="form-control col-md-7 col-xs-12" value="{$vo['content']}">
+                                </div>
+                            <button type="button" class="btn btn-danger" onclick="deleteRule($(this))">删除</button>
+                            </div>
+                        {/volist}
                     </div>
+
                     <div class="ln_solid"></div>
                     <div class="form-group">
-                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-2">
                             <button class="btn btn-primary" type="button" onclick="window.history.back(-1); ">返回</button>
                             <button type="button" class="btn btn-success" id="rulesubmit">保存</button>
                         </div>
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
 </div>
@@ -233,9 +240,75 @@
             });
 
         });
-
+        $('#addrule').click(function () {
+            let rulecount = $("input[name='rule']").length;
+            let html = '<div class="form-group">\n' +
+                '<label class="control-label col-md-2 col-sm-2 col-xs-12 ruletitle">规则'+(rulecount+1)+'\n' +
+                '</label>\n' +
+                '<div class="col-md-6 col-sm-6 col-xs-12">\n' +
+                '<input type="text" name="rule" required="required" class="form-control col-md-7 col-xs-12">\n' +
+                '</div>\n' +
+                '<button type="button" class="btn btn-danger" onclick="deleteRule($(this))">删除</button>\n' +
+                '</div>';
+            $('#ruleContent').append(html);
+        });
+        $('#rulesubmit').click(function () {
+            let ruleData = $('#ruleform').serializeArray();
+            let check = true;
+            for(var i = 0;i < ruleData.length;i++){
+                if(ruleData[i]['value'] == ''){
+                    $.alert('请补充完整数据！');
+                    check = false;
+                    return false;
+                }
+            }
+            if(!check){
+                return false;
+            }
+            var url = "{:url('admin/Gamear/ajaxUpdateRule')}";
+            $.ajax({
+                type: 'POST',
+                url: url,
+                dataType: 'json',
+                data:{data:ruleData},
+                success:function(res){
+                    if(res.code == 1){
+                        $.alert({
+                            title: '系统提示',
+                            content: '保存成功',
+                            icon: 'fa fa-comment',
+                            type: 'green',
+                        });
+                    }else {
+                        $.alert({
+                            title: '系统提示',
+                            content: '保存失败',
+                            icon: 'fa fa-comment',
+                            type: 'green',
+                        });
+                    }
+                    console.log(res);
+                },
+                error:function () {
+                    $.alert({
+                        title: '系统提示',
+                        content: '网络错误，请稍后再试！',
+                        icon: 'fa fa-comment',
+                        type: 'green',
+                    });
+                }
+            });
+            console.log(ruleData);
+        });
     });
     function deleteItem(obj) {
         obj.parent().remove();
+    }
+    function deleteRule(obj) {
+        obj.parent().remove();
+        $(".ruletitle").each(function (index,element) {
+            $(this).html('规则'+(index+1));
+            //console.log($(this).html());
+        })
     }
 </script>

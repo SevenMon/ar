@@ -620,4 +620,10 @@ class Argame extends Base {
         );
     }
 
+    //获取规则
+    public function getRule(){
+        $ruleList = Db::table('cn_game_ar_rule')->order('id asc')->select();
+        ajaxJsonReturn(0,'获取成功',array('ruleData'=>$ruleList));
+    }
+
 }

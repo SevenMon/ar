@@ -21,7 +21,9 @@ class Gamear extends Base
     }
     public function index(){
         $list = Db::table('cn_game_ar_param')->order('id desc')->select();
+        $ruleList = Db::table('cn_game_ar_rule')->order('id asc')->select();
         $this->assign('list',$list);
+        $this->assign('ruleList',$ruleList);
         return $this->fetch();
     }
     public function ceshi(){
@@ -48,4 +50,23 @@ class Gamear extends Base
             ajaxJsonReturn(1,'保寸成功');
         }
     }
+
+    public function ajaxUpdateRule(){
+        $data = input('data');
+        $temp = array();
+        for($i = 0;$i < count($data);$i++){
+            $temp[] = array(
+                'content' => $data[$i]['value']
+            );
+        }
+        $sql = 'delete from cn_game_ar_rule';
+        $info = Db::execute($sql);
+        $addInfo = Db::table('cn_game_ar_rule')->insertAll($temp);
+        if(empty($addInfo)){
+            ajaxJsonReturn(-1,'保存失败');
+        }else{
+            ajaxJsonReturn(1,'保寸成功');
+        }
+    }
+
 }

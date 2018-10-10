@@ -435,7 +435,21 @@ class Argame extends Base {
 
     //获取兑奖信息
     public function prize(){
-
+        //获取项目
+        $projectModel = new Project();
+        $where = array();
+        $where[] = array('partner_id' ,'=' ,$this->userInfo['partner_id']);
+        $where[] = array('status','=',1);
+        $projectData = $projectModel->where($where)->find();
+        if(empty($projectData) || $projectData == null || $projectData['status'] != 1){
+            ajaxJsonReturn(-1,'该合作商还没有开启项目，不能进入游戏',array());
+        }
+        $prizeModel = Db::table('cn_game_ar_prize');
+        $where = array();
+        $where[] = array('user_id' ,'=' ,$this->userId);
+        $where[] = array('project_id','=',$projectData['id']);
+        $data = $prizeModel->where($where)->find();
+        ajaxJsonReturn(0,'获取成功',array('prizeData' => $data));
     }
 
     //发送验证码接口

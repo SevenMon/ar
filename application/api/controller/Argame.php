@@ -449,6 +449,8 @@ class Argame extends Base {
         $where[] = array('user_id' ,'=' ,$this->userId);
         $where[] = array('project_id','=',$projectData['id']);
         $data = $prizeModel->where($where)->find();
+        $data['time'] = date('Y-m-d',strtotime($data['time']));
+        $data['address_pic'] = getUrl().$data['address_pic'];
         ajaxJsonReturn(0,'获取成功',array('prizeData' => $data));
     }
 

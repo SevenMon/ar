@@ -15,32 +15,53 @@
                             <input type="text" name="title" id="title" required="required" class="form-control col-md-7 col-xs-12">
                         </div>
                     </div>
-
-                    <!--<div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="remark">图片 <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div class="upload one" id="case" data-num="1" data-type="png,jpg" action="{:url('api/Publicapi/brandImgUpload')}"></div>
-                            <p hidden id="imgmsg" style="color: #E74C3C">不可为空！</p>
-                        </div>
-                    </div>-->
-
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="remark">领取方式 <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title">选择游戏类型<span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <textarea id="remark" required="required" class="form-control" name="message"></textarea>
+                            <select class="form-control" id="gameType" name="gameType">
+                                <option value="1">到店领取优惠券</option>
+                                <option value="2">领取微信卡卷</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="time">领取时间 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input class="controls input-append date form_datetime form-control" name="time" id="time" type="text" value="{:date('Y-m-d H-i-s',time())}" data-date="2018-09-01" data-date-format="yyyy mm dd" data-link-field="dtp_input1">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="address">领取地点 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" id="address" required="required" class="form-control" name="address"></input>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="upload">地点图片 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div id="upload" class="upload one" id="case" data-num="1" data-type="png,jpg" action="{:url('api/Publicapi/addressImgUpload')}"></div>
                         </div>
                     </div>
 
-
-                    <!--<div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="remark">状态 <span class="required">*</span>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="appId">appId <span class="required">*</span>
                         </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12" style="padding-top: 6px;">
-                            <input type="checkbox" class="js-switch" checked name="status" />
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" id="appId" required="required" class="form-control" name="appId"></input>
                         </div>
-                    </div>-->
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="appSecret">appSecret <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" id="appSecret" required="required" class="form-control" name="appSecret"></input>
+                        </div>
+                    </div>
                     <div class="ln_solid"></div>
                     <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
@@ -56,11 +77,20 @@
 </div>
 <script type="text/javascript">
     $(function() {
+        $("#upload").upload();
+        $('#time').datetimepicker({
+            format: "yyyy-mm-dd",
+            autoclose: true,
+            todayBtn: true,
+            todayHighlight: true,
+            showMeridian: true,
+            pickerPosition: "bottom-left",
+            startView: 2,
+            minView: 2,
+            language: 'zh-CN',
+        });
         $("#case").upload(
             //该函数为点击放大镜的回调函数，如没有该函数，则不显示放大镜
-            function(_this, data) {
-                console.log(data)
-            }
         );
         $('#form').submit(function () {
             var info = $("input[name='upload']").val();

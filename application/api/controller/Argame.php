@@ -4,6 +4,8 @@
 
 namespace app\api\controller;
 
+use app\model\Brand;
+use app\model\BrandWares;
 use app\model\Code;
 use app\model\Game;
 use app\model\Project;
@@ -517,20 +519,52 @@ class Argame extends Base {
         );
         //获取游戏获取部件的情况
         Db::startTrans();
-        //
+
         $codeModel->where('id','=',$data['id'])->update(array('status' => 1));
         $where = array();
         $where[] = array('user_id','=',$this->userId);
         $where[] = array('project_id','=',$projectData['id']);
         $userGameModel = Db::table('cn_user_game_ar_data');
         $info = $userGameModel->where($where)->update($update);
+
+        //生成奖品信息
+        //获取品牌商
+        $brandModel = new Brand();
+        $brandWareModel = new BrandWares();
+        $wareData = $brandWareModel->find($projectData['wares_id']);
+        $brandData = $brandModel->find($wareData['brand_id']);
+        $prizeModel = Db::table('cn_game_ar_prize');
+        $prizeLastData = $prizeModel->order('id desc')->find();
+        $prizeData = array(
+            'user_id' => $this->userId,
+            'project_id' => $projectData['id'],
+            'brand_id' => $brandData['id'],
+            'wares_name' => $wareData['name'],
+            'wares_pic' => $wareData['pic'],
+            'type' => $brandData['type'],
+            'prize_code' => $this->getRandStr(6).str_pad($prizeLastData['id'],4,"0",STR_PAD_LEFT),
+            'time' => $brandData['time'],
+            'address' => $brandData['address'],
+            'address_pic' => $brandData['address_pic'],
+        );
+
+        $prizeModel->insertGetId($prizeData);
         if(empty($info)){
             Db::rollback();
             ajaxJsonReturn(-1,'兑奖失败',array());
         }else{
             Db::commit();
-            ajaxJsonReturn(0,'兑奖成功',array());
+            ajaxJsonReturn(0,'兑奖成功',array('prizeData' => $prizeData));
         }
+    }
+
+    //获取任意长度字母数字组合随机串   str_pad($num,4,"0",STR_PAD_LEFT);
+    public function getRandStr($size){
+        $dict = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $len = $size == 16 ? 36 : setlen($dict);
+        $res = '';
+        for($i=0; $i<$size; $i++) $res .= $dict{rand(0, $len - 1)};
+        return $res;
     }
 
     //合成操作

@@ -45,26 +45,40 @@ class Brands extends Base
 
     public function add(){
         $name = input('post.title');
-        $introduce = input('post.message');
-        //$img = input('post.upload');
-        if(empty($name)){
-            $this->error('名称不可为空！');
+        $gameType = input('post.gameType');
+        $time = input('post.time');
+        $address = input('post.address');
+        $appId = input('post.appId');
+        $appSecret = input('post.appSecret');
+        $img = input('post.upload');
+        if(empty($name)||$name==null||
+            empty($gameType)||$gameType==null||
+            empty($time)||$time==null||
+            empty($address)||$address==null||
+            empty($appId)||$appId==null||
+            empty($appSecret)||$appSecret==null||
+            empty($img)||$img==null){
+            $this->error('请补全参数！');
         }
         $brandModel = new Brand();
         //检查标签是否存在
-        if($brandModel->checkName($name)){
+        /*if($brandModel->checkName($name)){
             $this->error('品牌已存在！');
-        }
+        }*/
 
         //获取最大sort
         $maxSort = $brandModel->field('max(sort) maxSort')->find();
         $maxSort = $maxSort['maxSort'];
-        //添加标签
+
         $data = array(
             'name' => $name,
             'sort' => ++$maxSort,
-            'type' => $introduce,
-            //'img' => $img,
+            'type' => $gameType,
+            'time' => $time,
+            'address' => $address,
+            'app_id' => $appId,
+            'app_secret' => $appSecret,
+            'address_pic' => $img,
         );
         $id = $brandModel->addData($data);
         if($id >= 1){
@@ -76,7 +90,22 @@ class Brands extends Base
 
     public function edit(){
         $brandId = input('id');
-        $introduce = input('post.message');
+        $name = input('post.title');
+        $gameType = input('post.gameType');
+        $time = input('post.time');
+        $address = input('post.address');
+        $appId = input('post.appId');
+        $appSecret = input('post.appSecret');
+        $img = input('post.upload');
+        if(empty($name)||$name==null||
+            empty($gameType)||$gameType==null||
+            empty($time)||$time==null||
+            empty($address)||$address==null||
+            empty($appId)||$appId==null||
+            empty($appSecret)||$appSecret==null||
+            empty($img)||$img==null){
+            $this->error('请补全参数！');
+        }
         $brandModel = new Brand();
         $data = $brandModel->find($brandId);
         if(empty($data)){
@@ -85,29 +114,28 @@ class Brands extends Base
             $this->error('品牌已删除！');
         }
 
-        $name = input('post.title');
-        if(empty($name)){
-            $this->error('名称不可为空！');
-        }
-
         //检查标签是否存在
-        if($data['name'] != $name){
+        /*if($data['name'] != $name){
             if($brandModel->checkName($name)){
                 $this->error('品牌已存在！');
             }
-        }
-        //添加标签
+        }*/
+
         $updataData = array(
             'name' => $name,
-            'type' => $introduce,
+            'type' => $gameType,
+            'time' => $time,
+            'address' => $address,
+            'app_id' => $appId,
+            'app_secret' => $appSecret,
+            'address_pic' => $img,
         );
-        $status = input('status');
+        /*$status = input('status');
         if(empty($status) || $status == null){
             $updataData['status'] = 2;
         }else{
             $updataData['status'] = 1;
-        }
-
+        }*/
 
         $id = $brandModel->saveData($brandId,$updataData);
         if($id >= 0){

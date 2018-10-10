@@ -23,7 +23,13 @@
                     <tr>
                         <th scope="row"><?php echo (($list->currentPage()-1)*$list->listRows() + $k) ?></th>
                         <td>{$vo.name}</td>
-                        <td>{$vo.type}</td>
+                        <td>
+                            <?php if($vo['type'] == 1){ ?>
+                            <span>到店领取优惠券</span>
+                            <?php }else{ ?>
+                            <span>领取微信卡卷</span>
+                            <?php } ?>
+                        </td>
                         <td>
                             <?php if($vo['status'] == 1){ ?>
                                 <span class="green">启用</span>

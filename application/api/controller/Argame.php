@@ -575,7 +575,7 @@ class Argame extends Base {
     //获取任意长度字母数字组合随机串   str_pad($num,4,"0",STR_PAD_LEFT);
     public function getRandStr($size){
         $dict = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $len = $size == 16 ? 36 : setlen($dict);
+        $len = $size == 16 ? 36 : strlen($dict);
         $res = '';
         for($i=0; $i<$size; $i++) $res .= $dict{rand(0, $len - 1)};
         return $res;

@@ -219,7 +219,12 @@ class Argame extends Base {
             $userGameModel->where($where)->update($userGameUpdate);
             $userGameData = $userGameModel->where($where)->find();
         }
-        ajaxJsonReturn(0,'扫描成功',array('data' => $userGameData));
+        $scanPartData = array(
+            'part_num' =>$part_num,
+            'partgif' =>getUrl.$gameMaterialData['partgif'.$part_num],
+            'complete_pic' => $gameMaterialData['complete_pic']
+        );
+        ajaxJsonReturn(0,'扫描成功',array('data' => $userGameData,'scanPartData' => $scanPartData));
 
     }
 

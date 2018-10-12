@@ -1,0 +1,111 @@
+<style>
+    .x_title {
+        border-bottom: none;
+    }
+    #upload{
+        display: inline-block;
+    }
+    #uploadfile{
+        margin-top: 10px;
+    }
+    .form-inline .btn{
+        margin-bottom: 0px!important;
+    }
+</style>
+<div class="x_panel">
+    <div class="x_title">
+        <ul class="nav nav-tabs" role="tablist" id="lineEditTabs">
+            <li role="presentation" class="<?php echo $status == 0 ? 'active' : '' ?>" ><a href="{:url('admin/Coupons/index',array('status' => 0))}">全部</a></li>
+            <li role="presentation" class="<?php echo $status == 1 ? 'active' : '' ?>" ><a href="{:url('admin/Coupons/index',array('status' => 1))}">未领取</a></li>
+            <li role="presentation" class="<?php echo $status == 2 ? 'active' : '' ?>" ><a href="{:url('admin/Coupons/index',array('status' => 2))}">已领取</a></li>
+            <li role="presentation" class="<?php echo $status == 3 ? 'active' : '' ?>" ><a href="{:url('admin/Coupons/index',array('status' => 3))}">已使用</a></li>
+        </ul>
+        <div style="margin-top: 10px">
+            <button type="button" class="btn btn-primary" id="importCouponData" onclick="importCouponData()">导入优惠券</button>
+            <button type="button" class="btn btn-primary" id="couponModelDown" onclick="couponModelDown()">优惠券模板下载</button>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+        <br>
+        <table class="table table-striped table-bordered dataTable no-footer">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>优惠券码</th>
+                <th>优惠券状态</th>
+                <th>品牌商id</th>
+                <th>品牌商名称</th>
+                <th>项目id</th>
+                <th>项目名称</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach $list as $k=>$v}
+            <tr>
+                <td><?php echo (($list->currentPage()-1)*$list->listRows() + $k +1) ?></td>
+                <td>{$v.code}</td>
+                <td>
+                    {if $v.status == 1} 未领取 {/if}
+                    {if $v.status == 2} 已领取 {/if}
+                    {if $v.status == 3} 已使用 {/if}
+                </td>
+                <td>{$v.brand_id}</td>
+                <td>{$v.brand_name}</td>
+                <td>{$v.project_id}</td>
+                <td>{$v.project_name}</td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        {:$list}
+    </div>
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModalCouponSendInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 10%;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalDelivery">
+                    导入优惠券信息文件
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{:url('admin/Coupons/uploadCouponInfo')}" enctype="multipart/form-data">
+                    请选择导入文件（xls）：<input type="file" name="fileUpload" id="upload" />
+                    <br/>
+                    <button type="submit" id="uploadfile">导入</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('#uploadfile').click(function () {
+            var fileName = $('#upload').val();
+            var postfix = fileName.substr(fileName.indexOf("."));
+            if(postfix != '.xls'){
+                alert('请上传xls文件！');
+                return false;
+            }
+        });
+    });
+    //显示导入发货信息模态框
+    function importCouponData() {
+        $('#myModalCouponSendInfo').modal('show');
+    }
+    //发货信息模板下载
+    function couponModelDown() {
+        let url = "{:url('admin/Coupons/couponModelDown')}";
+        window.location.href=url;
+    }
+
+</script>

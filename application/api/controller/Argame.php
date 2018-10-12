@@ -7,6 +7,7 @@ namespace app\api\controller;
 use app\model\Brand;
 use app\model\BrandWares;
 use app\model\Code;
+use app\model\Coupon;
 use app\model\Game;
 use app\model\Project;
 use app\model\Show;
@@ -548,7 +549,8 @@ class Argame extends Base {
         $userGameModel = Db::table('cn_user_game_ar_data');
         $info = $userGameModel->where($where)->update($update);
 
-        //生成奖品信息
+
+
         //获取品牌商
         $brandModel = new Brand();
         $brandWareModel = new BrandWares();
@@ -556,6 +558,13 @@ class Argame extends Base {
         $brandData = $brandModel->find($wareData['brand_id']);
         $prizeModel = Db::table('cn_game_ar_prize');
         $prizeLastData = $prizeModel->order('id desc')->find();
+        //生成奖品信息
+        $couponModel = new Coupon();
+        $couponData = $couponModel->getUnusered($wareData['brand_id'],$projectData['id']);
+        if(empty($couponData) || $couponData == null){
+            ajaxJsonReturn(-4,'优惠券已被领光，明天再来吧！',array());
+        }
+
         $prizeData = array(
             'user_id' => $this->userId,
             'project_id' => $projectData['id'],
@@ -563,10 +572,11 @@ class Argame extends Base {
             'wares_name' => $wareData['name'],
             'wares_pic' => $wareData['pic'],
             'type' => $brandData['type'],
-            'prize_code' => $this->getRandStr(6).str_pad($prizeLastData['id'],4,"0",STR_PAD_LEFT),
+            'prize_code' => $couponData['code'],
             'time' => $brandData['time'],
             'address' => $brandData['address'],
             'address_pic' => $brandData['address_pic'],
+            'coupon_id' => $couponData['id']
         );
 
         $prizeModel->insertGetId($prizeData);

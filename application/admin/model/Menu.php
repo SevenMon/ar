@@ -163,6 +163,21 @@ class Menu extends Model {
             ],
         ],
         [
+            'title' => '优惠券管理',
+            'id' => 'coupons',
+            'active' => '',
+            'css' => 'glyphicon glyphicon-cog',
+            'children' => [
+                [
+                    'label' => '优惠券列表',
+                    'id' => 'admin_coupons_index',
+                    'url' => 'admin_coupons_index',
+                    'css' => '',
+                    'display' => '',
+                ]
+            ],
+        ],
+        [
             'title' => '系统管理',
             'id' => 'system',
             'active' => '',

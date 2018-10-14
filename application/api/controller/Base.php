@@ -3,7 +3,10 @@ namespace app\api\controller;
 use app\model\Partner;
 use think\Controller;
 use app\model\User;
-
+use app\model\Project;
+use app\model\Game;
+use app\model\Brand;
+use app\model\BrandWares;
 
 class Base extends Controller
 {

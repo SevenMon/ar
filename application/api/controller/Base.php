@@ -31,12 +31,14 @@ class Base extends Controller
         if ($user_info['status'] == 2) {
             ajaxJsonReturn(-2, '您已经被加入黑名单，不能进行游戏！');
         }
-
+        $this->userId = $user_id;
+        $this->userInfo = $user_info;
         $partnerModel = new Partner();
         $partner_id = input('partner_id');
         $partner_id = decode($partner_id);
         $partner_info = $partnerModel->where('id','=',$partner_id)->find();
-
+        $this->partnerId = $partner_id;
+        $this->partnerInfo = $partner_info;
         if (empty($partner_info)) {
             ajaxJsonReturn(-1, '合作商不存在！');
         }
@@ -73,9 +75,7 @@ class Base extends Controller
         }
         $this->brandWaresInfo = $brandWareModel;
         $this->brandInfo = $brandData;
-        $this->userId = $user_id;
-        $this->userInfo = $user_info;
-        $this->partnerId = $partner_id;
-        $this->partnerInfo = $partner_info;
+
+
     }
 }

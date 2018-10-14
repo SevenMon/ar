@@ -68,7 +68,7 @@ class Argame extends Base {
 	    }
 	    $gameMaterialData['complete_pic']='https://www.hihill.cn'.$gameMaterialData['complete_pic'];
         $gameMaterialData['uncomplete_pic']='https://www.hihill.cn'.$gameMaterialData['uncomplete_pic'];
-        $gameMaterialData['completeimg_pic']='https://www.hihill.cn'.$gameMaterialData['completeimg_pic'];
+        $gameMaterialData['completeing_pic']='https://www.hihill.cn'.$gameMaterialData['completeing_pic'];
 	    if(empty($gameMaterialData) || $gameMaterialData == null || $gameMaterialData['status'] != 1){
             ajaxJsonReturn(-3,'游戏没有设置相应的素材，请设置好素材在进行游戏',array());
         }

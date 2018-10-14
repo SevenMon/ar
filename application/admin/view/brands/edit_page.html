@@ -63,6 +63,13 @@
                             <input value="{$brandData['app_secret']}" type="text" id="appSecret" required="required" class="form-control" name="appSecret"></input>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">状态 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12" style="padding-top: 6px;">
+                            <input type="checkbox" id="status" class="js-switch" {:$brandData['status'] == 1 ? 'checked' : ''} name="status" />
+                        </div>
+                    </div>
                     <div class="ln_solid"></div>
                     <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">

@@ -65,9 +65,23 @@ class Menu extends Model {
                     'display' => '',
                 ],
                 [
-                    'label' => '会员游戏信息',
+                    'label' => '黑名单',
+                    'id' => 'admin_users_blacklist',
+                    'url' => 'admin_users_blacklist',
+                    'css' => '',
+                    'display' => '',
+                ],
+                [
+                    'label' => '会员ar游戏信息',
                     'id' => 'admin_users_game',
                     'url' => 'admin_users_game',
+                    'css' => '',
+                    'display' => '',
+                ],
+                [
+                    'label' => '会员游戏中奖信息',
+                    'id' => 'admin_users_lucky',
+                    'url' => 'admin_users_lucky',
                     'css' => '',
                     'display' => '',
                 ],
@@ -78,13 +92,7 @@ class Menu extends Model {
                     'css' => '',
                     'display' => '',
                 ],*/
-                [
-                    'label' => '黑名单',
-                    'id' => 'admin_users_blacklist',
-                    'url' => 'admin_users_blacklist',
-                    'css' => '',
-                    'display' => '',
-                ],
+
             ],
         ],
         [
@@ -190,13 +198,13 @@ class Menu extends Model {
                     'css' => '',
                     'display' => '',
                 ],
-                [
+               /* [
                     'label' => '系统参数管理',
                     'id' => 'admin_system_parameter',
                     'url' => 'admin_system_parameter',
                     'css' => '',
                     'display' => '',
-                ],
+                ],*/
             ],
         ]
     ];

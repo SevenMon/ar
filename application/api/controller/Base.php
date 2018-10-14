@@ -12,6 +12,10 @@ class Base extends Controller
 
     public $partnerId = '';
     public $partnerInfo = '';
+    public $projectInfo = '';
+    public $gameInfo = '';
+    public $brandInfo = '';
+    public $brandWaresInfo = '';
     public function initialize() {
         parent::initialize();
         //判断用户登录
@@ -37,6 +41,35 @@ class Base extends Controller
             ajaxJsonReturn(-2, '该合作商以被禁用，不能进行游戏！');
         }
 
+        //获取项目
+        $projectModel = new Project();
+        $where = array();
+        $where[] = array('partner_id' ,'=' ,$this->userInfo['partner_id']);
+        $where[] = array('status','=',1);
+        $projectData = $projectModel->where($where)->find();
+        if(empty($projectData) || $projectData == null || $projectData['status'] != 1){
+            ajaxJsonReturn(-1,'该合作商还没有开启项目，不能进入游戏',array());
+        }
+        $this->projectInfo = $projectData;
+
+        //游戏
+        $gameModel = new Game();
+        $gameData = $gameModel->find($projectData['game_id']);
+        if(empty($gameData) || $gameData == null || $gameData['status'] != 1){
+            ajaxJsonReturn(-2,'该游戏不存在或还没有启动，不能进入游戏',array());
+        }
+        $this->gameInfo = $gameData;
+
+        //获取品牌商
+        $brandModel = new Brand();
+        $brandWareModel = new BrandWares();
+        $wareData = $brandWareModel->find($projectData['wares_id']);
+        $brandData = $brandModel->find($wareData['brand_id']);
+        if(empty($brandData) || $brandData == null || $brandData['status'] != 1){
+            ajaxJsonReturn(-2,'该游戏奖品的品牌商不存在或还没有启动，不能进入游戏',array());
+        }
+        $this->brandWaresInfo = $brandWareModel;
+        $this->brandInfo = $brandData;
         $this->userId = $user_id;
         $this->userInfo = $user_info;
         $this->partnerId = $partner_id;

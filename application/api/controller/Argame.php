@@ -22,7 +22,7 @@ class Argame extends Base {
     //获取游戏素材
     public function getGameMaterials(){
 
-        //获取项目
+        /*//获取项目
         $projectModel = new Project();
         $where = array();
         $where[] = array('partner_id' ,'=' ,$this->userInfo['partner_id']);
@@ -47,19 +47,28 @@ class Argame extends Base {
         $gameData = $gameModel->find($projectData['game_id']);
         if(empty($gameData) || $gameData == null || $gameData['status'] != 1){
             ajaxJsonReturn(-2,'该游戏不存在或还没有启动，不能进入游戏',array());
+        }*/
+        //获取游戏获取部件的情况
+        $where = array();
+        $where[] = array('user_id','=',$this->userId);
+        $where[] = array('project_id','=',$this->projectInfo['id']);
+        $userGameModel = Db::table('cn_user_game_ar_data');
+        $userGameData = $userGameModel->where($where)->find();
+        if(empty($userGameData)){
+            $userGameData = array();
         }
-
+        $gameData = $this->gameInfo;
         //游戏素材
         $gameMaterial = Db::table('cn_game_'.$gameData['type'].'_material');
         $gameMaterialData = $gameMaterial->find($gameData['material_id']);
         for($i = 1;$i <= $gameMaterialData['material_num'];$i++){
-		$gameMaterialData['part'.$i] = 'https://www.hihill.cn'.$gameMaterialData['part'.$i];
-		$gameMaterialData['scan'.$i] = 'https://www.hihill.cn'.$gameMaterialData['scan'.$i];
-		$gameMaterialData['partfif'.$i] = 'https://www.hihill.cn'.$gameMaterialData['partgif'.$i];
-	}
-	$gameMaterialData['complete_pic']='https://www.hihill.cn'.$gameMaterialData['complete_pic'];
- $gameMaterialData['uncomplete_pic']='https://www.hihill.cn'.$gameMaterialData['uncomplete_pic'];
-	if(empty($gameMaterialData) || $gameMaterialData == null || $gameMaterialData['status'] != 1){
+            $gameMaterialData['part'.$i] = 'https://www.hihill.cn'.$gameMaterialData['part'.$i];
+            $gameMaterialData['scan'.$i] = 'https://www.hihill.cn'.$gameMaterialData['scan'.$i];
+            $gameMaterialData['partfif'.$i] = 'https://www.hihill.cn'.$gameMaterialData['partgif'.$i];
+	    }
+	    $gameMaterialData['complete_pic']='https://www.hihill.cn'.$gameMaterialData['complete_pic'];
+        $gameMaterialData['uncomplete_pic']='https://www.hihill.cn'.$gameMaterialData['uncomplete_pic'];
+	    if(empty($gameMaterialData) || $gameMaterialData == null || $gameMaterialData['status'] != 1){
             ajaxJsonReturn(-3,'游戏没有设置相应的素材，请设置好素材在进行游戏',array());
         }
         ajaxJsonReturn(0,'获取成功',array('data' => $gameMaterialData,'userGameData'=>$userGameData));
@@ -70,14 +79,15 @@ class Argame extends Base {
 
         //判断用户今日  已经玩的次数 和总共有多少次
         //获取项目
-        $projectModel = new Project();
+        /*$projectModel = new Project();
         $where = array();
         $where[] = array('partner_id' ,'=' ,$this->userInfo['partner_id']);
         $where[] = array('status','=',1);
         $projectData = $projectModel->where($where)->find();
         if(empty($projectData) || $projectData == null || $projectData['status'] != 1){
             ajaxJsonReturn(-1,'该合作商还没有开启项目，不能进入游戏',array());
-        }
+        }*/
+        $projectData = $this->projectInfo;
         $playDataModel = Db::table('cn_play_game_ar_data');
         $where = array();
         $where[] = array('user_id','=',$this->userId);
@@ -156,7 +166,7 @@ class Argame extends Base {
             }
         }
 
-        //获取项目
+        /*//获取项目
         $projectModel = new Project();
         $where = array();
         $where[] = array('partner_id' ,'=' ,$this->userInfo['partner_id']);
@@ -170,7 +180,10 @@ class Argame extends Base {
         $gameData = $gameModel->find($projectData['game_id']);
         if(empty($gameData) || $gameData == null || $gameData['status'] != 1){
             ajaxJsonReturn(-2,'该游戏不存在或还没有启动，不能进入游戏',array());
-        }
+        }*/
+        $projectData = $this->projectInfo;
+        $gameData = $this->gameInfo;
+
         //游戏素材
         $gameMaterial = Db::table('cn_game_'.$gameData['type'].'_material');
         $gameMaterialData = $gameMaterial->find($gameData['material_id']);
@@ -232,12 +245,13 @@ class Argame extends Base {
     //分享游戏增加游戏次数
     public function show(){
         $showTimeModel = Db::table('cn_show_time');
-        //获取项目
+        /*//获取项目
         $projectModel = new Project();
         $where = array();
         $where[] = array('partner_id','=',$this->partnerId);
         $where[] = array('status','=',1);
-        $projectData = $projectModel->where($where)->find();
+        $projectData = $projectModel->where($where)->find();*/
+        $projectData = $this->gameInfo;
         $data = array(
             'project_id' => $projectData['id'],
             'user_id' => $this->userId
@@ -441,7 +455,7 @@ class Argame extends Base {
 
     //获取兑奖信息
     public function prize(){
-        //获取项目
+        /*//获取项目
         $projectModel = new Project();
         $where = array();
         $where[] = array('partner_id' ,'=' ,$this->userInfo['partner_id']);
@@ -449,7 +463,8 @@ class Argame extends Base {
         $projectData = $projectModel->where($where)->find();
         if(empty($projectData) || $projectData == null || $projectData['status'] != 1){
             ajaxJsonReturn(-1,'该合作商还没有开启项目，不能进入游戏',array());
-        }
+        }*/
+        $projectData = $this->projectInfo;
         $prizeModel = Db::table('cn_game_ar_prize');
         $where = array();
         $where[] = array('user_id' ,'=' ,$this->userId);
@@ -527,7 +542,7 @@ class Argame extends Base {
             ajaxJsonReturn(-2,'验证码过期，请重新获取并验证！',array());
         }
 
-        //获取项目
+        /*//获取项目
         $projectModel = new Project();
         $where = array();
         $where[] = array('partner_id' ,'=' ,$this->userInfo['partner_id']);
@@ -535,7 +550,8 @@ class Argame extends Base {
         $projectData = $projectModel->where($where)->find();
         if(empty($projectData) || $projectData == null || $projectData['status'] != 1){
             ajaxJsonReturn(-1,'该合作商还没有开启项目，不能进入游戏',array());
-        }
+        }*/
+        $projectData = $this->projectInfo;
         $update = array(
             'is_complete' => 3
         );
@@ -551,11 +567,13 @@ class Argame extends Base {
 
 
 
-        //获取品牌商
+        /*//获取品牌商
         $brandModel = new Brand();
         $brandWareModel = new BrandWares();
         $wareData = $brandWareModel->find($projectData['wares_id']);
-        $brandData = $brandModel->find($wareData['brand_id']);
+        $brandData = $brandModel->find($wareData['brand_id']);*/
+        $brandData = $this->brandInfo;
+        $wareData = $this->brandWaresInfo;
         $prizeModel = Db::table('cn_game_ar_prize');
         $prizeLastData = $prizeModel->order('id desc')->find();
         //生成奖品信息
@@ -600,7 +618,7 @@ class Argame extends Base {
 
     //合成操作
     public function complete(){
-        //获取项目
+        /*//获取项目
         $projectModel = new Project();
         $where = array();
         $where[] = array('partner_id' ,'=' ,$this->userInfo['partner_id']);
@@ -608,7 +626,9 @@ class Argame extends Base {
         $projectData = $projectModel->where($where)->find();
         if(empty($projectData) || $projectData == null || $projectData['status'] != 1){
             ajaxJsonReturn(-1,'该合作商还没有开启项目，不能进入游戏',array());
-        }
+        }*/
+
+        $projectData = $this->projectInfo;
 
         //获取游戏获取部件的情况
         $where = array();
@@ -645,7 +665,7 @@ class Argame extends Base {
     //获取剩余次数
     public function getPlayTime(){
         //判断用户今日  已经玩的次数 和总共有多少次
-        //获取项目
+        /*//获取项目
         $projectModel = new Project();
         $where = array();
         $where[] = array('partner_id' ,'=' ,$this->userInfo['partner_id']);
@@ -653,7 +673,8 @@ class Argame extends Base {
         $projectData = $projectModel->where($where)->find();
         if(empty($projectData) || $projectData == null || $projectData['status'] != 1){
             ajaxJsonReturn(-1,'该合作商还没有开启项目，不能进入游戏',array());
-        }
+        }*/
+        $projectData = $this->projectInfo;
         $playDataModel = Db::table('cn_play_game_ar_data');
         $where = array();
         $where[] = array('user_id','=',$this->userId);

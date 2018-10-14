@@ -186,7 +186,11 @@ class Users extends Base {
         return $this->fetch('argame');
     }
 
+    /*
+     * 中奖信息
+     */
     public function lucky(){
+
         $this->assign('left_menu_active', 'admin_users_lucky');
         return $this->fetch();
     }

@@ -130,12 +130,12 @@ class Brands extends Base
             'app_secret' => $appSecret,
             'address_pic' => $img,
         );
-        /*$status = input('status');
+        $status = input('status');
         if(empty($status) || $status == null){
             $updataData['status'] = 2;
         }else{
             $updataData['status'] = 1;
-        }*/
+        }
 
         $id = $brandModel->saveData($brandId,$updataData);
         if($id >= 0){

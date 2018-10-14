@@ -511,7 +511,7 @@ class Argame extends Base {
                 ajaxJsonReturn(-1,'该手机号最多可以发送十次');
             }
             if(time() - $data['create_time'] < 60){
-                ajaxJsonReturn(-2,'60秒内不可重复发送短信，剩余'.(60 - (time() - $data['create_time'])),array('overplus_time' => 60 - (time() - $data['create_time'])));
+                ajaxJsonReturn(-2,'60秒内不可重复发送短信，剩余'.(60 - (time() - $data['create_time'])).'秒',array('overplus_time' => 60 - (time() - $data['create_time'])));
             }
             $updateData['code'] = $code;
             if(date('Y-m-d',$data['create_time']) == date('Y-m-d',time())){

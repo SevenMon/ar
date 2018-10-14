@@ -127,7 +127,7 @@ class Argame extends Base {
                 'project_id' => $projectData['id']
             );
             $id = $userGameModel->insertGetId($userGameAddData);
-            return $userGameModel->find($id);
+            $userGameData = $userGameModel->find($id);
         }
 
         ajaxJsonReturn(0,'获取成功',array(

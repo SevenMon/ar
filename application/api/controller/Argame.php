@@ -278,6 +278,7 @@ class Argame extends Base {
         //检查用户是否有此部件
         $userGameDataModel = new UserGameArData();
         $data = $userGameDataModel->getUserData($this->userInfo);
+
         if(empty($data) || $data['part'.$part_num.'_num'] == 0){
             ajaxJsonReturn(-2,'分享部件不存在',array());
         }

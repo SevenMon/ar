@@ -8,7 +8,7 @@ use think\Db;
 class Menu extends Model {
 
     static $config = [
-        [
+        /*[
             'title' => '数据分析',
             'css' => 'glyphicon glyphicon-home',
             'id' => 'datas',
@@ -50,7 +50,7 @@ class Menu extends Model {
                     'display' => '',
                 ]
             ],
-        ],
+        ],*/
         [
             'title' => '会员管理',
             'css' => 'glyphicon glyphicon-home',

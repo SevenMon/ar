@@ -71,6 +71,14 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">合成动画<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div data-name="completeing" class="upload one" id="completeing" data-num="1" data-type="png,jpg,gif" action="{:url('api/Publicapi/game1ImgUpload')}"></div>
+                        </div>
+                    </div>
+
                     <div class="ln_solid"></div>
                     <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
@@ -87,6 +95,7 @@
     $(function() {
         $("#complete").upload();
         $("#uncomplete").upload();
+        $("#completeing").upload();
         $('#material').change(function () {
             var html = '';
             for(var i = 1; i <= $(this).val();i++){
@@ -171,6 +180,10 @@
             }
             if($("input[name='upload']").val() == ''){
                 $.alert('请补充玩偶的搜集完成图片');
+                return false;
+            }
+            if($("input[name='completeing']").val() == ''){
+                $.alert('请补充玩偶的合成动画');
                 return false;
             }
         });

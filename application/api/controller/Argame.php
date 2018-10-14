@@ -121,7 +121,12 @@ class Argame extends Base {
         $userGameModel = Db::table('cn_user_game_ar_data');
         $userGameData = $userGameModel->where($where)->find();
         if(empty($userGameData)){
-            $userGameData = array();
+            //创建
+            $userGameAddData = array(
+                'user_id' => $this->userId,
+                'project_id' => $projectData['id']
+            );
+            $userGameModel->insertGetId($userGameAddData);
         }
 
         ajaxJsonReturn(0,'获取成功',array(

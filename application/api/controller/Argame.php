@@ -83,7 +83,7 @@ class Argame extends Base {
         $temp = $temp[0];
         $j = 0;
         while (file_exists('.'.$temp.'/'.$j.'.jpeg')){
-            $gameMaterialData['completeing_pic_decode'][] = getUrl().$temp.$j.'.jpeg';
+            $gameMaterialData['completeing_pic_decode'][] = getUrl().$temp.'/'.$j.'.jpeg';
             $j++;
         }
         $gameMaterialData['completeing_pic']=getUrl().$gameMaterialData['completeing_pic'];

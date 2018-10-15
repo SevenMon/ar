@@ -65,16 +65,16 @@ class Argame extends Base {
 
         for($i = 1;$i <= $gameMaterialData['material_num'];$i++){
             //gif 分解图
-            $temp = explode('.',$gameMaterialData['partgif'.$i]);
-            $temp = $temp[0];
+            /*$temp = explode('.',$gameMaterialData['partgif'.$i]);
+            $temp = $temp[0];*/
             $gameMaterialData['part'.$i] = getUrl().$gameMaterialData['part'.$i];
             $gameMaterialData['scan'.$i] = getUrl().$gameMaterialData['scan'.$i];
             $gameMaterialData['partgif'.$i] = getUrl().$gameMaterialData['partgif'.$i];
-            $j = 0;
+            /*$j = 0;
             while (file_exists('.'.$temp.'/'.$j.'.jpeg')){
-                $gameMaterialData['partgif'.$i.'_decode'][] = getUrl().$temp.$i.'.jpeg';
+                $gameMaterialData['partgif'.$i.'_decode'][] = getUrl().$temp.$j.'.jpeg';
                 $j++;
-            }
+            }*/
 	    }
 	    $gameMaterialData['complete_pic']=getUrl().$gameMaterialData['complete_pic'];
         $gameMaterialData['uncomplete_pic']=getUrl().$gameMaterialData['uncomplete_pic'];
@@ -83,7 +83,7 @@ class Argame extends Base {
         $temp = $temp[0];
         $j = 0;
         while (file_exists('.'.$temp.'/'.$j.'.jpeg')){
-            $gameMaterialData['completeing_pic_decode'][] = getUrl().$temp.$i.'.jpeg';
+            $gameMaterialData['completeing_pic_decode'][] = getUrl().$temp.$j.'.jpeg';
             $j++;
         }
         $gameMaterialData['completeing_pic']=getUrl().$gameMaterialData['completeing_pic'];
@@ -258,6 +258,22 @@ class Argame extends Base {
             $userGameUpdate['part'.$part_num.'_num'] = $userGameData['part'.$part_num.'_num'];
             $userGameModel->where($where)->update($userGameUpdate);
             $userGameData = $userGameModel->where($where)->find();
+        }
+        //gif 分解图
+        $temp = explode('.',$gameMaterialData['partgif'.$part_num]);
+        $temp = $temp[0];
+        $j = 0;
+        while (file_exists('.'.$temp.'/'.$j.'.jpeg')){
+            $gameMaterialData['partgif'.$part_num.'_decode'][] = getUrl().$temp.$j.'.jpeg';
+            $j++;
+        }
+        //gif 分解图
+        $temp = explode('.',$gameMaterialData['complete_pic']);
+        $temp = $temp[0];
+        $j = 0;
+        while (file_exists('.'.$temp.'/'.$j.'.jpeg')){
+            $gameMaterialData['complete_pic_decode'][] = getUrl().$temp.$j.'.jpeg';
+            $j++;
         }
         $scanPartData = array(
             'part_num' =>$part_num,

@@ -1,5 +1,5 @@
 (function(a) {
-    a.fn.upload = function(D) {
+    a.fn.upload = function(D,complete) {
         var r = a(this), w = "<li class='item'></li>", A = a('<li class="item add"><svg class="icon" viewBox="0 0 1024 1024" version="1" xmlns="http://www.w3.org/2000/svg" width="200" height="200"><defs><style/></defs><path d="M737 436a174 174 0 0 1 172 172 172 172 0 0 1-172 172c-69 1-69 107 0 106 152-2 276-125 278-278S886 332 737 330c-69-1-69 105 0 106zM285 779a174 174 0 0 1-172-172 172 172 0 0 1 172-172c68-1 69-106 0-106A282 282 0 0 0 7 607a281 281 0 0 0 278 278c69 1 68-105 0-106z" fill="#4A5699"/><path d="M340 384a174 174 0 0 1 172-172 172 172 0 0 1 172 172c1 68 106 68 106 0a282 282 0 0 0-278-278 281 281 0 0 0-278 278c-1 68 105 68 106 0z" fill="#C45FA0"/><path d="M545 473c17 17 17 43 0 60L422 656a42 42 0 0 1-60-60l123-123c17-16 43-16 60 0z" fill="#F39A2B"/><path d="M485 473c17-16 44-16 60 0l123 123a42 42 0 0 1-60 60L485 533a42 42 0 0 1 0-60z" fill="#F39A2B"/><path d="M514 634c24 0 43 20 43 43v179a43 43 0 0 1-86 0V677c0-23 19-43 43-43z" fill="#E5594F"/></svg></li>'), e = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="300" class="progress"><g fill="rgba(17,89,164,0.1)"><path d="M 0 70 Q 75 39, 150 70 T 300 70 T 450 70 T 600 70 T 750 70 V 320 H 0 V 0"></path><animateTransform attributeName="transform" attributeType="XML" type="translate" from="0" to="-300" dur="1.5s" repeatCount="indefinite"></animateTransform></g><g fill="rgba(17,89,164,0.15)"><path d="M 0 70 Q 87.5 47, 175 70 T 350 70 T 525 70 T 700 70 T 875 70 T 1050 70 V 320 H 0 V 0"></path><animateTransform attributeName="transform" attributeType="XML" type="translate" from="0" to="-350" dur="3s" repeatCount="indefinite"></animateTransform></g></svg><div class="progressnum"></div>', g = '<svg xmlns="http://www.w3.org/2000/svg" class="delete" version="1" viewBox="0 0 1024 1024"><path fill="#fff" d="M512 70a439 439 0 0 1 442 442 439 439 0 0 1-442 442A439 439 0 0 1 70 512 439 439 0 0 1 512 70m0-40a482 482 0 1 0 0 964 482 482 0 0 0 0-964zm114 253v-1c0-21-17-38-38-38H436c-21 0-38 17-38 38v1H282v74h460v-74H626zM321 396v346c0 21 17 38 38 38h306c21 0 38-17 38-38V396H321zm114 306h-76V474h76v228zm115 0h-76V474h76v228zm115 0h-76V474h76v228z"/></svg>', E = '<svg xmlns="http://www.w3.org/2000/svg" class="look" version="1" viewBox="0 0 1024 1024"><path fill="#fff" d="M451 835a386 386 0 1 1 0-771 386 386 0 0 1 0 771zm0-675a291 291 0 1 0 0 581 291 291 0 0 0 0-581zm450 798c-15 0-30-5-42-17L658 740a58 58 0 0 1 83-82l201 201a58 58 0 0 1-41 99"/></svg>', d = a('<input type="file" name="file" />'), b = a('<input type="hidden" />'), j, u, t, o, n, m, y, B = {
             height: r.attr("data-height") ? r.attr("data-height") : 0,
             width: r.attr("data-width") ? r.attr("data-width") : 1920,
@@ -174,6 +174,9 @@
                                     J.addClass("error").attr("data-error", M.msg ? M.msg : "服务端返回数据异常")
                                 }
                                 q()
+                                if (complete && typeof complete == "function") {
+                                    complete(M.msg);
+                                }
                             },
                             xhr: function() {
                                 var M = new XMLHttpRequest();

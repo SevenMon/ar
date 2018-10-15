@@ -120,7 +120,20 @@
             }
             $('#imgcontent').html(html);
             for(var i = 1; i <= $(this).val();i++){
-                $("#materials_sacn_"+ i).upload();
+                $("#materials_sacn_"+ i).upload('',function (url) {
+                    //检查扫描图片重复性
+                    $.ajax({
+                        url:"/admin/Materials/ajaxCheckScan",
+                        data:{imgPath:url},
+                        async:false,
+                        dataType:'json',
+                        success:function (rs) {
+                            if(rs.code < 1){
+                                $.alert('上传的扫描图已存在，请重新选择图片，否则会导致错误！');
+                            }
+                        }
+                    });
+                });
                 $("#materials_img_"+ i).upload();
                 $("#materials_gif_"+ i).upload();
             }
@@ -134,7 +147,7 @@
                     check = false;
                     return false;
                 }else {
-                    var path = $(this).val();
+                    /*var path = $(this).val();
                     var number = $(this).parent().data('number');
                     //检查扫描图片重复性
                     $.ajax({
@@ -148,7 +161,7 @@
                                 return false;
                             }
                         }
-                    });
+                    });*/
                 }
             })
             if(!check){

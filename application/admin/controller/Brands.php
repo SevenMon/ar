@@ -45,19 +45,19 @@ class Brands extends Base
 
     public function add(){
         $name = input('post.title');
-        $gameType = input('post.gameType');
+        /*$gameType = input('post.gameType');
         $time = input('post.time');
-        $address = input('post.address');
+        $address = input('post.address');*/
         $appId = input('post.appId');
         $appSecret = input('post.appSecret');
-        $img = input('post.upload');
-        if(empty($name)||$name==null||
-            empty($gameType)||$gameType==null||
+        /*$img = input('post.upload');*/
+        if(empty($name)||$name==null
+            /*||empty($gameType)||$gameType==null||
             empty($time)||$time==null||
-            empty($address)||$address==null||
-            empty($appId)||$appId==null||
-            empty($appSecret)||$appSecret==null||
-            empty($img)||$img==null){
+            empty($address)||$address==null||*/
+            /*empty($appId)||$appId==null||
+            empty($appSecret)||$appSecret==null*/
+            /*||empty($img)||$img==null*/){
             $this->error('请补全参数！');
         }
         $brandModel = new Brand();
@@ -73,12 +73,12 @@ class Brands extends Base
         $data = array(
             'name' => $name,
             'sort' => ++$maxSort,
-            'type' => $gameType,
+            /*'type' => $gameType,
             'time' => $time,
-            'address' => $address,
+            'address' => $address,*/
             'app_id' => $appId,
             'app_secret' => $appSecret,
-            'address_pic' => $img,
+            /*'address_pic' => $img,*/
         );
         $id = $brandModel->addData($data);
         if($id >= 1){
@@ -91,19 +91,19 @@ class Brands extends Base
     public function edit(){
         $brandId = input('id');
         $name = input('post.title');
-        $gameType = input('post.gameType');
+        /*$gameType = input('post.gameType');
         $time = input('post.time');
-        $address = input('post.address');
+        $address = input('post.address');*/
         $appId = input('post.appId');
         $appSecret = input('post.appSecret');
-        $img = input('post.upload');
-        if(empty($name)||$name==null||
-            empty($gameType)||$gameType==null||
+        /*$img = input('post.upload');*/
+        if(empty($name)||$name==null
+            /*||empty($gameType)||$gameType==null||
             empty($time)||$time==null||
-            empty($address)||$address==null||
-            empty($appId)||$appId==null||
-            empty($appSecret)||$appSecret==null||
-            empty($img)||$img==null){
+            empty($address)||$address==null||*/
+            /*empty($appId)||$appId==null||
+            empty($appSecret)||$appSecret==null*/
+            /*||empty($img)||$img==null*/){
             $this->error('请补全参数！');
         }
         $brandModel = new Brand();
@@ -123,12 +123,12 @@ class Brands extends Base
 
         $updataData = array(
             'name' => $name,
-            'type' => $gameType,
+            /*'type' => $gameType,
             'time' => $time,
-            'address' => $address,
+            'address' => $address,*/
             'app_id' => $appId,
             'app_secret' => $appSecret,
-            'address_pic' => $img,
+            /*'address_pic' => $img,*/
         );
         $status = input('status');
         if(empty($status) || $status == null){

@@ -20,20 +20,21 @@ class Visitdatas extends Base {
         $partner_id = $this->userInfo['partner_id'];
         $project_id = $this->projectInfo['id'];
         $address_url = input('address_url');
+        //1任意页面  2进入小程序页面
+        $type = input('type');
         $source_address_url = input('source_address_url');
+        $visitDataModel = new VisitData();
         $addData = array(
             'user_id' => $user_id,
             'open_id' => $open_id,
             'partner_id' => $partner_id,
             'project_id' => $project_id,
             'address_url' => $address_url,
-            'source_address_url' => $source_address_url
+            'address_name' => $visitDataModel->pageData[$address_url],
+            'source_address_url' => $source_address_url,
+            'source_address_name' => $visitDataModel->pageData[$source_address_url],
+            'type' => $type
         );
-        $visitDataModel = new VisitData();
         $visitDataModel->insertGetId($addData);
-    }
-
-    public function recordFirstEnd(){
-
     }
 }

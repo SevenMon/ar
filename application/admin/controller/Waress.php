@@ -66,6 +66,10 @@ class Waress extends Base {
     public function add(){
         $brandId = input('brand_id');
         $name = input('post.title');
+        $type = input('post.type');
+        $time = input('post.time');
+        $address = input('post.address');
+        $map_pic = input('post.map_pic');
         $introduce = input('post.message');
         $img = input('post.upload');
         if(empty($name) || empty($introduce)){
@@ -83,7 +87,10 @@ class Waress extends Base {
             'sort' => ++$maxSort,
             'introduce' => $introduce,
             'pic' => $img,
-            'create_time' => time()
+            'type' => $type,
+            'time' => $time,
+            'address' => $address,
+            'address_pic' => $map_pic,
         );
 
         $id = $brandWaresModel->insert($datas);
@@ -106,17 +113,31 @@ class Waress extends Base {
         }
 
         $name = input('post.title');
+        $type = input('post.type');
+        $time = input('post.time');
+        $address = input('post.address');
+        $map_pic = input('post.map_pic');
         $introduce = input('post.message');
         $img = input('post.upload');
         if(empty($name) || empty($introduce) || empty($img)){
             $this->error('名称和介绍和图片不可为空！');
         }
-
+        $status = input('post.status');
+        if($status == 'on'){
+            $status = 1;
+        }else{
+            $status = 2;
+        }
         //添加标签
         $updataData = array(
             'name' => $name,
             'introduce' => $introduce,
             'pic' => $img,
+            'type' => $type,
+            'time' => $time,
+            'address' => $address,
+            'address_pic' => $map_pic,
+            'status' => $status
         );
         $id = $brandWaresModel->where('id','=',$waresId)->update($updataData);
         if($id >= 0){

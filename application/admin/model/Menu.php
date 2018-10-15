@@ -8,7 +8,7 @@ use think\Db;
 class Menu extends Model {
 
     static $config = [
-        /*[
+        [
             'title' => '数据分析',
             'css' => 'glyphicon glyphicon-home',
             'id' => 'datas',
@@ -16,12 +16,12 @@ class Menu extends Model {
             'children' => [
                 [
                     'label' => '数据大看板',
-                    'id' => 'admin_datas_index',
-                    'url' => 'admin_datas_index',
+                    'id' => 'admin_index_index',
+                    'url' => 'admin_index_index',
                     'css' => '',
                     'display' => '',
                 ],
-                [
+                /*[
                     'label' => '项目分析',
                     'id' => 'admin_datas_project',
                     'url' => 'admin_datas_project',
@@ -48,9 +48,9 @@ class Menu extends Model {
                     'url' => 'admin_datas_partner',
                     'css' => '',
                     'display' => '',
-                ]
+                ]*/
             ],
-        ],*/
+        ],
         [
             'title' => '会员管理',
             'css' => 'glyphicon glyphicon-home',

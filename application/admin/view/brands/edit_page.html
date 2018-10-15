@@ -16,7 +16,7 @@
                             <input type="text" name="title" id="title" required="required" class="form-control col-md-7 col-xs-12" value="{$brandData['name']}">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <!--<div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title">选择游戏类型<span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -46,21 +46,21 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div data-value="{$brandData['address_pic']}" id="upload" class="upload one" id="case" data-num="1" data-type="png,jpg" action="{:url('api/Publicapi/addressImgUpload')}"></div>
                         </div>
-                    </div>
+                    </div>-->
 
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="appId">appId <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="appId">appId
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input value="{$brandData['app_id']}" type="text" id="appId" required="required" class="form-control" name="appId"></input>
+                            <input value="{$brandData['app_id']}" type="text" id="appId" class="form-control" name="appId"></input>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="appSecret">appSecret <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="appSecret">appSecret
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input value="{$brandData['app_secret']}" type="text" id="appSecret" required="required" class="form-control" name="appSecret"></input>
+                            <input value="{$brandData['app_secret']}" type="text" id="appSecret" class="form-control" name="appSecret"></input>
                         </div>
                     </div>
                     <div class="form-group">
@@ -85,7 +85,7 @@
 </div>
 <script type="text/javascript">
     $(function() {
-        $("#upload").upload();
+        /*$("#upload").upload();
         $('#time').datetimepicker({
             format: "yyyy-mm-dd",
             autoclose: true,
@@ -109,6 +109,6 @@
                 $('#imgmsg').hide();
             }
 
-        });
+        });*/
     })
 </script>

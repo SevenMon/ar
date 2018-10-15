@@ -62,13 +62,21 @@ class Argame extends Base {
         $gameMaterial = Db::table('cn_game_'.$gameData['type'].'_material');
         $gameMaterialData = $gameMaterial->find($gameData['material_id']);
         for($i = 1;$i <= $gameMaterialData['material_num'];$i++){
-            $gameMaterialData['part'.$i] = 'https://www.hihill.cn'.$gameMaterialData['part'.$i];
-            $gameMaterialData['scan'.$i] = 'https://www.hihill.cn'.$gameMaterialData['scan'.$i];
-            $gameMaterialData['partfif'.$i] = 'https://www.hihill.cn'.$gameMaterialData['partgif'.$i];
+            $gameMaterialData['part'.$i] = getUrl().$gameMaterialData['part'.$i];
+            $gameMaterialData['scan'.$i] = getUrl().$gameMaterialData['scan'.$i];
+            $gameMaterialData['partfif'.$i] = getUrl().$gameMaterialData['partgif'.$i];
+            //gif 分解图
+            $temp = explode(',',$gameMaterialData['partgif'.$i]);
+            $temp = $temp[0];
+            $i = 0;
+            while (file_exists($temp.$i.'.jpeg')){
+                $gameMaterialData['partfif'.$i.'_decode'][] = getUrl().$temp.$i.'.jpeg';
+                $i++;
+            }
 	    }
-	    $gameMaterialData['complete_pic']='https://www.hihill.cn'.$gameMaterialData['complete_pic'];
-        $gameMaterialData['uncomplete_pic']='https://www.hihill.cn'.$gameMaterialData['uncomplete_pic'];
-        $gameMaterialData['completeing_pic']='https://www.hihill.cn'.$gameMaterialData['completeing_pic'];
+	    $gameMaterialData['complete_pic']=getUrl().$gameMaterialData['complete_pic'];
+        $gameMaterialData['uncomplete_pic']=getUrl().$gameMaterialData['uncomplete_pic'];
+        $gameMaterialData['completeing_pic']=getUrl().$gameMaterialData['completeing_pic'];
 	    if(empty($gameMaterialData) || $gameMaterialData == null || $gameMaterialData['status'] != 1){
             ajaxJsonReturn(-3,'游戏没有设置相应的素材，请设置好素材在进行游戏',array());
         }

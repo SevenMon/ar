@@ -278,7 +278,9 @@ class Argame extends Base {
         $scanPartData = array(
             'part_num' =>$part_num,
             'partgif' =>getUrl().$gameMaterialData['partgif'.$part_num],
-            'complete_pic' => getUrl().$gameMaterialData['complete_pic']
+            'partgif_decode' => $gameMaterialData['partgif'.$part_num.'_decode'],
+            'complete_pic' => getUrl().$gameMaterialData['complete_pic'],
+            'complete_pic_decode' => $gameMaterialData['complete_pic_decode']
         );
         ajaxJsonReturn(0,'扫描成功',array('data' => $userGameData,'scanPartData' => $scanPartData));
 

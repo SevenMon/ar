@@ -190,7 +190,18 @@ class Users extends Base {
      * 中奖信息
      */
     public function lucky(){
-
+        $partner_id = input('partner_id');
+        $is_complete = input('is_complete');
+        //获取游戏类型
+        $gameList = GameType::TYPE;
+        $this->assign('gameList',$gameList);
+        //获取所有激活的合作商
+        $partnerModel = new Partner();
+        $where = array();
+        $where[] = array('status','=',1);
+        $partnerList = $partnerModel->where($where)->select();
+        $this->assign('partnerList',$partnerList);
+        
         $this->assign('left_menu_active', 'admin_users_lucky');
         return $this->fetch();
     }

@@ -156,9 +156,13 @@ class Materials extends Base {
             $frameDurations = $gfe->getFrameDurations();
             $i = 0;
             foreach ($frameImages as $image) {
-                imagejpeg($image, $dirName.$i.".jpeg");
+                imagejpeg($image, $dirName.$i.".png");
                 $i++;
             }
         }
+    }
+    public function ceshi(){
+        $parth = '/static/upload/game1/xiaoxiong.gif';
+        $this->decodeGif($parth);
     }
 }

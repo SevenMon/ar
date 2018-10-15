@@ -264,7 +264,7 @@ class Argame extends Base {
         $temp = $temp[0];
         $j = 0;
         while (file_exists('.'.$temp.'/'.$j.'.jpeg')){
-            $gameMaterialData['partgif'.$part_num.'_decode'][] = getUrl().$temp.$j.'.jpeg';
+            $gameMaterialData['partgif'.$part_num.'_decode'][] = getUrl().$temp.'/'.$j.'.jpeg';
             $j++;
         }
         //gif 分解图
@@ -272,7 +272,7 @@ class Argame extends Base {
         $temp = $temp[0];
         $j = 0;
         while (file_exists('.'.$temp.'/'.$j.'.jpeg')){
-            $gameMaterialData['complete_pic_decode'][] = getUrl().$temp.$j.'.jpeg';
+            $gameMaterialData['complete_pic_decode'][] = getUrl().$temp.'/'.$j.'.jpeg';
             $j++;
         }
         $scanPartData = array(

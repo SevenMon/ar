@@ -93,9 +93,6 @@ class Argame extends Base {
         ajaxJsonReturn(0,'获取成功',array('data' => $gameMaterialData,'userGameData'=>$userGameData));
     }
 
-    private function getGifDecode(){
-
-    }
 
     //获取用户游戏信息
     public function getUserGameData(){
@@ -618,11 +615,11 @@ class Argame extends Base {
             'brand_id' => $brandData['id'],
             'wares_name' => $wareData['name'],
             'wares_pic' => $wareData['pic'],
-            'type' => $brandData['type'],
+            'type' => $wareData['type'],
             'prize_code' => $couponData['code'],
-            'time' => $brandData['time'],
-            'address' => $brandData['address'],
-            'address_pic' => $brandData['address_pic'],
+            'time' => $wareData['time'],
+            'address' => $wareData['address'],
+            'address_pic' => $wareData['address_pic'],
             'coupon_id' => $couponData['id']
         );
 

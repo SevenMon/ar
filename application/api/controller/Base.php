@@ -69,6 +69,7 @@ class Base extends Controller
         $brandModel = new Brand();
         $brandWareModel = new BrandWares();
         $wareData = $brandWareModel->find($projectData['wares_id']);
+
         $brandData = $brandModel->find($wareData['brand_id']);
         if(empty($brandData) || $brandData == null || $brandData['status'] != 1){
             ajaxJsonReturn(-2,'该游戏奖品的品牌商不存在或还没有启动，不能进入游戏',array());

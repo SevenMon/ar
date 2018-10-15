@@ -354,7 +354,7 @@ class Argame extends Base {
         if($showData['status'] == 1){
             ajaxJsonReturn(-7,'已经领取过',array());
         }
-        if(strtotime($showData['create_time']) > time() - 60*60*24*3){
+        if(strtotime($showData['create_time']) < time() - 60*60*24*3){
             ajaxJsonReturn(-4,'已经过期无法领取',array());
         }
 

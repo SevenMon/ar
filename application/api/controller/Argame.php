@@ -75,15 +75,26 @@ class Argame extends Base {
                 $gameMaterialData['partgif'.$i.'_decode'][] = getUrl().$temp.$i.'.jpeg';
                 $j++;
             }
-
 	    }
 	    $gameMaterialData['complete_pic']=getUrl().$gameMaterialData['complete_pic'];
         $gameMaterialData['uncomplete_pic']=getUrl().$gameMaterialData['uncomplete_pic'];
+        //gif 分解图
+        $temp = explode('.',$gameMaterialData['completeing_pic']);
+        $temp = $temp[0];
+        $j = 0;
+        while (file_exists('.'.$temp.'/'.$j.'.jpeg')){
+            $gameMaterialData['completeing_pic_decode'][] = getUrl().$temp.$i.'.jpeg';
+            $j++;
+        }
         $gameMaterialData['completeing_pic']=getUrl().$gameMaterialData['completeing_pic'];
 	    if(empty($gameMaterialData) || $gameMaterialData == null || $gameMaterialData['status'] != 1){
             ajaxJsonReturn(-3,'游戏没有设置相应的素材，请设置好素材在进行游戏',array());
         }
         ajaxJsonReturn(0,'获取成功',array('data' => $gameMaterialData,'userGameData'=>$userGameData));
+    }
+
+    private function getGifDecode(){
+
     }
 
     //获取用户游戏信息

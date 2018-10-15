@@ -32,7 +32,7 @@ class Visitdatas extends Base {
             'address_url' => $address_url,
             'address_name' => $visitDataModel->pageData[$address_url],
             'source_address_url' => $source_address_url,
-            'source_address_name' => $visitDataModel->pageData[$source_address_url],
+            'source_address_name' => empty($visitDataModel->pageData[$source_address_url]) || $visitDataModel->pageData[$source_address_url] == null ?"":$visitDataModel->pageData[$source_address_url],
             'type' => $type
         );
         $visitDataModel->insertGetId($addData);

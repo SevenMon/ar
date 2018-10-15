@@ -607,7 +607,7 @@ class Argame extends Base {
         $where = array();
         $where[] = array('user_id','=',$this->userId);
         $where[] = array('project_id','=',$projectData['id']);
-        $userGameModel = Db::table('cn_user_game_ar_data');
+        $userGameModel = new UserGameArData();
         $info = $userGameModel->where($where)->update($update);
 
 
@@ -625,6 +625,7 @@ class Argame extends Base {
         $couponModel = new Coupon();
         $couponData = $couponModel->getUnusered($wareData['brand_id'],$projectData['id']);
         if(empty($couponData) || $couponData == null){
+            Db::rollback();
             ajaxJsonReturn(-4,'优惠券已被领光，明天再来吧！',array());
         }
         $prizeData = array(

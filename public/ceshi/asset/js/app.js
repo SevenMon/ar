@@ -8,7 +8,7 @@ const WebAR = function(interval, recognizeUrl) {
     var interval = interval;
     var recognizeUrl = recognizeUrl;
 
-    var videoSetting = {width: 320, height: 240};
+    var videoSetting = {width: 100, height: 100};
     var videoElement = null;
     var videoDeviceElement = null;
 
@@ -84,8 +84,8 @@ const WebAR = function(interval, recognizeUrl) {
             video: {deviceId: {exact: deviceId}}
         };
 
-        canvasElement.setAttribute('width', videoSetting.width + 'px');
-        canvasElement.setAttribute('height', videoSetting.height + 'px');
+        canvasElement.setAttribute('width', videoSetting.width + '%');
+        canvasElement.setAttribute('height', videoSetting.height + '%');
 
         // 如果是切换摄像头，则需要先关闭。
         if (videoElement.srcObject) {
@@ -208,9 +208,9 @@ const WebAR = function(interval, recognizeUrl) {
 const webAR = new WebAR(1000, 'https://www.hihill.cn/api/Argame/scan?user_id=MpQaO0O0OiO0O0Ox&partner_id=NpAaO0O0OiO0O0Ox');
 
 document.querySelector('#openCamera').addEventListener('click', function(){
-    const videoSetting = {width: 320, height: 240};
+    const videoSetting = {width: 100, height: 100};
     const video = document.querySelector('#video');
-    video.setAttribute('width', videoSetting.width.toString() +'px');
+    video.setAttribute('width', videoSetting.width.toString() +'%');
 
     const videoDevice = document.querySelector('#videoDevice');
 

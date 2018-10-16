@@ -24,6 +24,7 @@ class Easyar {
         $path = "./Uploads/tempImg/".time().'_'.rand(1000,9999).'.png';
         $r = file_put_contents($path, base64_decode($image));//返回的是字节数
         if(100000 < $r){
+            $orbig = true;
             $dst_img = './Uploads/tempImg/'.time().'_'.rand(1000,9999).'.png';
             $percent = bcdiv(100000,$r,2);  #原图压缩，不缩放，但体积大大降低
             (new imgcompress($path,$percent))->compressImg($dst_img);
@@ -50,6 +51,10 @@ class Easyar {
 
         // step 3: 解析识别结果，返回给浏览器使用
         $obj = json_decode($str);
+        if($orbig){
+            unlink($dst_img);
+            unlink($path);
+        }
         if (!$obj || (isset($obj->status) && $obj->status == 500)) {
             return $this->showMsg(-6, '网络错误');
         } else if ($obj->statusCode != 0) {

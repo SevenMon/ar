@@ -71,8 +71,8 @@ class Argame extends Base {
             $gameMaterialData['scan'.$i] = getUrl().$gameMaterialData['scan'.$i];
             $gameMaterialData['partgif'.$i] = getUrl().$gameMaterialData['partgif'.$i];
             /*$j = 0;
-            while (file_exists('.'.$temp.'/'.$j.'.jpeg')){
-                $gameMaterialData['partgif'.$i.'_decode'][] = getUrl().$temp.$j.'.jpeg';
+            while (file_exists('.'.$temp.'/'.$j.'.png')){
+                $gameMaterialData['partgif'.$i.'_decode'][] = getUrl().$temp.$j.'.png';
                 $j++;
             }*/
 	    }
@@ -82,8 +82,8 @@ class Argame extends Base {
         $temp = explode('.',$gameMaterialData['completeing_pic']);
         $temp = $temp[0];
         $j = 0;
-        while (file_exists('.'.$temp.'/'.$j.'.jpeg')){
-            $gameMaterialData['completeing_pic_decode'][] = getUrl().$temp.'/'.$j.'.jpeg';
+        while (file_exists('.'.$temp.'/'.$j.'.png')){
+            $gameMaterialData['completeing_pic_decode'][] = getUrl().$temp.'/'.$j.'.png';
             $j++;
         }
         $gameMaterialData['completeing_pic']=getUrl().$gameMaterialData['completeing_pic'];
@@ -263,16 +263,16 @@ class Argame extends Base {
         $temp = explode('.',$gameMaterialData['partgif'.$part_num]);
         $temp = $temp[0];
         $j = 0;
-        while (file_exists('.'.$temp.'/'.$j.'.jpeg')){
-            $gameMaterialData['partgif'.$part_num.'_decode'][] = getUrl().$temp.'/'.$j.'.jpeg';
+        while (file_exists('.'.$temp.'/'.$j.'.png')){
+            $gameMaterialData['partgif'.$part_num.'_decode'][] = getUrl().$temp.'/'.$j.'.png';
             $j++;
         }
         //gif 分解图
         $temp = explode('.',$gameMaterialData['complete_pic']);
         $temp = $temp[0];
         $j = 0;
-        while (file_exists('.'.$temp.'/'.$j.'.jpeg')){
-            $gameMaterialData['complete_pic_decode'][] = getUrl().$temp.'/'.$j.'.jpeg';
+        while (file_exists('.'.$temp.'/'.$j.'.png')){
+            $gameMaterialData['complete_pic_decode'][] = getUrl().$temp.'/'.$j.'.png';
             $j++;
         }
         $scanPartData = array(

@@ -62,6 +62,7 @@ class Easyar {
      */
     function getPostImage() {
         $data = @file_get_contents('php://input');
+        $this->base64_image_content($data,'.');
         if ($data) {
             $obj = json_decode($data);
             $data = $obj->image;
@@ -90,6 +91,8 @@ class Easyar {
 
     function base64_image_content($base64_image_content,$path)
     {
+        echo '123213';
+        exit();
         //匹配出图片的格式
         if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64_image_content, $result)) {
             $type = $result[2];

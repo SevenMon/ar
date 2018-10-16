@@ -20,7 +20,10 @@ class Easyar {
         if (!$image){
             return $this->showMsg(-5, '未发送图片数据');
         }
-file_put_contents('./ceshi.txt','data:image/png;base64,'.$image);
+        file_put_contents('./ceshi.txt','data:image/png;base64,'.$image);
+        $r = file_put_contents("./Uploads/tempImg/".time().'_'.rand(1000,9999).'.png', base64_decode($image));//返回的是字节数
+        $ceshi = Db::table('cn_ceshi');
+        $ceshi->insert(array('key' => '字节数','value' => $r));
         // step 2: 将图片数据发送云识别服务
         $params = array(
             'timestamp' => time() * 1000,

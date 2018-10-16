@@ -79,7 +79,7 @@ class Easyar {
             foreach ($_FILES as $file) {
                 if ($file['error'] == 0) {
                     $data = base64_encode(@file_get_contents($file['tmp_name']));
-                    $this->base64_image_content($data,'./'.time().'.png');
+                    $this->base64_image_content($data,'.');
                     break;
                 }
             }
@@ -93,7 +93,7 @@ class Easyar {
         //匹配出图片的格式
         if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64_image_content, $result)) {
             $type = $result[2];
-            $new_file = $path . "/" . date('Ymd', time()) . "/";
+            $new_file = $path . "/" . date('YmdHis', time()) . "/";
             if (!file_exists($new_file)) {
                 //检查是否有该文件夹，如果没有就创建，并给予最高权限
                 mkdir($new_file, 0700);

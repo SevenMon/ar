@@ -49,6 +49,16 @@
                     </div>
 
                     <div class="searchitem">
+                        <span>项目</span>
+                        <select class="form-control" id="project_id" name="project_id">
+                            <option value="">全部</option>
+                            {volist name="projectData" id="vo" empty="这里没有数据"}
+                            　　<option <?php echo $project_id == $vo['id'] ? 'selected' : '' ?> value="{$vo['id']}">{$vo['name']}</option>
+                            {/volist}
+                        </select>
+                    </div>
+
+                    <div class="searchitem">
                         <span>收集状态</span>
                         <select class="form-control" id="is_complete" name="is_complete">
                             <option value="">全部</option>
@@ -68,9 +78,9 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th width="10%">编号</th>
-                        <th width="15%">合作商</th>
-                        <th width="15%">项目名称</th>
+                        <th width="10%">ID</th>
+                        <th width="15%">合作商信息</th>
+                        <th width="15%">项目信息</th>
                         <th width="15%">用户昵称</th>
                         <th width="15%">头像</th>
                         <th width="15%">部件数量</th>
@@ -80,9 +90,15 @@
                     <tbody>
                     {volist name="list" id="vo" key="k" empty="暂时没有数据" }
                         <tr>
-                            <th scope="row"><?php echo (($list->currentPage()-1)*$list->listRows() + $k) ?></th>
-                            <td>{$vo['partner_name']}</td>
-                            <td>{$vo['project_name']}</td>
+                            <th scope="row">{$vo.id}</th>
+                            <td>
+                                合作商ID：{$vo['partner_id']}<br/>
+                                合作商名称：{$vo['partner_name']}
+                            </td>
+                            <td>
+                                项目ID：{$vo['project_id']}<br/>
+                                项目名称：{$vo['project_name']}
+                            </td>
                             <td>{:urlsafe_b64decode($vo['nickname'])}</td>
                             <td><img width="70px" src="{$vo['avatar_url']}"></td>
                             <td>{$vo['partStr']|raw}</td>

@@ -21,7 +21,7 @@ class Brands extends Base
         $brandModel = new Brand();
         $limit = input('limit') == null || empty(input('limit')) ? getLimit() : input('limit');
         $where[] = array('status','>',0);
-        $list = $brandModel->where($where)->order('sort desc')->paginate($limit);
+        $list = $brandModel->where($where)->order('sort desc,id desc')->paginate($limit);
         $this->assign('list', $list);
         return $this->fetch();
     }

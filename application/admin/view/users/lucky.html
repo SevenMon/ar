@@ -25,7 +25,7 @@
                 <h2>会员游戏中奖信息</h2>
                 <div class="clearfix"></div>
             </div>
-            <form method="get" action="/admin/users/game.html">
+            <form method="get" action="/admin/users/lucky.html">
                 <input type="hidden" name="status" value="1">
                 <div class="col-md-12 col-sm-12 col-xs-12 searchwarpper">
 
@@ -48,6 +48,15 @@
                         </select>
                     </div>
                     <div class="searchitem">
+                        <span>项目</span>
+                        <select class="form-control" id="project_id" name="project_id">
+                            <option value="">全部</option>
+                            {volist name="projectData" id="vo" empty="这里没有数据"}
+                            　　<option <?php echo $project_id == $vo['id'] ? 'selected' : '' ?> value="{$vo['id']}">{$vo['name']}</option>
+                            {/volist}
+                        </select>
+                    </div>
+                    <div class="searchitem">
                         <button type="submit" class="btn btn-default">搜索</button>
                     </div>
                 </div>
@@ -56,26 +65,44 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th width="10%">编号</th>
-                        <th width="15%">合作商</th>
-                        <th width="15%">项目名称</th>
-                        <th width="15%">用户昵称</th>
-                        <th width="15%">头像</th>
-                        <th width="15%">部件数量</th>
-                        <th width="15%">收集状态</th>
+                        <th>编号</th>
+                        <th>用户昵称</th>
+                        <th>用户头像</th>
+                        <th>项目信息</th>
+                        <th>品牌商信息</th>
+                        <th>奖品名字</th>
+                        <th>奖品图片</th>
+                        <th>奖品类型</th>
+                        <th>兑换码信息</th>
+                        <th>兑换时间</th>
                     </tr>
                     </thead>
                     <tbody>
                     {volist name="list" id="vo" key="k" empty="暂时没有数据" }
                     <tr>
-                        <th scope="row"><?php echo (($list->currentPage()-1)*$list->listRows() + $k) ?></th>
-                        <td>{$vo['partner_name']}</td>
-                        <td>{$vo['project_name']}</td>
+                        <th scope="row">{$vo['id']}</th>
                         <td>{:urlsafe_b64decode($vo['nickname'])}</td>
                         <td><img width="70px" src="{$vo['avatar_url']}"></td>
-                        <td>{$vo['partStr']|raw}</td>
-                        <td>{$vo['is_complete_str']}</td>
-
+                        <td>
+                            项目ID：{$vo['project_id']}<br/>
+                            项目名称：{$vo['project_name']}
+                        </td>
+                        <td>
+                            品牌商ID：{$vo['brand_id']}<br/>
+                            品牌商名称：{$vo['brand_name']}
+                        </td>
+                        <td>{$vo['wares_name']}</td>
+                        <td><img width="70px" src="{$vo['wares_pic']}"></td>
+                        <td>
+                            <?php if($vo['type'] == 1)echo '优惠券';  ?>
+                            <?php if($vo['type'] == 2)echo '实物奖品';  ?>
+                            <?php if($vo['type'] == 3)echo '微信卡卷';  ?>
+                        </td>
+                        <td>
+                            兑换码ID：{$vo['coupon_id']}<br/>
+                            兑换码：{$vo['prize_code']}
+                        </td>
+                        <td>{$vo['time']}</td>
                     </tr>
                     {/volist}
                     </tbody>

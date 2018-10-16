@@ -1,3 +1,19 @@
+<style>
+    .searchwarpper select,.searchwarpper input{
+        width: 160px;
+        display: inline-block;
+    }
+    .searchitem{
+        margin-right: 20px;
+        display: inline-block;
+    }
+    .searchwarpper{
+        padding: 30px 0px;
+    }
+    .x_title {
+        border-bottom: none;
+    }
+</style>
 <div class="clearfix"></div>
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
@@ -6,28 +22,54 @@
                 <h2>会员列表</h2>
                 <div class="clearfix"></div>
             </div>
+            <form method="get" action="/admin/users/index.html">
+                <input type="hidden" name="status" value="1">
+                <div class="col-md-12 col-sm-12 col-xs-12 searchwarpper">
+                    <div class="searchitem">
+                        <span>合作商</span>
+                        <select class="form-control" id="partner_id" name="partner_id">
+                            <option value="">全部</option>
+                            {volist name="partnerList" id="vo" empty="这里没有数据"}
+                            　　<option <?php echo $partnerId == $vo['id'] ? 'selected' : '' ?> value="{$vo['id']}">{$vo['name']}</option>
+                            {/volist}
+                        </select>
+                    </div>
+                    <div class="searchitem">
+                        <button type="submit" class="btn btn-default">搜索</button>
+                    </div>
+                </div>
+            </form>
             <div class="x_content">
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th>序号</th>
+                        <th>ID</th>
                         <th>头像</th>
                         <th>昵称</th>
                         <th>性别</th>
                         <th>OpenId</th>
-                        <th>所属合作商</th>
+                        <th>所属合作商信息</th>
                         <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
                     {volist name="list" id="vo" key="k" empty="暂时没有数据" }
                     <tr id="user_item_{$vo.id}">
-                        <th scope="row"><?php echo (($list->currentPage()-1)*$list->listRows() + $k) ?></th>
+                        <th scope="row">{$vo.id}</th>
                         <td><img width="60px" src="{$vo.avatar_url}" /></td>
                         <td>{:urlsafe_b64decode($vo.nickname)}</td>
-                        <td>{$vo.gender}</td>
+                        <td>
+                            <?php if($vo['gender'] == 1){ ?>
+                            男
+                            <?php }else{ ?>
+                            女
+                            <?php } ?>
+                        </td>
                         <td>{$vo.openid}</td>
-                        <th>{:getPartnerInfo($vo.partner_id,'name')}</th>
+                        <td>
+                            合作商ID:{$vo.partner_id}<br/>
+                            合作商名称:{:getPartnerInfo($vo.partner_id,'name')}
+                        </td>
                         <td>
                             <a href="{:url('admin/Users/detail',array('user_id' => $vo.id))}">详情</a> |
                             <a href="#" onclick="addblack({$vo.id})">加入黑名单</a>

@@ -25,7 +25,7 @@ class Games extends Base
         $gameModel = new Game();
         $limit = input('limit') == null || empty(input('limit')) ? getLimit() : input('limit');
         $where[] = array('status','>',0);
-        $list = $gameModel->where($where)->order('sort desc')->paginate($limit);
+        $list = $gameModel->where($where)->order('sort desc,id desc')->paginate($limit);
         foreach ($list as &$value){
             $materialModel = Db::table('cn_game_'.$value['type'].'_material');
             $materialData = $materialModel->find($value['material_id']);

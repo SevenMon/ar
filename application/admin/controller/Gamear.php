@@ -32,8 +32,20 @@ class Gamear extends Base
 
     public function ajaxUpdateParam(){
         $data = input('data');
+        Db::startTrans();
+        $sql = 'delete from cn_game_ar_param';
+        $info = Db::execute($sql);
+        if($info === false){
+            Db::rollback();
+            ajaxJsonReturn(-1,'保存失败');
+        }
+        if(empty($data)){
+            if($info !== false){
+                Db::commit();
+                ajaxJsonReturn(1,'保存成功');
+            }
+        }
         $temp = array();
-
         for($i = 0;$i < (count($data) / 3);$i++){
             $temp[] = array(
                 'start_time' => $data[$i*3]['value'],
@@ -41,13 +53,13 @@ class Gamear extends Base
                 'play_number' => $data[$i*3+2]['value'],
             );
         }
-        $sql = 'delete from cn_game_ar_param';
-        $info = Db::execute($sql);
         $addInfo = Db::table('cn_game_ar_param')->insertAll($temp);
         if(empty($addInfo)){
+            Db::rollback();
             ajaxJsonReturn(-1,'保存失败');
         }else{
-            ajaxJsonReturn(1,'保寸成功');
+            Db::commit();
+            ajaxJsonReturn(1,'保存成功');
         }
     }
 
@@ -59,12 +71,15 @@ class Gamear extends Base
                 'content' => $data[$i]['value']
             );
         }
+        Db::startTrans();
         $sql = 'delete from cn_game_ar_rule';
         $info = Db::execute($sql);
         $addInfo = Db::table('cn_game_ar_rule')->insertAll($temp);
         if(empty($addInfo)){
+            Db::rollback();
             ajaxJsonReturn(-1,'保存失败');
         }else{
+            Db::commit();
             ajaxJsonReturn(1,'保寸成功');
         }
     }

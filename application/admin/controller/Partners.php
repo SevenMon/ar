@@ -23,7 +23,7 @@ class Partners extends Base
         $partnerModel = new Partner();
         $limit = input('limit') == null || empty(input('limit')) ? getLimit() : input('limit');
         $where[] = array('status','>',0);
-        $list = $partnerModel->where($where)->order('sort desc')->paginate($limit);
+        $list = $partnerModel->where($where)->order('sort desc,id desc')->paginate($limit);
 
         $this->assign('list', $list);
         return $this->fetch();

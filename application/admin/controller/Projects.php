@@ -28,7 +28,8 @@ class Projects extends Base
         $limit = input('limit') == null || empty(input('limit')) ? getLimit() : input('limit');
         $where[] = array('cn_project.status','>',0);
         $list = $projectModel
-            ->field('cn_project.id id,cn_project.name name,cn_project.status status,cn_game.title gameName,cn_game.title gameName,cn_brand_wares.name waresName,cn_partner.name partnerName,cn_partner.id partner_id')
+            ->field('cn_project.id id,cn_project.name name,cn_project.status status,cn_game.title gameName,
+            cn_game.title gameName,cn_brand_wares.name waresName,cn_partner.name partnerName,cn_partner.id partner_id')
             ->leftJoin('cn_game','cn_project.game_id=cn_game.id')
             ->leftJoin('cn_partner','cn_project.partner_id=cn_partner.id')
             ->leftJoin('cn_brand_wares','cn_project.wares_id=cn_brand_wares.id')

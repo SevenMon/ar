@@ -31,7 +31,7 @@
         <table class="table table-striped table-bordered dataTable no-footer">
             <thead>
             <tr>
-                <th>序号</th>
+                <th>ID</th>
                 <th>优惠券码</th>
                 <th>优惠券状态</th>
                 <th>品牌商id</th>
@@ -43,7 +43,7 @@
             <tbody>
             {foreach $list as $k=>$v}
             <tr>
-                <td><?php echo (($list->currentPage()-1)*$list->listRows() + $k +1) ?></td>
+                <td>{$v.id}</td>
                 <td>{$v.code}</td>
                 <td>
                     {if $v.status == 1} 未领取 {/if}

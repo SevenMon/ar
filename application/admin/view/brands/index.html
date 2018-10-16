@@ -11,7 +11,7 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th width="20%">序号</th>
+                        <th width="20%">ID</th>
                         <th width="20%">品牌名称</th>
                         <!--<th width="20%">领取方式</th>-->
                         <th width="20%">状态</th>
@@ -21,7 +21,7 @@
                     <tbody>
                     {volist name="list" id="vo" key="k" empty="暂时没有数据" }
                     <tr>
-                        <th scope="row"><?php echo (($list->currentPage()-1)*$list->listRows() + $k) ?></th>
+                        <th scope="row">{$vo['id']}</th>
                         <td>{$vo.name}</td>
                         <!--<td>
                             <?php if($vo['type'] == 1){ ?>

@@ -2,8 +2,10 @@
 
 namespace app\admin\controller;
 
+use app\model\GameArPrize;
 use app\model\GameType;
 use app\model\Partner;
+use app\model\Project;
 use app\model\UserGameArData;
 use think\facade\Request;
 use app\model\User;
@@ -24,11 +26,27 @@ class Users extends Base {
      */
 
     public function index(){
+        //获取所有激活的合作商
+        $partnerModel = new Partner();
+        $where = array();
+        $where[] = array('status','>',0);
+        $partnerList = $partnerModel->where($where)->select();
+        $this->assign('partnerList',$partnerList);
         //获取数据  分页
+        $partnerId = input('partner_id');
+        $where = array();
+        $query = array();
+        if(!empty($partnerId) && $partnerId != null){
+            $where[] = array('partner_id','=',$partnerId);
+            $this->assign('partnerId',$partnerId);
+            $query['partner_id'] = $partnerId;
+        }
         $userModel = new User();
         $limit = input('limit') == null || empty(input('limit')) ? getLimit() : input('limit');
         $where[] = array('status','=',1);
-        $list = $userModel->where($where)->order('id desc')->paginate($limit);
+        $list = $userModel->where($where)->order('id desc')->paginate($limit,false, [
+            'query' => $query,
+        ]);
         $this->assign('list', $list);
         return $this->fetch();
     }
@@ -37,11 +55,27 @@ class Users extends Base {
      * 黑名单列表
      */
     public function blacklist(){
+        //获取所有激活的合作商
+        $partnerModel = new Partner();
+        $where = array();
+        $where[] = array('status','>',0);
+        $partnerList = $partnerModel->where($where)->select();
+        $this->assign('partnerList',$partnerList);
         //获取数据  分页
+        $partnerId = input('partner_id');
+        $where = array();
+        $query = array();
+        if(!empty($partnerId) && $partnerId != null){
+            $where[] = array('partner_id','=',$partnerId);
+            $this->assign('partnerId',$partnerId);
+            $query['partner_id'] = $partnerId;
+        }
         $userModel = new User();
         $limit = input('limit') == null || empty(input('limit')) ? getLimit() : input('limit');
         $where[] = array('status','=',2);
-        $list = $userModel->where($where)->order('id desc')->paginate($limit);
+        $list = $userModel->where($where)->order('id desc')->paginate($limit,false, [
+            'query' => $query,
+        ]);
         $this->assign('list', $list);
         $this->assign('left_menu_active', 'admin_users_blacklist');
         return $this->fetch();
@@ -125,6 +159,7 @@ class Users extends Base {
     public function argame(){
         $partner_id = input('partner_id');
         $is_complete = input('is_complete');
+        $project_id = input('project_id');
         //获取游戏类型
         $gameList = GameType::TYPE;
         $this->assign('gameList',$gameList);
@@ -134,7 +169,10 @@ class Users extends Base {
         $where[] = array('status','=',1);
         $partnerList = $partnerModel->where($where)->select();
         $this->assign('partnerList',$partnerList);
-
+        //获取所有项目
+        $projectModel = new Project();
+        $projectData = $projectModel->where('status','>',0)->select();
+        $this->assign('projectData',$projectData);
         //获取用户及其游戏信息
         $userModel = new User();
         $query = array();
@@ -150,11 +188,17 @@ class Users extends Base {
             $this->assign('is_complete',$is_complete);
             $query['is_complete'] = $is_complete;
         }
-        $list = $userModel->field('cn_user.*,cn_partner.*,cn_user_game_ar_data.*,cn_user.id user_id,cn_project.*,cn_project.name project_name,cn_partner.name partner_name')
+        if(!(empty($project_id) || $project_id == null) || $project_id === '0'){
+            $where[] = array('cn_user_game_ar_data.project_id','=',$project_id);
+            $this->assign('project_id',$project_id);
+            $query['project_id'] = $project_id;
+        }
+        $where[] = array('cn_project.status','>',0);
+        $list = $userModel->field('cn_user.*,cn_partner.*,cn_user_game_ar_data.*,cn_user.id user_id,cn_project.*,cn_project.name project_name,cn_project.id project_id,cn_partner.id partner_id,cn_partner.name partner_name,cn_user_game_ar_data.id id')
             ->join('cn_user_game_ar_data','cn_user.id=cn_user_game_ar_data.user_id')
             ->join('cn_project','cn_project.id=cn_user_game_ar_data.project_id')
             ->leftJoin('cn_partner','cn_user.partner_id=cn_partner.id')
-            ->where($where)->paginate($limit,false,array('query'=>$query));
+            ->where($where)->order('cn_user_game_ar_data.id desc')->paginate($limit,false,array('query'=>$query));
         //获取部件信息
         $userGameModel = new UserGameArData();
         foreach ($list as &$value){
@@ -191,17 +235,42 @@ class Users extends Base {
      */
     public function lucky(){
         $partner_id = input('partner_id');
-        $is_complete = input('is_complete');
+        $project_id = input('project_id');
+
         //获取游戏类型
         $gameList = GameType::TYPE;
         $this->assign('gameList',$gameList);
+        //获取所有项目
+        $projectModel = new Project();
+        $projectData = $projectModel->where('status','>',0)->select();
+        $this->assign('projectData',$projectData);
         //获取所有激活的合作商
         $partnerModel = new Partner();
         $where = array();
-        $where[] = array('status','=',1);
+        $query = array();
+        //$where[] = array('status','=',1);
         $partnerList = $partnerModel->where($where)->select();
         $this->assign('partnerList',$partnerList);
-        
+
+        if(!(empty($partner_id) || $partner_id == null)){
+            $where[] = array('cn_user.partner_id','=',$partner_id);
+            $this->assign('partner_id',$partner_id);
+            $query['partner_id'] = $partner_id;
+        }
+        if(!(empty($project_id) || $project_id == null) || $project_id === '0'){
+            $where[] = array('cn_project.id','=',$project_id);
+            $this->assign('project_id',$project_id);
+            $query['project_id'] = $project_id;
+        }
+        $where[] = array('cn_project.status','>',0);
+        $gameArPrize = new GameArPrize();
+        $limit = input('limit') == null || empty(input('limit')) ? getLimit() : input('limit');
+        $list = $gameArPrize->field('cn_user.*,cn_project.id project_id,cn_project.name project_name,cn_brand.id brand_id,cn_brand.name brand_name,cn_game_ar_prize.type prize_type,cn_game_ar_prize.*')
+            ->join('cn_project','cn_project.id=cn_game_ar_prize.project_id')
+            ->leftJoin('cn_brand','cn_game_ar_prize.brand_id=cn_brand.id')
+            ->leftJoin('cn_user','cn_game_ar_prize.user_id=cn_user.id')
+            ->where($where)->paginate($limit,false,array('query'=>$query));
+        $this->assign('list',$list);
         $this->assign('left_menu_active', 'admin_users_lucky');
         return $this->fetch();
     }

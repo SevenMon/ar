@@ -20,7 +20,7 @@ class Easyar {
         if (!$image){
             return $this->showMsg(-5, '未发送图片数据');
         }
-
+file_put_contents('./ceshi.txt','data:image/png;base64,'.$image);
         // step 2: 将图片数据发送云识别服务
         $params = array(
             'timestamp' => time() * 1000,
@@ -86,7 +86,7 @@ class Easyar {
         return $data;
     }
 
-    
+
 
     /**
      * 生成签名，使用sha256加密

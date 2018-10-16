@@ -156,7 +156,7 @@ class Materials extends Base {
             $frameDurations = $gfe->getFrameDurations();
             $i = 0;
             foreach ($frameImages as $image) {
-                imagejpeg($image, $dirName.$i.".png");
+                imagepng($image, $dirName.$i.".png");
                 $i++;
             }
         }

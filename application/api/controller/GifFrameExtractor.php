@@ -110,7 +110,7 @@ class GifFrameExtractor
      *
      * @return array
      */
-    public function extract($filename, $originalFrames = false)
+    public function extract($filename, $originalFrames = true)
     {
         if (!self::isAnimatedGif($filename)) {
             throw new \Exception('The GIF image you are trying to explode is not animated !');

@@ -21,7 +21,17 @@ class Easyar {
             return $this->showMsg(-5, '未发送图片数据');
         }
         file_put_contents('./ceshi.txt','data:image/png;base64,'.$image);
-        $r = file_put_contents("./Uploads/tempImg/".time().'_'.rand(1000,9999).'.png', base64_decode($image));//返回的是字节数
+        $path = "./Uploads/tempImg/".time().'_'.rand(1000,9999).'.png';
+        $r = file_put_contents($path, base64_decode($image));//返回的是字节数
+        if(200000 < $r){
+            $dst_img = './Uploads/tempImg/'.time().'_'.rand(1000,9999).'.png';
+            $percent = 1;  #原图压缩，不缩放，但体积大大降低
+            (new imgcompress($path,$percent))->compressImg($dst_img);
+            $image = base64_encode(file_get_contents($dst_img));
+        }else{
+            unlink($path);
+        }
+
         $ceshi = Db::table('cn_ceshi');
         $ceshi->insert(array('key' => '字节数','value' => $r));
         // step 2: 将图片数据发送云识别服务

@@ -23,9 +23,9 @@ class Easyar {
         file_put_contents('./ceshi.txt','data:image/png;base64,'.$image);
         $path = "./Uploads/tempImg/".time().'_'.rand(1000,9999).'.png';
         $r = file_put_contents($path, base64_decode($image));//返回的是字节数
-        if(200000 < $r){
+        if(100000 < $r){
             $dst_img = './Uploads/tempImg/'.time().'_'.rand(1000,9999).'.png';
-            $percent = 1;  #原图压缩，不缩放，但体积大大降低
+            $percent = ceil($r/100000);  #原图压缩，不缩放，但体积大大降低
             (new imgcompress($path,$percent))->compressImg($dst_img);
             $image = base64_encode(file_get_contents($dst_img));
         }else{

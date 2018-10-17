@@ -85,7 +85,7 @@ class Argame extends Base {
         while (file_exists('.'.$temp.'/'.$j.'.png')){
             $gameMaterialData['completeing_pic_decode'][] = getUrl().$temp.'/'.$j.'.png';
             if(file_exists('.'.$temp.'/'.$j.'.png')){
-                $mime_type= mime_content_type('.'.$temp.'/'.$j.'.png');
+                //$mime_type= mime_content_type('.'.$temp.'/'.$j.'.png');
                 $base64_data = base64_encode(file_get_contents('.'.$temp.'/'.$j.'.png'));
                 $base64_file = 'data:png;base64,'.$base64_data;
             }

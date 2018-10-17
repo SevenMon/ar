@@ -89,7 +89,7 @@ class Argame extends Base {
                 $base64_data = base64_encode(file_get_contents('.'.$temp.'/'.$j.'.png'));
                 $base64_file = 'data:png;base64,'.$base64_data;
             }
-            $gameMaterialData['completeing_pic_decode_base64'] = $base64_file;
+            $gameMaterialData['completeing_pic_decode_base64'][] = $base64_file;
             $j++;
         }
         $gameMaterialData['completeing_pic']=getUrl().$gameMaterialData['completeing_pic'];

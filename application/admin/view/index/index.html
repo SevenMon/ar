@@ -1,65 +1,140 @@
 <style>
-    .tile-stats h3{
+    .num{
+        font-size: 40px;
+        color: #333333;
+    }
+    .text{
+        font-size: 20px;
+        color: #999999;
+    }
+    .table-bordered thead td{
+        font-size: 18px;
+        color: #666666;
+    }
+    .table-bordered tbody td{
         font-size: 16px;
-        font-weight: normal;
+        color: #666666;
     }
-    .tile-stats .count {
-        font-size: 32px;
-        font-weight: 500;
+    .btns{
+        padding-bottom: 50px;
+        text-align: center;
     }
-    .fist_title{
-        margin-top: 10px!important;
+    .btns .btn{
+        width: 80px;
+        box-sizing: border-box;
+        margin-right: 8px;
+        border: 1px solid #cccccc;
+        transition: all .3s ease;
     }
-    .x_title{
-        border:none;
+    .btns .btn.active{
+        background-color: #409eff;
+        border-color: #409eff;
+        color: #ffffff;
+    }
+    .btns .btn:hover{
+        background-color: #409eff;
+        border-color: #409eff;
+        color: #ffffff;
     }
 </style>
-<div class="row">
-    <div class="col-md-12">
-        <div class="x_panel col-lg-6 col-md-6 col-sm-12 col-xs-12">
-            <div class="x_title">
-                <h2>总数据</h2>
-                <div class="clearfix"></div>
+<div class="x_panel"  id="app">
+    <div class="x_title">
+        <h2>数据大看板</h2>
+        <div class="clearfix"></div>
+    </div>
+    <div class="container" style="padding-top: 100px;">
+        <div class="row" style="margin-bottom: 40px;">
+            <div class="col-md-9">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <td>序号</td>
+                            <td>页面url</td>
+                            <td>页面名字</td>
+                            <td>访问次数</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {volist name="pageData" id="vo" key="k" }
+                        <tr>
+                            <td>{$k}</td>
+                            <td>{$vo['address_url']}</td>
+                            <td>{$vo['address_name']}</td>
+                            <td>{$vo['time']}</td>
+                        </tr>
+                        {/volist}
+                    </tbody>
+                </table>
             </div>
-            <div class="x_content">
-                <div class="row top_tiles">
-                    <div class="animated flipInY col-lg-2 col-md-2 col-sm-6 col-xs-12">
-                        <div class="tile-stats">
-                            <h3 class="fist_title">总访问次数</h3>
-                            <div class="count">11<span style="font-size: 20px">次</span></div>
-                        </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="num">{$allData['time']}</div>
+                        <div class="text">总访问量</div>
                     </div>
-                    <div class="animated flipInY col-lg-2 col-md-2 col-sm-6 col-xs-12">
-                        <div class="tile-stats">
-                            <h3 class="fist_title">总访问人数</h3>
-                            <div class="count">22<span style="font-size: 20px">次</span></div>
-                        </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="num">{$allData['user_time']}</div>
+                        <div class="text">总访问人数</div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="x_panel">
-            <div class="x_title">
-                <ul class="nav nav-tabs" role="tablist" id="lineEditTabs">
-                    <li role="presentation" class="active"><a href="#">访问次数趋势</a></li>
-                    <li role="presentation"><a href="#">访问人数趋势</a></li>
-                </ul>
-                <div class="clearfix"></div>
-            </div>
-            <div class="x_content">
-
-            </div>
-        </div>
-
-        <div class="x_panel" style="width: 50%;">
-            <div class="x_title">
-                <h4>页面访问统计</h4>
-                <div class="clearfix"></div>
-            </div>
-            <div class="x_content">
-
+        <div class="row">
+            <div class="col-md-12"></div>
+            <div>
+                <ve-line :data="chartData" :settings="chartSettings"></ve-line>
+                <div class="btns">
+                    <div v-for="(item, index) in selects" class="btn" :class="currentIndex==index?'active':''" @click="select(index)">{{item}}</div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/v-charts/lib/index.min.js"></script>
+
+<script>
+    var vm = new Vue({
+        el: '#app',
+        created() {
+            this.chartSettings = {
+                columns: ['日期', '访问用户', '用户访问量'],
+            }
+        },
+        data() {
+            return {
+                chartData: {
+                    columns: ['日期', '访问量', '访问人数'],
+                    rows: JSON.parse('{$sevenResult|raw}')
+                },
+                currentIndex: 0,
+                selects: ['7天','30天'],
+                dataWeek: JSON.parse('{$sevenResult|raw}'),
+                dataMonth:JSON.parse('{$thirtyResult|raw}')
+            }
+        },
+        methods: {
+            select: function (index) {
+                console.log((index))
+                if(this.currentIndex==index) {
+                    return;
+                }
+                if(index==0) {
+                    this.chartData.rows = this.dataWeek;
+                }
+                else{
+                    this.chartData.rows = this.dataMonth;
+                }
+                this.currentIndex = index;
+            }
+        }
+    })
+</script>
+
+</html>

@@ -484,7 +484,7 @@ class Argame extends Base {
         $update = array(
             'part'.$showData['part_num'].'_num' => $showUserData['part'.$showData['part_num'].'_num']
         );
-        if($check){
+        if($check && $selfData['is_complete'] == 0){
             $update['is_complete'] = 1;
         }
         $showUserUpdateInfo = $userGameDataModel->where('id','=',$showUserData['id'])->update($update);

@@ -6,6 +6,13 @@ use app\admin\model\Admin;
 
 class Index  extends Base
 {
+    public $left_menu_active = 'admin_index_index';
+    public $top_menu_active = 'index';
+
+    public function initialize() {
+
+        parent::initialize();
+    }
     /**
      *
      *首页模板

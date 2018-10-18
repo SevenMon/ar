@@ -70,6 +70,7 @@ class Index  extends Base
         $this->assign('pageData',$pageData);
         $this->assign('thirtyResult',json_encode($thirtyResult));
         $this->assign('sevenResult',json_encode($sevenResult));
+        $this->assign('left_menu_active', 'admin_index_index');
         return $this->fetch();
     }
     

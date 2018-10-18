@@ -9,7 +9,7 @@ class Base extends Controller {
 
     public $aid = '';
     public $user = '';
-    public $top_menu_active = 'datas';
+    public $top_menu_active;
     public $left_menu_active;
 
     public function initialize() {

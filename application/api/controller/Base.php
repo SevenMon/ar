@@ -26,10 +26,10 @@ class Base extends Controller
         $user_id = decode(input('user_id'));
         $user_info = $UserModel->where('id','=',$user_id)->find();
         if (empty($user_info)) {
-            ajaxJsonReturn(-1, '用户不存在！');
+            ajaxJsonReturn(-100, '用户不存在！');
         }
         if ($user_info['status'] == 2) {
-            ajaxJsonReturn(-2, '您已经被加入黑名单，不能进行游戏！');
+            ajaxJsonReturn(-101, '您已经被加入黑名单，不能进行游戏！');
         }
         $this->userId = $user_id;
         $this->userInfo = $user_info;
@@ -40,10 +40,10 @@ class Base extends Controller
         $this->partnerId = $partner_id;
         $this->partnerInfo = $partner_info;
         if (empty($partner_info)) {
-            ajaxJsonReturn(-1, '合作商不存在！');
+            ajaxJsonReturn(-102, '合作商不存在！');
         }
-        if ($user_info['status'] == 0) {
-            ajaxJsonReturn(-2, '该合作商以被禁用，不能进行游戏！');
+        if ($user_info['status'] != 1) {
+            ajaxJsonReturn(-103, '该合作商以被禁用，不能进行游戏！');
         }
 
         //获取项目
@@ -53,7 +53,7 @@ class Base extends Controller
         $where[] = array('status','=',1);
         $projectData = $projectModel->where($where)->find();
         if(empty($projectData) || $projectData == null || $projectData['status'] != 1){
-            ajaxJsonReturn(-1,'该合作商还没有开启项目，不能进入游戏',array());
+            ajaxJsonReturn(-104,'该合作商还没有开启项目，不能进入游戏',array());
         }
         $this->projectInfo = $projectData;
 
@@ -61,7 +61,7 @@ class Base extends Controller
         $gameModel = new Game();
         $gameData = $gameModel->find($projectData['game_id']);
         if(empty($gameData) || $gameData == null || $gameData['status'] != 1){
-            ajaxJsonReturn(-2,'该游戏不存在或还没有启动，不能进入游戏',array());
+            ajaxJsonReturn(-105,'该游戏不存在或还没有启动，不能进入游戏',array());
         }
         $this->gameInfo = $gameData;
 
@@ -72,7 +72,7 @@ class Base extends Controller
 
         $brandData = $brandModel->find($wareData['brand_id']);
         if(empty($brandData) || $brandData == null || $brandData['status'] != 1){
-            ajaxJsonReturn(-2,'该游戏奖品的品牌商不存在或还没有启动，不能进入游戏',array());
+            ajaxJsonReturn(-106,'该游戏奖品的品牌商不存在或还没有启动，不能进入游戏',array());
         }
         $this->brandWaresInfo = $wareData;
         $this->brandInfo = $brandData;

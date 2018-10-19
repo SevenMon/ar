@@ -17,8 +17,6 @@ use think\Request;
 use think\Db;
 
 class Argame extends Base {
-//class Argame {
-
     //获取游戏素材
     public function getGameMaterials(){
 

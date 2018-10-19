@@ -23,4 +23,14 @@ class Index {
             $i++;
         }
     }
+
+    //获取背景图
+    public function getBackPic(){
+        //file_get_contents($url,true); 可以读取远程图片，也可以读取本地图片
+        $img = file_get_contents('./static/upload/material/picture.jpg',true);
+        //使用图片头输出浏览器
+        header("Content-Type: image/jpeg;text/html; charset=utf-8");
+        echo $img;
+        exit;
+    }
 }

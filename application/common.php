@@ -194,22 +194,6 @@ function WSTCheckFilterWords($srcword, $filterWords) {
 }
 
 /**
- * 中国网建短信服务商
- * @param string $phoneNumer  手机号码
- * @param string $content     短信内容
- */
-function WSTSendSMS($phoneNumer, $content) {
-    $url = 'http://utf8.sms.webchinese.cn/?Uid=' . WSTConf("CONF.smsKey") . '&Key=' . WSTConf("CONF.smsPass") . '&smsMob=' . $phoneNumer . '&smsText=' . $content;
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //设置否输出到页面
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30); //设置连接等待时间
-    curl_setopt($ch, CURLOPT_ENCODING, "gzip");
-    $data = curl_exec($ch);
-    curl_close($ch);
-    return $data;
-}
-
-/**
  * 获取指定的全局配置
  */
 function WSTConf($key, $v = '') {

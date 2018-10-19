@@ -14,10 +14,5 @@
 // +----------------------------------------------------------------------
 
 return [
-    'default_return_type' => 'html',
-    'OSS_ACCESS_ID' => 'LTAIfY2Ozore5zcV',
-    'OSS_ACCESS_KEY' => '2aUShLe9fDMYfBZKAs6ZpCsFxve5h9',
-    'OSS_ENDPOINT' => 'oss-cn-hangzhou.aliyuncs.com',
-    'OSS_TEST_BUCKET' => 'paixiuminappimg',
-    'OSS_IMG_URLL' => 'http://paixiuminappimg.oss-cn-hangzhou.aliyuncs.com'
+
 ];

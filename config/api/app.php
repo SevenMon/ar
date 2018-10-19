@@ -14,22 +14,7 @@
 // +----------------------------------------------------------------------
 
 return [
-    'default_return_type' => 'html',
-    'SITE_URL' => '',
-    'ORDER_PAY_ONE' => 1,
-    'HTTP_URL_JUMP' => 'https://youhoo.2828.net',
-    //支付配置
-    'PAY_TYPE' => 1, //0 普通支付 1子商户支付
-    //普通支付
-    'P_APPID' => 'wx128aa16a467de0e3',
-    'P_MCH_ID' => '1507672181',
-    'P_KEY' => '9129be70b0e5687b4b01f4924738002b',
-    //子商户支付
-    'SERCIVE_APP_ID' => 'wxc623b78a211787aa',
-    'SERCIVE_KEY' => '9129be70b0e5687b4b01f4924738002b',
-    'SERCIVE_MACHID' => '1507672181',
-    'SUB_APPID' => 'wx128aa16a467de0e3',
-    'SUB_MCH_ID' => '1508346821',
+
     
     // Ueditor 配置
     'UEDITOR_CONFIG' => array(

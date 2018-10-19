@@ -20,6 +20,7 @@ class Base extends Controller
     public $brandInfo = '';
     public $brandWaresInfo = '';
     public function initialize() {
+
         parent::initialize();
         //判断用户登录
         $UserModel = new User();
@@ -42,10 +43,9 @@ class Base extends Controller
         if (empty($partner_info)) {
             ajaxJsonReturn(-102, '合作商不存在！');
         }
-        if ($user_info['status'] != 1) {
+        if ($partner_info['status'] != 1) {
             ajaxJsonReturn(-103, '该合作商以被禁用，不能进行游戏！');
         }
-
         //获取项目
         $projectModel = new Project();
         $where = array();

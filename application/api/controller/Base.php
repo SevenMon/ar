@@ -61,7 +61,7 @@ class Base extends Controller
         //获取项目
         $projectModel = new Project();
         $where = array();
-        $where[] = array('partner_id' ,'=' ,$this->userInfo['partner_id']);
+        $where[] = array('partner_id' ,'=' ,$partner_id);
         $where[] = array('status','=',1);
         $projectData = $projectModel->where($where)->find();
         if(empty($projectData) || $projectData == null || $projectData['status'] != 1){

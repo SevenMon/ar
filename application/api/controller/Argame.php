@@ -137,6 +137,7 @@ class Argame extends Base {
         //判断是否有可玩次数
         $playTime = $this->getPlayTime();
         if($playTime['allPlayNum'] != 0 && $playTime['todayPlayNum'] >= $playTime['allPlayNum']){
+
             ajaxJsonReturn(-9,'今日次数已经用完不能再次进行游戏',array());
         }
         $easyar = new Easyar();
@@ -342,7 +343,7 @@ class Argame extends Base {
         if($showData['status'] == 1){
             ajaxJsonReturn(-7,'已经领取过',array());
         }
-        if($showData['status'] == 0){
+        if($showData['status'] == -1){
             ajaxJsonReturn(-8,'部件分享失败',array());
         }
         if(strtotime($showData['create_time']) < time() - 60*60*24*3){
@@ -423,6 +424,9 @@ class Argame extends Base {
         }
         if($showData['type'] != 2){
             ajaxJsonReturn(-2,'分享类型错误',array());
+        }
+        if($showData['status'] == -1){
+            ajaxJsonReturn(-4,'索要失败',array());
         }
         if($showData['status'] == 1){
             ajaxJsonReturn(-3,'已经确认过给予部件',array());

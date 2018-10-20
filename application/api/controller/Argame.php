@@ -283,7 +283,7 @@ class Argame extends Base {
             $userGameDataModel->where('id','=',$data['id'])->update($updateData);
         }
 
-        $projectData = $this->gameInfo;
+        $projectData = $this->projectInfo;
         $data = array(
             'project_id' => $projectData['id'],
             'user_id' => $this->userId

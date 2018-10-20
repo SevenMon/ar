@@ -24,8 +24,9 @@ class Base extends Controller
 
         parent::initialize();
         $action = request()->action();
-        if('getGameMaterials' != $action && 'getRule' == $action){
+        if('getGameMaterials' != $action && 'getRule' != $action){
             $this->getUserInfo();
+
         }
         $this->getGameInfo();
 

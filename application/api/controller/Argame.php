@@ -17,35 +17,10 @@ use think\Request;
 use think\Db;
 
 class Argame extends Base {
+
     //获取游戏素材
     public function getGameMaterials(){
 
-        /*//获取项目
-        $projectModel = new Project();
-        $where = array();
-        $where[] = array('partner_id' ,'=' ,$this->userInfo['partner_id']);
-        $where[] = array('status','=',1);
-        $projectData = $projectModel->where($where)->find();
-        if(empty($projectData) || $projectData == null || $projectData['status'] != 1){
-            ajaxJsonReturn(-1,'该合作商还没有开启项目，不能进入游戏',array());
-        }
-
-        //获取游戏获取部件的情况
-        $where = array();
-        $where[] = array('user_id','=',$this->userId);
-        $where[] = array('project_id','=',$projectData['id']);
-        $userGameModel = Db::table('cn_user_game_ar_data');
-        $userGameData = $userGameModel->where($where)->find();
-        if(empty($userGameData)){
-            $userGameData = array();
-        }
-
-        //游戏
-        $gameModel = new Game();
-        $gameData = $gameModel->find($projectData['game_id']);
-        if(empty($gameData) || $gameData == null || $gameData['status'] != 1){
-            ajaxJsonReturn(-2,'该游戏不存在或还没有启动，不能进入游戏',array());
-        }*/
         //获取游戏获取部件的情况
         $where = array();
         $where[] = array('user_id','=',$this->userId);
@@ -288,17 +263,31 @@ class Argame extends Base {
     //分享游戏增加游戏次数
     public function show(){
         $showTimeModel = Db::table('cn_show_time');
-        /*//获取项目
-        $projectModel = new Project();
-        $where = array();
-        $where[] = array('partner_id','=',$this->partnerId);
-        $where[] = array('status','=',1);
-        $projectData = $projectModel->where($where)->find();*/
+        $show_id = input('show_id');
+        $showModel = new Show();
+        $showData = $showModel->find($show_id);
+        if($showData['type'] == 1){
+            //检查用户是否有此部件
+            $userGameDataModel = new UserGameArData();
+            $data = $userGameDataModel->getUserData($this->userInfo);
+
+            if(empty($data) || $data['part'.$showData['part_num'].'_num'] == 0){
+                ajaxJsonReturn(-2,'分享部件不存在',array());
+            }
+            $updateData['part'.$showData['part_num'].'_num'] = --$data['part'.$showData['part_num'].'_num'];
+            if($updateData['part'.$showData['part_num'].'_num'] == 0){
+                $updateData['is_complete'] = 0;
+                $data['is_complete'] = 0;
+            }
+            $userGameDataModel->where('id','=',$data['id'])->update($updateData);
+        }
+
         $projectData = $this->gameInfo;
         $data = array(
             'project_id' => $projectData['id'],
             'user_id' => $this->userId
         );
+        $showModel->where('id','=',$showData['id'])->update(array('status' => 0));
         $info = $showTimeModel->insertGetId($data);
         if(empty($info)){
             ajaxJsonReturn(-1,'分享失败',array());
@@ -318,12 +307,12 @@ class Argame extends Base {
         if(empty($data) || $data['part'.$part_num.'_num'] == 0){
             ajaxJsonReturn(-2,'分享部件不存在',array());
         }
-        $updateData['part'.$part_num.'_num'] = --$data['part'.$part_num.'_num'];
+        /*$updateData['part'.$part_num.'_num'] = --$data['part'.$part_num.'_num'];
         if($updateData['part'.$part_num.'_num'] == 0){
             $updateData['is_complete'] = 0;
             $data['is_complete'] = 0;
         }
-        $userGameDataModel->where('id','=',$data['id'])->update($updateData);
+        $userGameDataModel->where('id','=',$data['id'])->update($updateData);*/
         $datas = array(
             'part_num' => $part_num,
             'type' => 1,
@@ -352,6 +341,9 @@ class Argame extends Base {
         }
         if($showData['status'] == 1){
             ajaxJsonReturn(-7,'已经领取过',array());
+        }
+        if($showData['status'] == 0){
+            ajaxJsonReturn(-8,'部件分享失败',array());
         }
         if(strtotime($showData['create_time']) < time() - 60*60*24*3){
             ajaxJsonReturn(-4,'已经过期无法领取',array());
@@ -444,7 +436,7 @@ class Argame extends Base {
         }
         //判断自己是否有这个部件
         if($selfData['part'.$showData['part_num'].'_num'] < 1){
-            ajaxJsonReturn(-5,'您没有多余的部件可以分享！');
+            ajaxJsonReturn(-5,'您没有多余的部件可以分享，请扫描识别图获取相应部件');
         }
 
         //更新自己的部件数量

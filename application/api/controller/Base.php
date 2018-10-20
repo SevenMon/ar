@@ -7,6 +7,7 @@ use app\model\Project;
 use app\model\Game;
 use app\model\Brand;
 use app\model\BrandWares;
+use think\Request;
 
 class Base extends Controller
 {
@@ -22,6 +23,15 @@ class Base extends Controller
     public function initialize() {
 
         parent::initialize();
+        $action = request()->action();
+        if('getGameMaterials' != $action){
+            $this->getUserInfo();
+        }
+        $this->getGameInfo();
+
+
+    }
+    public function getUserInfo(){
         //判断用户登录
         $UserModel = new User();
         $user_id = decode(input('user_id'));
@@ -34,6 +44,8 @@ class Base extends Controller
         }
         $this->userId = $user_id;
         $this->userInfo = $user_info;
+    }
+    public function getGameInfo(){
         $partnerModel = new Partner();
         $partner_id = input('partner_id');
         $partner_id = decode($partner_id);
@@ -76,7 +88,5 @@ class Base extends Controller
         }
         $this->brandWaresInfo = $wareData;
         $this->brandInfo = $brandData;
-
-
     }
 }

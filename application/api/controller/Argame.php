@@ -276,7 +276,7 @@ class Argame extends Base {
                 ajaxJsonReturn(-2,'分享部件不存在',array());
             }
             $updateData['part'.$showData['part_num'].'_num'] = --$data['part'.$showData['part_num'].'_num'];
-            if($updateData['part'.$showData['part_num'].'_num'] == 0){
+            if($updateData['part'.$showData['part_num'].'_num'] == 0 && $data['is_complete'] == 1){
                 $updateData['is_complete'] = 0;
                 $data['is_complete'] = 0;
             }

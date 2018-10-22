@@ -197,7 +197,7 @@ class Menu extends Model {
                     'url' => 'admin_admins_index',
                     'css' => '',
                     'display' => '',
-                ],
+                ]
                /* [
                     'label' => '系统参数管理',
                     'id' => 'admin_system_parameter',
@@ -205,6 +205,28 @@ class Menu extends Model {
                     'css' => '',
                     'display' => '',
                 ],*/
+            ],
+        ],
+        [
+            'title' => '测试使用',
+            'id' => 'ceshi',
+            'active' => '',
+            'css' => 'glyphicon glyphicon-cog',
+            'children' => [
+                [
+                    'label' => '重置用户状态',
+                    'id' => 'admin_ceshi_reset',
+                    'url' => 'admin_ceshi_reset',
+                    'css' => '',
+                    'display' => '',
+                ]
+                /* [
+                     'label' => '系统参数管理',
+                     'id' => 'admin_system_parameter',
+                     'url' => 'admin_system_parameter',
+                     'css' => '',
+                     'display' => '',
+                 ],*/
             ],
         ]
     ];

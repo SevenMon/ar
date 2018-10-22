@@ -33,8 +33,8 @@ class Easyar {
             unlink($path);
         }
 
-        $ceshi = Db::table('cn_ceshi');
-        $ceshi->insert(array('key' => '字节数','value' => $r));
+        /*$ceshi = Db::table('cn_ceshi');
+        $ceshi->insert(array('key' => '字节数','value' => $r));*/
         // step 2: 将图片数据发送云识别服务
         $params = array(
             'timestamp' => time() * 1000,

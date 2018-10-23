@@ -215,8 +215,8 @@ class Menu extends Model {
             'children' => [
                 [
                     'label' => '重置用户状态',
-                    'id' => 'admin_ceshi_reset',
-                    'url' => 'admin_ceshi_reset',
+                    'id' => 'admin_ceshi_resetpage',
+                    'url' => 'admin_ceshi_resetpage',
                     'css' => '',
                     'display' => '',
                 ]

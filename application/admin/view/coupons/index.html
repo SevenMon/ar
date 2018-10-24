@@ -19,6 +19,7 @@
             <li role="presentation" class="<?php echo $status == 1 ? 'active' : '' ?>" ><a href="{:url('admin/Coupons/index',array('status' => 1))}">未领取</a></li>
             <li role="presentation" class="<?php echo $status == 2 ? 'active' : '' ?>" ><a href="{:url('admin/Coupons/index',array('status' => 2))}">已领取</a></li>
             <li role="presentation" class="<?php echo $status == 3 ? 'active' : '' ?>" ><a href="{:url('admin/Coupons/index',array('status' => 3))}">已使用</a></li>
+            <li role="presentation" class="<?php echo $status == 4 ? 'active' : '' ?>" ><a href="{:url('admin/Coupons/index',array('status' => 4))}">已过期</a></li>
         </ul>
         <div style="margin-top: 10px">
             <button type="button" class="btn btn-primary" id="importCouponData" onclick="importCouponData()">导入优惠券</button>
@@ -38,6 +39,7 @@
                 <th>品牌商名称</th>
                 <th>项目id</th>
                 <th>项目名称</th>
+                <th>领取时间</th>
             </tr>
             </thead>
             <tbody>
@@ -54,6 +56,7 @@
                 <td>{$v.brand_name}</td>
                 <td>{$v.project_id}</td>
                 <td>{$v.project_name}</td>
+                <td>{$v.time}</td>
             </tr>
             {/foreach}
             </tbody>

@@ -1,0 +1,53 @@
+<div class="clearfix"></div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>门店列表</h2>
+                <a class="navbar-right panel_toolbox btn btn-danger" style="margin-left: 20px" type="button"  href="{:url('admin/Brands/index',array('brand_id' => $brandId))}">返回</a>
+
+                <a type="button" class="navbar-right panel_toolbox btn btn-primary" href="{:url('admin/Shops/addPage',array('brand_id' => $brandId))}">添加门店</a>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>门店名称</th>
+                        <th>门店地址</th>
+                        <th>联系方式</th>
+                        <th>地址图片</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="list" id="vo" key="k" empty="暂时没有数据" }
+                    <tr>
+                        <th scope="row">{$vo.id}</th>
+                        <td>{$vo.name}</td>
+                        <td>{$vo.address}</td>
+                        <td>{$vo.phone}</td>
+                        <td><img src="{$vo.address_pic}" style="width: 80px;" /></td>
+                        <td>
+                            {if condition="($vo['status'] == 1)"}
+                            <span class="green">启用</span>
+                            {else /}
+                            <span class="red">禁用</span>
+                            {/if}
+                        </td>
+                        <td>
+                            <a href="{:url('admin/Shops/editPage',array('shop_id' => $vo.id,'brand_id' => $brandId))}">编辑</a>
+                            <a href="{:url('admin/Shops/delete',array('shop_id' => $vo.id,'brand_id' => $brandId))}">删除</a>
+                        </td>
+                    </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+            </div>
+            {:$list}
+        </div>
+    </div>
+</div>

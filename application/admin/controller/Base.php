@@ -27,6 +27,7 @@ class Base extends Controller {
         }
         $this->aid = $user['aid'];
         $this->user = $user;
+        $this->assign('user', $user);
         $this->assign('top_menu_active', $this->top_menu_active);
         $this->assign('left_menu_active', $this->left_menu_active);
     }

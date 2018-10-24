@@ -638,6 +638,8 @@ class Argame extends Base {
         );
 
         $prizeModel->insertGetId($prizeData);
+        $userModel = new User();
+        $userModel->where('id','=',$this->userId)->update(array('mobile' => $phone));
         if(empty($info)){
             Db::rollback();
             ajaxJsonReturn(-1,'兑奖失败',array());
@@ -645,6 +647,35 @@ class Argame extends Base {
             Db::commit();
             ajaxJsonReturn(0,'兑奖成功',array('prizeData' => $prizeData));
         }
+    }
+
+    /*
+     * 生成卡卷
+     */
+    public function addCard($brand_id,$card_id){
+        $brandModel = new Brand();
+        $accessToken = $brandModel->getAccessToken($brand_id);
+        if(!$accessToken){
+            return false;
+        }
+        $ticket = http_curl("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=".$accessToken."&type=wx_card");
+        if($ticket['errcode'] != 0){
+            return false;
+        }
+        $api_ticket = $ticket['ticket'];
+        $data = $this->cardSignature($card_id,$api_ticket);
+        $data['open_id'] = $this->userInfo['openId'];
+        ajaxJsonReturn(1,'获取成功',$data);
+    }
+
+    public function cardSignature($card_id, $api_ticket) {
+        $time = time();
+        $nonce_str = $this->getRandStr(18);
+        $data = array($time, $nonce_str, $card_id, $api_ticket);
+        asort($data, SORT_STRING); // 排序
+        $key = implode($data); // 加密
+        $signature = sha1($key);
+        return ['signature'=>$signature, 'timestamp'=>$time, 'nonce_str'=>$nonce_str, 'card_id'=>$card_id, 'api_ticket'=>$api_ticket];
     }
 
     //获取任意长度字母数字组合随机串   str_pad($num,4,"0",STR_PAD_LEFT);

@@ -1,0 +1,71 @@
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>添加门店</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br>
+                <form id="form" data-parsley-validate="" data-parsley-required-message="不可为空！" class="form-horizontal form-label-left" novalidate="" action="{:url('admin/Shops/add')}" method="post" class="dropzone" >
+                    <input type="hidden" name="brand_id" value="{$brandId}" >
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title">门店名称 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" name="title" id="title" required="required" class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title">联系方式 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" name="phone" id="phone" required="required" class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="address">领取地址 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" id="address" required="required" class="form-control" name="address"></input>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="map_pic">地点图片<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div data-name="map_pic" class="upload one" id="map_pic" data-num="1" data-type="png,jpg" action="{:url('api/Publicapi/addressImgUpload')}"></div>
+                        </div>
+                    </div>
+                    <!--<div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="remark">状态 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12" style="padding-top: 6px;">
+                            <input type="checkbox" class="js-switch" checked name="status" />
+                        </div>
+                    </div>-->
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button class="btn btn-primary" type="button" onclick="window.history.back(-1); ">返回</button>
+                            <button type="submit" class="btn btn-success">提交</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function() {
+        $("#map_pic").upload();
+        $('#form').submit(function () {
+            if($("input[name='map_pic']").val() == ''){
+                $.alert('请上传地址图片');
+                return false;
+            }
+        });
+    })
+</script>

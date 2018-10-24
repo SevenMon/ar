@@ -25,8 +25,8 @@
                         <th>商品名称</th>
                         <th>商品类型</th>
                         <th>领取时间</th>
-                        <th>地址</th>
-                        <th>地址图片</th>
+                        <!--<th>地址</th>
+                        <th>地址图片</th>-->
                         <th>商品介绍</th>
                         <th>状态</th>
                         <th>操作</th>
@@ -46,8 +46,8 @@
                             {/if}
                         </td>
                         <td>{$vo.time}</td>
-                        <td>{$vo.address}</td>
-                        <td><img src="{$vo.address_pic}" style="width: 80px;" /></td>
+                       <!-- <td>{$vo.address}</td>
+                        <td><img src="{$vo.address_pic}" style="width: 80px;" /></td>-->
                         <td style="max-width: 160px;word-wrap:break-word;">{$vo.introduce}</td>
                         <td>
                             {if condition="($vo['status'] == 1)"}

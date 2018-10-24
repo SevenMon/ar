@@ -10,6 +10,8 @@ use app\model\Label;
 use app\model\ProductLabel;
 use app\model\Property;
 use app\model\PropertyValue;
+use app\model\Shop;
+use app\model\Show;
 use app\model\Stock;
 use app\model\StockProperty;
 use app\model\Type;
@@ -18,7 +20,7 @@ use think\Request;
 use app\model\Product;
 
 
-class Waress extends Base {
+class Shops extends Base {
 
     public $left_menu_active = 'admin_brands_index';
     public $top_menu_active = 'brands';
@@ -28,15 +30,14 @@ class Waress extends Base {
 	}
 
     public function index(){
-
         $brandId = input('brand_id');
         $this->assign('brandId',$brandId);
         //获取数据  分页
-        $brandWaresModel = Db::table('cn_brand_wares');
+        $shopModel = new Shop();
         $limit = input('limit') == null || empty(input('limit')) ? getLimit() : input('limit');
         $where[] = array('status','>',0);
         $where[] = array('brand_id','=',$brandId);
-        $list = $brandWaresModel->where($where)->order('sort desc')->paginate($limit);
+        $list = $shopModel->where($where)->order('id desc')->paginate($limit);
         $this->assign('list', $list);
         return $this->fetch();
     }
@@ -49,53 +50,47 @@ class Waress extends Base {
 
     public function editPage(){
         $brandId = input('brand_id');
-        $waresId = input('wares_id');
+        $shopId = input('shop_id');
 
-        $brandWaresModel = new BrandWares();
-        $waresData = $brandWaresModel->find($waresId);
-        if(empty($waresData)){
-            $this->error('商品不存在！');
-        }elseif($waresData['status'] == 0){
-            $this->error('商品已删除！');
+        $shopModel = new Shop();
+        $shopData = $shopModel->find($shopId);
+        if(empty($shopData)){
+            $this->error('门店不存在！');
+        }elseif($shopData['status'] == 0){
+            $this->error('门店已删除！');
         }
         $this->assign('brandId',$brandId);
-        $this->assign('waresData',$waresData);
+        $this->assign('shopData',$shopData);
         return $this->fetch();
     }
 
     public function add(){
         $brandId = input('brand_id');
         $name = input('post.title');
-        $type = input('post.type');
-        $time = input('post.time');
-        //$address = input('post.address');
-        //$map_pic = input('post.map_pic');
-        $introduce = input('post.message');
-        $img = input('post.upload');
-        if(empty($name) || empty($introduce)){
-            $this->error('名称和介绍不可为空！');
+        $phone = input('post.phone');
+        $address = input('post.address');
+        $map_pic = input('post.map_pic');
+        if(empty($name) || $name == null ||empty($phone) || $phone == null ||empty($address) || $address == null ||empty($map_pic) || $map_pic == null){
+            $this->error('补充参数！');
         }
-        $brandWaresModel = new BrandWares();
+        $shopModel = new Shop();
 
         //获取最大sort
-        $maxSort = $brandWaresModel->field('max(sort) maxSort')->find();
+        $maxSort = $shopModel->field('max(sort) maxSort')->find();
         $maxSort = $maxSort['maxSort'];
         //添加标签
         $datas = array(
             'brand_id' => $brandId,
             'name' => $name,
             'sort' => ++$maxSort,
-            'introduce' => $introduce,
-            'pic' => $img,
-            'type' => $type,
-            'time' => $time,
-            /*'address' => $address,
-            'address_pic' => $map_pic,*/
+            'phone' => $phone,
+            'address' => $address,
+            'address_pic' => $map_pic,
         );
 
-        $id = $brandWaresModel->insert($datas);
+        $id = $shopModel->insert($datas);
         if($id >= 1){
-            $this->redirect('admin/Waress/index?brand_id='.$brandId);
+            $this->redirect('admin/Shops/index?brand_id='.$brandId);
         }else{
             $this->error('添加失败！');
         }
@@ -103,24 +98,22 @@ class Waress extends Base {
 
     public function edit(){
         $brandId = input('brand_id');
-        $waresId = input('wares_id');
-        $brandWaresModel = new BrandWares();
-        $data = $brandWaresModel->find($waresId);
+        $shopId = input('shop_id');
+        $shopModel = new Shop();
+        $data = $shopModel->find($shopId);
         if(empty($data)){
-            $this->error('商品不存在！');
+            $this->error('门店不存在！');
         }elseif($data['status'] == 0){
-            $this->error('商品已删除！');
+            $this->error('商门店已删除！');
         }
 
         $name = input('post.title');
-        $type = input('post.type');
-        $time = input('post.time');
-        //$address = input('post.address');
-        //$map_pic = input('post.map_pic');
-        $introduce = input('post.message');
-        $img = input('post.upload');
-        if(empty($name) || empty($introduce) || empty($img)){
-            $this->error('名称和介绍和图片不可为空！');
+        $phone = input('post.phone');
+        $address = input('post.address');
+        $map_pic = input('post.map_pic');
+
+        if(empty($name) || $name == null ||empty($phone) || $phone == null ||empty($address) || $address == null ||empty($map_pic) || $map_pic == null){
+            $this->error('补充参数！');
         }
         $status = input('post.status');
         if($status == 'on'){
@@ -131,17 +124,14 @@ class Waress extends Base {
         //添加标签
         $updataData = array(
             'name' => $name,
-            'introduce' => $introduce,
-            'pic' => $img,
-            'type' => $type,
-            'time' => $time,
-            /*'address' => $address,
-            'address_pic' => $map_pic,*/
+            'phone' => $phone,
+            'address' => $address,
+            'address_pic' => $map_pic,
             'status' => $status
         );
-        $id = $brandWaresModel->where('id','=',$waresId)->update($updataData);
+        $id = $shopModel->where('id','=',$shopId)->update($updataData);
         if($id >= 0){
-            $this->redirect('admin/Waress/index?brand_id='.$brandId);
+            $this->redirect('admin/Shops/index?brand_id='.$brandId);
         }else{
             $this->error('修改失败！');
         }

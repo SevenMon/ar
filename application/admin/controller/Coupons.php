@@ -24,8 +24,13 @@ class Coupons extends Base
         $limit = input('limit') == null || empty(input('limit')) ? getLimit() : input('limit');
         $where = array();
         if(!empty($status) && $status != null){
-            $where[] = array('status','=',$status);
+            if(in_array($status,array(1,2,3))){
+                $where[] = array('status','=',$status);
+            }elseif ($status == 4){
+                $where[] = array('time','<',date('Y-m-d',time()));
+            }
         }
+
         $list = $couponModel->where($where)->order('id desc')->paginate($limit);
         $this->assign('list', $list);
         $this->assign('status', $status);
@@ -43,6 +48,7 @@ class Coupons extends Base
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C1','项目id');
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D1','项目名称');
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E1','优惠券码');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F1','领取时间（例：2018-10-10）');
         $objPHPExcel->getActiveSheet()->getDefaultColumnDimension()->setWidth(17);//所有单元格（列）默认宽度
         $objPHPExcel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(15);
 
@@ -51,12 +57,14 @@ class Coupons extends Base
         $objPHPExcel->getActiveSheet()->getStyle('C1')->getFont()->setBold(true)->setSize(12);
         $objPHPExcel->getActiveSheet()->getStyle('D1')->getFont()->setBold(true)->setSize(12);
         $objPHPExcel->getActiveSheet()->getStyle('E1')->getFont()->setBold(true)->setSize(12);
+        $objPHPExcel->getActiveSheet()->getStyle('F1')->getFont()->setBold(true)->setSize(12);
 
         $objPHPExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->getStyle('B1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->getStyle('C1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->getStyle('D1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->getStyle('E1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('F1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
         /*for ($i=0;$i<50;$i++){
             $objPHPExcel->getActiveSheet()->setCellValue('A'.$i,'');
@@ -108,6 +116,7 @@ class Coupons extends Base
                     'project_id' => $value[2],
                     'project_name' => $value[3],
                     'code' => $value[4],
+                    'time' => $value[5],
                 );
                 $where = array();
                 $where[] = array('brand_id','=',$value[0]);

@@ -26,7 +26,15 @@ class Ceshi extends Base
         $user_id = input('user_id');
         $user_id = str_replace('，',',',$user_id);
         $userGameArModel = new UserGameArData();
-        $info = $userGameArModel->where('id','in',explode(',',$user_id))->update(array('is_complete' => 0));
+        $update = array(
+            'is_complete' => 0,
+            'part1_num' => 0,
+            'part2_num' => 0,
+            'part3_num' => 0,
+            'part4_num' => 0,
+            'part5_num' => 0
+        );
+        $info = $userGameArModel->where('id','in',explode(',',$user_id))->update($update);
         if($info === false){
             ajaxJsonReturn(-1,'重置失败');
         }else{

@@ -266,28 +266,37 @@ class Argame extends Base {
     public function show(){
         $showTimeModel = Db::table('cn_show_time');
         $show_id = input('show_id');
-        $showModel = new Show();
-        $showData = $showModel->find($show_id);
-        if($showData['type'] == 1){
-            //检查用户是否有此部件
-            $userGameDataModel = new UserGameArData();
-            $data = $userGameDataModel->getUserData($this->userInfo);
+        $type = 0;
+        if(!empty($show_id) && $show_id != null) {
+            $showModel = new Show();
+            $showData = $showModel->find($show_id);
+            if ($showData['type'] == 1) {
+                //检查用户是否有此部件
+                $userGameDataModel = new UserGameArData();
+                $data = $userGameDataModel->getUserData($this->userInfo);
 
-            if(empty($data) || $data['part'.$showData['part_num'].'_num'] == 0){
-                ajaxJsonReturn(-2,'分享部件不存在',array());
+                if (empty($data) || $data['part' . $showData['part_num'] . '_num'] == 0) {
+                    ajaxJsonReturn(-2, '分享部件不存在', array());
+                }
+                $updateData['part' . $showData['part_num'] . '_num'] = --$data['part' . $showData['part_num'] . '_num'];
+                if ($updateData['part' . $showData['part_num'] . '_num'] == 0 && $data['is_complete'] == 1) {
+                    $updateData['is_complete'] = 0;
+                    $data['is_complete'] = 0;
+                }
+                $userGameDataModel->where('id', '=', $data['id'])->update($updateData);
             }
-            $updateData['part'.$showData['part_num'].'_num'] = --$data['part'.$showData['part_num'].'_num'];
-            if($updateData['part'.$showData['part_num'].'_num'] == 0 && $data['is_complete'] == 1){
-                $updateData['is_complete'] = 0;
-                $data['is_complete'] = 0;
-            }
-            $userGameDataModel->where('id','=',$data['id'])->update($updateData);
+            $type = $showData['type'];
+        }else{
+            $show_id = 0;
         }
+
 
         $projectData = $this->projectInfo;
         $data = array(
             'project_id' => $projectData['id'],
-            'user_id' => $this->userId
+            'user_id' => $this->userId,
+            'type' => $type,
+            'show_id' => $show_id
         );
         $showModel->where('id','=',$showData['id'])->update(array('status' => 0));
         $info = $showTimeModel->insertGetId($data);
@@ -762,6 +771,7 @@ class Argame extends Base {
             ajaxJsonReturn(-1,'该合作商还没有开启项目，不能进入游戏',array());
         }*/
         $projectData = $this->projectInfo;
+
         $playDataModel = Db::table('cn_play_game_ar_data');
         $where = array();
         $where[] = array('user_id','=',$this->userId);

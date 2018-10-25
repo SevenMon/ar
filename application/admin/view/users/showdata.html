@@ -1,0 +1,146 @@
+<style>
+    .searchwarpper select,.searchwarpper input{
+        width: 160px;
+        display: inline-block;
+    }
+    .searchitem{
+        margin-right: 20px;
+        display: inline-block;
+    }
+    .searchwarpper{
+        padding: 30px 0px;
+    }
+    .x_title {
+        border-bottom: none;
+    }
+    .waresidwrraper{
+
+    }
+</style>
+<div class="clearfix"></div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>会员ar游戏分享记录</h2>
+                <div class="clearfix"></div>
+            </div>
+            <form method="get" action="/admin/users/showdata.html">
+                <input type="hidden" name="status" value="1">
+                <div class="col-md-12 col-sm-12 col-xs-12 searchwarpper">
+                    <div class="searchitem">
+                        <span>合作商</span>
+                        <select class="form-control" id="partner_id" name="partner_id">
+                            <option value="">全部</option>
+                            {volist name="partnerList" id="vo" empty="这里没有数据"}
+                            　　<option <?php echo $partner_id == $vo['id'] ? 'selected' : '' ?> value="{$vo['id']}">{$vo['name']}</option>
+                            {/volist}
+                        </select>
+                    </div>
+                    <div class="searchitem">
+                        <span>项目</span>
+                        <select class="form-control" id="project_id" name="project_id">
+                            <option value="">全部</option>
+                            {volist name="projectData" id="vo" empty="这里没有数据"}
+                            　　<option <?php echo $project_id == $vo['id'] ? 'selected' : '' ?> value="{$vo['id']}">{$vo['name']}</option>
+                            {/volist}
+                        </select>
+                    </div>
+                    <div class="searchitem">
+                        <span>昵称</span>
+                        <input data-parsley-required="" type="text" class="form-control" name="nickname" id="nickname" placeholder="昵称" aria-describedby="basic-addon1" value="{$nickname}">
+                    </div>
+                    <div class="searchitem">
+                        <span>电话</span>
+                        <input data-parsley-required="" type="text" class="form-control" name="phone" id="phone" placeholder="电话" aria-describedby="basic-addon1" value="{$phone}">
+                    </div>
+                    <div class="searchitem">
+                        <button type="submit" class="btn btn-default">搜索</button>
+                    </div>
+                </div>
+            </form>
+            <div class="x_content">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>分享用户信息</th>
+                        <th>用户头像</th>
+                        <th>项目信息</th>
+                        <th>被分享用户信息</th>
+                        <th>分享信息</th>
+                        <th>分享时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="list" id="vo" key="k" empty="暂时没有数据" }
+                    <tr>
+                        <th scope="row">{$vo['id']}</th>
+                        <td>
+                            昵称：{:urlsafe_b64decode($vo['show_user_nickname'])}<br/>
+                            状态：{:$vo['show_user_status'] == 1?'启用':'黑名单'}<br/>
+                            手机：{$vo['show_user_phone']}
+                        </td>
+                        <td><img width="70px" src="{$vo['show_user_avatar_url']}"></td>
+                        <td>
+                            项目ID：{$vo['project_id']}<br/>
+                            项目名称：{$vo['project_name']}
+                        </td>
+                        <td>
+                            昵称：{:urlsafe_b64decode($vo['showed_user_nickname'])}<br/>
+                            状态：{:$vo['showed_user_status'] == 1?'启用':$vo['showed_user_status']==''?'':'黑名单'}<br/>
+                            手机：{$vo['showed_user_phone']}
+                        </td>
+                        <td>
+                            分享/索要部件:{:$vo['part_num']==''?'':'部件'.$vo['part_num']}<br/>
+                            分享类型:{:$vo['type'] == 1?'分享部件分享':$vo['type']==2?'索要部件分享':'普通分享'}<br/>
+                            分享状态:{:$vo['type']!=0?($vo['status']==0?'分享之后未接受':'被分享人已接受'):''}<br/>
+                        </td>
+                        <td>{$vo['create_time']}</td>
+                    </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+            </div>
+            {:$list}
+        </div>
+    </div>
+</div>
+<script>
+    function deleteItem(obj,id){
+        var url = "{:url('admin/Users/deletePlayData')}";
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data:{id:id},
+            dataType: 'json',
+            success:function(res){
+                if(res.code == 1){
+                    $.alert({
+                        title: '系统提示',
+                        content: '删除成功！',
+                        icon: 'fa fa-comment',
+                        type: 'green',
+                    });
+                    $(obj).parent().parent().remove();
+                }else {
+                    $.alert({
+                        title: '系统提示',
+                        content: '删除失败，稍后再试！',
+                        icon: 'fa fa-comment',
+                        type: 'green',
+                    });
+                }
+                console.log(res);
+            },
+            error:function () {
+                $.alert({
+                    title: '系统提示',
+                    content: '网络错误，请稍后再试！',
+                    icon: 'fa fa-comment',
+                    type: 'green',
+                });
+            }
+        });
+    }
+</script>

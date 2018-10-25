@@ -6,6 +6,7 @@ namespace app\admin\controller;
 
 
 use app\model\Brand;
+use app\model\BrandWares;
 use app\model\Game;
 use app\model\Project;
 use app\model\Property;
@@ -100,14 +101,15 @@ class Projects extends Base
         $brandList = $brandModel->where($where)->order('sort desc')->select();
 
         //商品
-        $brandWaresModel = Db::table('cn_brand_wares');
+        $brandWaresModel = new BrandWares();
         $where = array();
         $where[] = array('status','=',1);
         $where[] = array('id','=',$projectData['wares_id']);
         $waresData = $brandWaresModel->where($where)->find();
+
         $where = array();
         $where[] = array('status','=',1);
-        $where[] = array('brand_id','=',$waresData['brand_id']);
+        $where[] = array('brand_id','=',$waresData['brand_id']==null?'':$waresData['brand_id']);
         $waresslist = $brandWaresModel->where($where)->order('sort desc')->select();
 
         $this->assign('projectData',$projectData);
@@ -180,7 +182,7 @@ class Projects extends Base
             'wares_id' => $waresId,
         );
         $info = $projectModel->where('id','=',$project_id)->update($data);
-        if(!empty($info)){
+        if($info !== false){
             $this->redirect('admin/Projects/index');
         }else{
             $this->error('修改失败！');
@@ -225,7 +227,7 @@ class Projects extends Base
         $where[] = array('status','=',1);
         $where[] = array('partner_id','=',$partnerId);
         $info = $projectModel->where($where)->update($updateData);
-        if(empty($info)){
+        if($info === false){
             Db::rollback();
             $this->error('设置失败！');
         }

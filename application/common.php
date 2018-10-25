@@ -1040,7 +1040,7 @@ function get_client_ip($type = 0,$adv=false) {
     return $ip[$type];
 }
 function getLimit(){
-    return 2;
+    return 10;
 }
 
 function getPartnerInfo($partner_id,$colum=''){

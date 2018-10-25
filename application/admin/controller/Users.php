@@ -6,6 +6,7 @@ use app\model\GameArPrize;
 use app\model\GameType;
 use app\model\Partner;
 use app\model\Project;
+use app\model\Show;
 use app\model\UserGameArData;
 use think\Db;
 use think\facade\Request;
@@ -406,12 +407,64 @@ class Users extends Base {
             ->where($where)->order('cn_user_game_ar_data.id desc')->paginate($limit,false,array('query'=>$query));
         //获取部件信息
         $userGameModel = new UserGameArData();
+        $userModel = new User();
         foreach ($list as &$value){
             $playGameDataModel = Db::table('cn_play_game_ar_data');
             $where = array();
             $where[] = array('user_id','=',$value['user_id']);
             $where[] = array('project','=',$value['project_id']);
             $count = $playGameDataModel->where($where)->count();
+            //获取分享信息
+            $showTimeModel = Db::table('cn_show_time');
+            $where = array();
+            $where[] = array('user_id','=',$value['user_id']);
+            $where[] = array('project_id','=',$value['project_id']);
+            $showData = $showTimeModel->where($where)->select();
+            if(empty($showData) || $showData==null){
+                $value['show_info'] = array(
+                    'day_all_show_time' => 0,
+                    'day_give_show_time' => 0,
+                    'day_ask_show_time' => 0,
+                    'all_show_time' => 0,
+                    'all_give_show_time' => 0,
+                    'all_ask_show_time' => 0,
+                );
+            }else{
+                $all_show_time = count($showData);
+                $day_all_show_time = 0;
+                $day_give_show_time = 0;
+                $day_ask_show_time = 0;
+                $all_give_show_time = 0;
+                $all_ask_show_time = 0;
+                foreach ($showData as $value1){
+                    if($value1['type'] == 1){
+                        $all_give_show_time++;
+                        if(strtotime($value1['create_time']) > strtotime(date('Y-m-d 00:00:00',time())) &&strtotime($value1['create_time']) > strtotime(date('Y-m-d 23:59:59',time()))){
+                            $day_give_show_time++;
+                        }
+                    }elseif ($value1['type'] == 2){
+                        $all_ask_show_time++;
+                        if(strtotime($value1['create_time']) > strtotime(date('Y-m-d 00:00:00',time())) &&strtotime($value1['create_time']) > strtotime(date('Y-m-d 23:59:59',time()))){
+                            $day_ask_show_time++;
+                        }
+                    }else{
+                        if(strtotime($value1['create_time']) > strtotime(date('Y-m-d 00:00:00',time())) &&strtotime($value1['create_time']) > strtotime(date('Y-m-d 23:59:59',time()))){
+                            $day_all_show_time++;
+                        }
+                    }
+                }
+                $value['show_info'] = array(
+                    'day_all_show_time' => $day_all_show_time,
+                    'day_give_show_time' => $day_give_show_time,
+                    'day_ask_show_time' => $day_ask_show_time,
+                    'all_show_time' => $all_show_time,
+                    'all_give_show_time' => $all_give_show_time,
+                    'all_ask_show_time' => $all_ask_show_time,
+                );
+
+            }
+            //剩余次数和可玩次数
+            $value['play_time'] = $userModel->getPlayTime($value['user_id'],$value['project_id']);
             $tempData = $userGameModel->getMateria($value['game_id']);
             $partStr = '';
             for($i=1;$i <= $tempData['gameMaterialData']['material_num'];$i++){
@@ -461,7 +514,7 @@ class Users extends Base {
         $where = array();
         $query = array();
         //$where[] = array('status','=',1);
-        $partnerList = $partnerModel->where($where)->select();
+        $partnerList = $partnerModel->where('status','>',0)->select();
         $this->assign('partnerList',$partnerList);
 
         if(!(empty($partner_id) || $partner_id == null)){
@@ -517,7 +570,7 @@ class Users extends Base {
         $where = array();
         $query = array();
         //$where[] = array('status','=',1);
-        $partnerList = $partnerModel->where($where)->select();
+        $partnerList = $partnerModel->where('status','>',0)->select();
         $this->assign('partnerList',$partnerList);
 
         if(!(empty($partner_id) || $partner_id == null)){
@@ -585,7 +638,7 @@ class Users extends Base {
         $where = array();
         $query = array();
         //$where[] = array('status','=',1);
-        $partnerList = $partnerModel->where($where)->select();
+        $partnerList = $partnerModel->where('status','>',0)->select();
         $this->assign('partnerList',$partnerList);
 
         if(!(empty($partner_id) || $partner_id == null)){
@@ -599,25 +652,29 @@ class Users extends Base {
             $query['project_id'] = $project_id;
         }
         if(!empty($nickname) && $nickname != null){
-            $where[] = array('nickname_unbase','like','%'.$nickname.'%');
+            $where[] = array('t1.nickname_unbase','like','%'.$nickname.'%');
             $this->assign('nickname',$nickname);
             $query['nickname'] = $nickname;
         }
         if(!empty($phone) && $phone != null){
-            $where[] = array('mobile','like','%'.$phone.'%');
+            $where[] = array('t1.mobile','like','%'.$phone.'%');
             $this->assign('phone',$phone);
             $query['phone'] = $phone;
         }
 
-        $playGameDataModel = Db::table('cn_play_game_ar_data');
+        $showTimeModel = Db::table('cn_show_time');
+        //$playGameDataModel = Db::table('cn_play_game_ar_data');
         $limit = input('limit') == null || empty(input('limit')) ? getLimit() : input('limit');
-        $list = $playGameDataModel
-            ->field('cn_user.id user_id,cn_user.nickname user_nickname,cn_user.mobile user_phone,cn_user.status user_status,cn_user.avatar_url avatar_url,
-            cn_play_game_ar_data.create_time create_time,cn_play_game_ar_data.id play_game_id,cn_play_game_ar_data.part part_number,
-            cn_project.id project_id,cn_project.name project_name,cn_project.partner_id partner_id
+        $list = $showTimeModel
+            ->field('cn_project.id project_id,cn_project.name project_name,cn_project.partner_id partner_id,
+            t1.nickname show_user_nickname,t1.status show_user_status,t1.mobile show_user_phone,t1.avatar_url show_user_avatar_url,
+            t2.nickname showed_user_nickname,t2.status showed_user_status,t2.mobile showed_user_phone,t2.avatar_url showed_user_avatar_url,
+            cn_show_time.type type,cn_show.status status,cn_show_time.create_time create_time,cn_show_time.id id,cn_show.part_num part_num
             ')
-            ->leftJoin('cn_user','cn_user.id = cn_play_game_ar_data.user_id')
-            ->leftJoin('cn_project','cn_project.id = cn_play_game_ar_data.project')
+            ->leftJoin('cn_show','cn_show_time.show_id=cn_show.id')
+            ->leftJoin('cn_user t1','t1.id = cn_show_time.user_id')
+            ->leftJoin('cn_user t2','t2.id = cn_show.end_user_id')
+            ->leftJoin('cn_project','cn_project.id = cn_show_time.project_id')
             ->where($where)
             ->paginate($limit,false,array('query'=>$query));
         $this->assign('list',$list);

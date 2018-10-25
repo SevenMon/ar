@@ -87,13 +87,14 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th width="10%">ID</th>
+                        <th width="5%">ID</th>
                         <th width="15%">合作商信息</th>
                         <th width="15%">项目信息</th>
                         <th width="15%">用户信息</th>
-                        <th width="15%">头像</th>
+                        <th width="10%">头像</th>
                         <th width="15%">部件数量</th>
-                        <th width="15%">收集状态</th>
+                        <th width="15%">分享及游戏次数信息</th>
+                        <th width="10%">收集状态</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -116,6 +117,16 @@
                             <td><img width="70px" src="{$vo['avatar_url']}"></td>
                             <td>
                                 {$vo['partStr']|raw}
+                            </td>
+                            <td>
+                                <p>总分享次数：{$vo['show_info']['all_show_time']}</p>
+                                <p>总赠送分享次数：{$vo['show_info']['all_give_show_time']}</p>
+                                <p>总索要分享次数：{$vo['show_info']['all_ask_show_time']}</p>
+                                <p>今日分享次数：{$vo['show_info']['day_all_show_time']}</p>
+                                <p>今日赠送分享次数：{$vo['show_info']['day_give_show_time']}</p>
+                                <p>今日索要分享次数：{$vo['show_info']['day_ask_show_time']}</p>
+                                <p>今日已玩次数：{$vo['play_time']['todayPlayNum']}</p>
+                                <p>今日可玩次数：{$vo['play_time']['allPlayNum']}</p>
                             </td>
                             <td>{$vo['is_complete_str']}</td>
 

@@ -22,6 +22,15 @@ class Login {
     public function index() {
         echo('OK');
     }
+    function filterEmoji($str)
+    {
+        $str = preg_replace_callback( '/./u',
+            function (array $match) {
+                return strlen($match[0]) >= 4 ? '' : $match[0];
+            },
+            $str);
+        return $str;
+    }
 
     public function login() {
         $UserModel = new User();
@@ -50,6 +59,7 @@ class Login {
                 $addData['session_key'] = $info['session_key'];
                 $addData['openid'] = $info['openid'];
                 $addData['nickname'] = base64_encode($userinfo['nickName']);
+                $addData['nickname_unbase'] = $this->filterEmoji($userinfo['nickName']);
                 $addData['avatar_url'] = $userinfo['avatarUrl'];
                 $addData['city'] = $userinfo['city'];
                 $addData['language'] = $userinfo['language'];

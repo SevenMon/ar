@@ -144,4 +144,72 @@ class Partners extends Base
             $this->redirect('admin/Partners/index');
         }
     }
+
+    public function export(){
+        $partnerModel = new Partner();
+        $data = $partnerModel->where('status','>',0)->select();
+        require '../extend/phpexcel/PHPExcel.php';
+        $objPHPExcel  = new \PHPExcel();
+        $objDrawing = new \PHPExcel_Worksheet_Drawing();
+        //导出订单模板
+        //定义配置
+        $topNumber = 2;//表头有几行占用
+        $cellKey = array(
+            'A','B','C','D','E','F','G'
+        );
+        //写在处理的前面（了解表格基本知识，已测试）
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1','合作商id');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B1','合作商名称');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C1','联系方式');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D1','appid');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E1','appsecret');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F1','状态');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G1','创建时间');
+
+        $objPHPExcel->getActiveSheet()->getDefaultColumnDimension()->setWidth(17);//所有单元格（列）默认宽度
+        //$objPHPExcel->getActiveSheet()->getDefaultRowDimension(2)->setRowHeight(80);
+        $objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true)->setSize(12);
+        $objPHPExcel->getActiveSheet()->getStyle('B1')->getFont()->setBold(true)->setSize(12);
+        $objPHPExcel->getActiveSheet()->getStyle('C1')->getFont()->setBold(true)->setSize(12);
+        $objPHPExcel->getActiveSheet()->getStyle('D1')->getFont()->setBold(true)->setSize(12);
+        $objPHPExcel->getActiveSheet()->getStyle('E1')->getFont()->setBold(true)->setSize(12);
+        $objPHPExcel->getActiveSheet()->getStyle('F1')->getFont()->setBold(true)->setSize(12);
+        $objPHPExcel->getActiveSheet()->getStyle('G1')->getFont()->setBold(true)->setSize(12);
+
+
+        $objPHPExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('B1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('C1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('D1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('E1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('F1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('G1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+        $i = 2;
+        foreach ($data as $value){
+            $objPHPExcel->getActiveSheet()->getStyle('A'.$i)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->getStyle('B'.$i)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->getStyle('C'.$i)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->getStyle('D'.$i)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->getStyle('E'.$i)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->getStyle('F'.$i)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->getStyle('G'.$i)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->setCellValue('A'.$i,$value['id']);
+            $objPHPExcel->getActiveSheet()->setCellValue('B'.$i,$value['name']);
+            $objPHPExcel->getActiveSheet()->setCellValue('C'.$i,$value['phone']);
+            $objPHPExcel->getActiveSheet()->setCellValue('D'.$i,$value['appid']);
+            $objPHPExcel->getActiveSheet()->setCellValue('E'.$i,$value['appsecret']);
+            $objPHPExcel->getActiveSheet()->setCellValue('F'.$i,$value['status'] == 1?'启用':'禁用');
+            $objPHPExcel->getActiveSheet()->setCellValue('G'.$i,$value['create_time']);
+            $i++;
+        }
+        //导出execl
+        header('Content-Type: application/vnd.ms-excel');//storeSelfTradeTemplatet
+        header('Content-Disposition: attachment;filename="partner_'.date('Y-m-d',time()).'.xls"');
+        header('Cache-Control: max-age=0');
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter->save('php://output');
+
+        exit;
+    }
 }

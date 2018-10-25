@@ -10,6 +10,7 @@ use app\model\Code;
 use app\model\Coupon;
 use app\model\Game;
 use app\model\Project;
+use app\model\Shop;
 use app\model\Show;
 use app\model\User;
 use app\model\UserGameArData;
@@ -512,6 +513,13 @@ class Argame extends Base {
         $data = $prizeModel->where($where)->find();
         $data['time'] = date('Y-m-d',strtotime($data['time']));
         $data['address_pic'] = getUrl().$data['address_pic'];
+        //获取门店信息
+        $shopModel = new Shop();
+        $shopData = $shopModel->getShopByBrand($data['brand_id']);
+        foreach ($shopData as &$value){
+            $value['address_pic'] = getUrl().$value['address_pic'];
+        }
+        $data['shop_info'] = $shopData;
         ajaxJsonReturn(0,'获取成功',array('prizeData' => $data));
     }
 
@@ -623,6 +631,12 @@ class Argame extends Base {
             Db::rollback();
             ajaxJsonReturn(-4,'优惠券已被领光，明天再来吧！',array());
         }
+        //获取门店信息
+        $shopModel = new Shop();
+        $shopData = $shopModel->getShopByBrand($brandData['id']);
+        foreach ($shopData as &$value){
+            $value['address_pic'] = getUrl().$value['address_pic'];
+        }
         $prizeData = array(
             'user_id' => $this->userId,
             'project_id' => $projectData['id'],
@@ -634,7 +648,8 @@ class Argame extends Base {
             'time' => $wareData['time'],
             'address' => $wareData['address'],
             'address_pic' => $wareData['address_pic'],
-            'coupon_id' => $couponData['id']
+            'coupon_id' => $couponData['id'],
+            'wares_id' => $wareData['id'],
         );
 
         $prizeModel->insertGetId($prizeData);
@@ -645,6 +660,7 @@ class Argame extends Base {
             ajaxJsonReturn(-1,'兑奖失败',array());
         }else{
             Db::commit();
+            $prizeData['shop_info'] = $shopData;
             ajaxJsonReturn(0,'兑奖成功',array('prizeData' => $prizeData));
         }
     }

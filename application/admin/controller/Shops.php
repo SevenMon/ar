@@ -139,20 +139,20 @@ class Shops extends Base {
 
     public function delete(){
         $brandId = input('brand_id');
-        $waresId = input('wares_id');
-        $brandWaresModel = new BrandWares();
-        $data = $brandWaresModel->find($waresId);
+        $shopId = input('shop_id');
+        $shopModel = new Shop();
+        $data = $shopModel->find($shopId);
         if(empty($data)){
-            $this->error('商品不存在！');
+            $this->error('门店不存在！');
         }elseif($data['status'] == 0){
-            $this->error('商品已删除！');
+            $this->error('门店已删除！');
         }
         $updateData['status'] = 0;
-        $info = $brandWaresModel->where('id','=',$waresId)->update($updateData);
+        $info = $shopModel->where('id','=',$shopId)->update($updateData);
         if(empty($info)){
             $this->error('删除失败！');
         }else{
-            $this->redirect('admin/Waress/index?brand_id='.$brandId);
+            $this->redirect('admin/Shops/index?brand_id='.$brandId);
         }
     }
 

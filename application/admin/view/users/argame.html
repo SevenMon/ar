@@ -59,6 +59,15 @@
                     </div>
 
                     <div class="searchitem">
+                        <span>昵称</span>
+                        <input data-parsley-required="" type="text" class="form-control" name="nickname" id="nickname" placeholder="昵称" aria-describedby="basic-addon1" value="{$nickname}">
+                    </div>
+                    <div class="searchitem">
+                        <span>电话</span>
+                        <input data-parsley-required="" type="text" class="form-control" name="phone" id="phone" placeholder="电话" aria-describedby="basic-addon1" value="{$phone}">
+                    </div>
+
+                    <div class="searchitem">
                         <span>收集状态</span>
                         <select class="form-control" id="is_complete" name="is_complete">
                             <option value="">全部</option>
@@ -81,7 +90,7 @@
                         <th width="10%">ID</th>
                         <th width="15%">合作商信息</th>
                         <th width="15%">项目信息</th>
-                        <th width="15%">用户昵称</th>
+                        <th width="15%">用户信息</th>
                         <th width="15%">头像</th>
                         <th width="15%">部件数量</th>
                         <th width="15%">收集状态</th>
@@ -99,9 +108,15 @@
                                 项目ID：{$vo['project_id']}<br/>
                                 项目名称：{$vo['project_name']}
                             </td>
-                            <td>{:urlsafe_b64decode($vo['nickname'])}</td>
+                            <td>
+                                昵称：{:urlsafe_b64decode($vo['nickname'])}<br/>
+                                状态：{:$vo['user_status'] == 1?'启用':'黑名单'}<br/>
+                                手机：{$vo['user_phone']}
+                            </td>
                             <td><img width="70px" src="{$vo['avatar_url']}"></td>
-                            <td>{$vo['partStr']|raw}</td>
+                            <td>
+                                {$vo['partStr']|raw}
+                            </td>
                             <td>{$vo['is_complete_str']}</td>
 
                         </tr>

@@ -79,6 +79,20 @@ class Menu extends Model {
                     'display' => '',
                 ],
                 [
+                    'label' => '会员ar游戏记录',
+                    'id' => 'admin_users_playdata',
+                    'url' => 'admin_users_playdata',
+                    'css' => '',
+                    'display' => '',
+                ],
+                [
+                    'label' => '会员ar游戏分享记录',
+                    'id' => 'admin_users_showdata',
+                    'url' => 'admin_users_showdata',
+                    'css' => '',
+                    'display' => '',
+                ],
+                [
                     'label' => '会员游戏中奖信息',
                     'id' => 'admin_users_lucky',
                     'url' => 'admin_users_lucky',

@@ -16,7 +16,7 @@ class Ceshi extends Base
 
     public function resetpage(){
         $ceshi = Db::table('cn_ceshi');
-        $ceshiData = $ceshi->find(1);
+        $ceshiData = $ceshi->where('id','<=',2)->select();
         $this->assign('ceshiData',$ceshiData);
         $this->assign('left_menu_active', 'admin_ceshi_resetpage');
         return $this->fetch();
@@ -42,5 +42,26 @@ class Ceshi extends Base
             $ceshi->where('id','=',1)->update(array('id' => 1,'value' => $user_id));
             ajaxJsonReturn(1,'重置成功');
         }
+    }
+
+    public function resetGame(){
+        $user_id = input('user_id');
+        $user_id = str_replace('，',',',$user_id);
+        $userGameArModel = new UserGameArData();
+        $data = $userGameArModel->where('id','in',explode(',',$user_id))->select();
+        foreach ($data as $value){
+            $playGameDataModel = Db::table('cn_play_game_ar_data');
+            $where = array();
+            $where[] = array('user_id','=',$value['user_id']);
+            $where[] = array('project','=',$value['project_id']);
+            $where[] = array('create_time','>',date('Y-m-d 00:00:00'));
+            $where[] = array('create_time','<',date('Y-m-d 23:59:59'));
+            $where[] = array('project','=',$value['project_id']);
+            $playGameDataModel->where($where)->delete();
+        }
+        $ceshi = Db::table('cn_ceshi');
+        $ceshi->where('id','=',2)->update(array('id' => 2,'value' => $user_id));
+        ajaxJsonReturn(1,'重置成功');
+
     }
 }

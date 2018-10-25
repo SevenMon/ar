@@ -35,7 +35,17 @@
                         </select>
                     </div>
                     <div class="searchitem">
+                        <span>昵称</span>
+                        <input data-parsley-required="" type="text" class="form-control" name="nickname" id="nickname" placeholder="昵称" aria-describedby="basic-addon1" value="{$nickname}">
+                    </div>
+                    <div class="searchitem">
+                        <span>电话</span>
+                        <input data-parsley-required="" type="text" class="form-control" name="phone" id="phone" placeholder="电话" aria-describedby="basic-addon1" value="{$phone}">
+                    </div>
+
+                    <div class="searchitem">
                         <button type="submit" class="btn btn-default">搜索</button>
+                        <a href="{:url('admin/Users/export',$query)}" class="btn btn-default">导出</a>
                     </div>
                 </div>
             </form>

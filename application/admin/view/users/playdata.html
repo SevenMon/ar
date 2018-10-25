@@ -22,10 +22,10 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>会员游戏中奖信息</h2>
+                <h2>会员ar游戏记录</h2>
                 <div class="clearfix"></div>
             </div>
-            <form method="get" action="/admin/users/lucky.html">
+            <form method="get" action="/admin/users/playdata.html">
                 <input type="hidden" name="status" value="1">
                 <div class="col-md-12 col-sm-12 col-xs-12 searchwarpper">
 
@@ -77,20 +77,17 @@
                         <th>用户信息</th>
                         <th>用户头像</th>
                         <th>项目信息</th>
-                        <th>品牌商信息</th>
-                        <th>奖品名字</th>
-                        <th>奖品图片</th>
-                        <th>奖品类型</th>
-                        <th>兑换码信息</th>
-                        <th>兑换时间</th>
+                        <th>获取部件</th>
+                        <th>游戏时间</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
                     {volist name="list" id="vo" key="k" empty="暂时没有数据" }
                     <tr>
-                        <th scope="row">{$vo['id']}</th>
+                        <th scope="row">{$vo['play_game_id']}</th>
                         <td>
-                            昵称：{:urlsafe_b64decode($vo['nickname'])}<br/>
+                            昵称：{:urlsafe_b64decode($vo['user_nickname'])}<br/>
                             状态：{:$vo['user_status'] == 1?'启用':'黑名单'}<br/>
                             手机：{$vo['user_phone']}
                         </td>
@@ -100,21 +97,11 @@
                             项目名称：{$vo['project_name']}
                         </td>
                         <td>
-                            品牌商ID：{$vo['brand_id']}<br/>
-                            品牌商名称：{$vo['brand_name']}
+                            部件{$vo['part_number']}
                         </td>
-                        <td>{$vo['wares_name']}</td>
-                        <td><img width="70px" src="{$vo['wares_pic']}"></td>
-                        <td>
-                            <?php if($vo['type'] == 1)echo '优惠券';  ?>
-                            <?php if($vo['type'] == 2)echo '实物奖品';  ?>
-                            <?php if($vo['type'] == 3)echo '微信卡卷';  ?>
-                        </td>
-                        <td>
-                            兑换码ID：{$vo['coupon_id']}<br/>
-                            兑换码：{$vo['prize_code']}
-                        </td>
-                        <td>{$vo['time']}</td>
+
+                        <td>{$vo['create_time']}</td>
+                        <td><a href="###" onclick="deleteItem(this,{$vo['play_game_id']})">删除</a></td>
                     </tr>
                     {/volist}
                     </tbody>
@@ -124,3 +111,41 @@
         </div>
     </div>
 </div>
+<script>
+    function deleteItem(obj,id){
+        var url = "{:url('admin/Users/deletePlayData')}";
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data:{id:id},
+            dataType: 'json',
+            success:function(res){
+                if(res.code == 1){
+                    $.alert({
+                        title: '系统提示',
+                        content: '删除成功！',
+                        icon: 'fa fa-comment',
+                        type: 'green',
+                    });
+                    $(obj).parent().parent().remove();
+                }else {
+                    $.alert({
+                        title: '系统提示',
+                        content: '删除失败，稍后再试！',
+                        icon: 'fa fa-comment',
+                        type: 'green',
+                    });
+                }
+                console.log(res);
+            },
+            error:function () {
+                $.alert({
+                    title: '系统提示',
+                    content: '网络错误，请稍后再试！',
+                    icon: 'fa fa-comment',
+                    type: 'green',
+                });
+            }
+        });
+    }
+</script>

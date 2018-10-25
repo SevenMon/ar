@@ -678,7 +678,7 @@ class Users extends Base {
             ->where($where)
             ->paginate($limit,false,array('query'=>$query));
         $this->assign('list',$list);
-        $this->assign('left_menu_active', 'admin_users_playdata');
+        $this->assign('left_menu_active', 'admin_users_showdata');
         return $this->fetch();
     }
 

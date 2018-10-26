@@ -15,7 +15,7 @@ class Coupon extends Model {
         $where[] = array('brand_id','=',$brandId);
         $where[] = array('project_id','=',$projectId);
         $where[] = array('status','=',1);
-        $where[] = array('tiem','>=',date('Y-m-d',time()));
+        $where[] = array('time','>=',date('Y-m-d',time()));
         $data = $this->where($where)->find();
         $this->where('id','=',$data['id'])->update(array('status' => 2));
         return $data;

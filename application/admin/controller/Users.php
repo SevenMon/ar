@@ -547,7 +547,7 @@ class Users extends Base {
             ->join('cn_project','cn_project.id=cn_game_ar_prize.project_id')
             ->leftJoin('cn_brand','cn_game_ar_prize.brand_id=cn_brand.id')
             ->leftJoin('cn_user','cn_game_ar_prize.user_id=cn_user.id')
-            ->where($where)->paginate($limit,false,array('query'=>$query));
+            ->where($where)->order('cn_project.id desc')->paginate($limit,false,array('query'=>$query));
         $this->assign('list',$list);
         $this->assign('left_menu_active', 'admin_users_lucky');
         return $this->fetch();
@@ -604,6 +604,7 @@ class Users extends Base {
             ->leftJoin('cn_user','cn_user.id = cn_play_game_ar_data.user_id')
             ->leftJoin('cn_project','cn_project.id = cn_play_game_ar_data.project')
             ->where($where)
+            ->order('cn_play_game_ar_data.id desc')
             ->paginate($limit,false,array('query'=>$query));
         $this->assign('list',$list);
         $this->assign('left_menu_active', 'admin_users_playdata');
@@ -676,6 +677,7 @@ class Users extends Base {
             ->leftJoin('cn_user t2','t2.id = cn_show.end_user_id')
             ->leftJoin('cn_project','cn_project.id = cn_show_time.project_id')
             ->where($where)
+            ->order('cn_show_time.id desc')
             ->paginate($limit,false,array('query'=>$query));
         $this->assign('list',$list);
         $this->assign('left_menu_active', 'admin_users_showdata');

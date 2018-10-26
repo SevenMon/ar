@@ -520,6 +520,9 @@ class Argame extends Base {
         $where[] = array('user_id' ,'=' ,$this->userId);
         $where[] = array('project_id','=',$projectData['id']);
         $data = $prizeModel->where($where)->find();
+        if(empty($data)){
+            ajaxJsonReturn(1,'您还没有中奖！');
+        }
         $data['time'] = date('Y-m-d',strtotime($data['time']));
         $data['address_pic'] = getUrl().$data['address_pic'];
         //获取门店信息

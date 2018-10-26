@@ -39,8 +39,8 @@
                         <div class="col-md-8 col-sm-8 col-xs-12 playnumber col-md-offset-2">
                             {volist name="list" id="vo" key="k" }
                                 <div class="timeitem">
-                                    开始：<input readonly class="controls input-append date form_datetime form-control" name="start_time" id="start_time_{$k}" type="text" value="{$vo['start_time']}" data-date="2018-09-01" data-date-format="yyyy mm dd" data-link-field="dtp_input1">
-                                    结束：<input readonly class="controls input-append date form_datetime form-control" name="end_time" id="end_time_{$k}" type="text" value="{$vo['end_time']}" data-date="2018-09-01" data-date-format="yyyy mm dd" data-link-field="dtp_input1">
+                                    开始：<input readonly class="controls input-append date form_datetime form-control" name="start_time" id="start_time_{$k}" type="text" value="{$vo['start_time']}" data-date="{:date('Y-m-d',time())}" data-date-format="yyyy mm dd" data-link-field="dtp_input1">
+                                    结束：<input readonly class="controls input-append date form_datetime form-control" name="end_time" id="end_time_{$k}" type="text" value="{$vo['end_time']}" data-date="{:date('Y-m-d',time())}" data-date-format="yyyy mm dd" data-link-field="dtp_input1">
                                     次数：<input class="controls input-append date form_datetime form-control" name="play_number" id="play_number_{$k}" type="number" value="{$vo['play_number']}" >
                                     <button type="button" class="btn btn-danger" onclick="deleteItem($(this))">删除</button>
                                 </div>
@@ -125,8 +125,8 @@
             var count = $('.playnumber').children().length;
 
             var str = '<div class="timeitem">\n' +
-                '开始：<input readonly class="controls input-append date form_datetime form-control" name="start_time" id="start_time_'+(count+1)+'" type="text" value="" data-date="2018-09-01" data-date-format="yyyy mm dd" data-link-field="dtp_input1">\n' +
-                '结束：<input readonly class="controls input-append date form_datetime form-control" name="end_time" id="end_time_'+(count+1)+'" type="text" value="" data-date="2018-09-01" data-date-format="yyyy mm dd" data-link-field="dtp_input1">\n' +
+                '开始：<input readonly class="controls input-append date form_datetime form-control" name="start_time" id="start_time_'+(count+1)+'" type="text" value="" data-date="{:date('Y-m-d',time())}" data-date-format="yyyy mm dd" data-link-field="dtp_input1">\n' +
+                '结束：<input readonly class="controls input-append date form_datetime form-control" name="end_time" id="end_time_'+(count+1)+'" type="text" value="" data-date="{:date('Y-m-d',time())}" data-date-format="yyyy mm dd" data-link-field="dtp_input1">\n' +
                 '次数：<input class="controls input-append date form_datetime form-control" name="play_number" id="play_number_'+(count+1)+'" type="number" value="" >\n' +
                 '<button type="button" class="btn btn-danger" onclick="deleteItem($(this))">删除</button>\n' +
                 '</div>';

@@ -20,7 +20,7 @@ class Gamear extends Base
         parent::initialize();
     }
     public function index(){
-        $list = Db::table('cn_game_ar_param')->order('id desc')->select();
+        $list = Db::table('cn_game_ar_param')->order('id asc')->select();
         $ruleList = Db::table('cn_game_ar_rule')->order('id asc')->select();
         $this->assign('list',$list);
         $this->assign('ruleList',$ruleList);

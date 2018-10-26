@@ -168,6 +168,7 @@ class Users extends Base {
             $objPHPExcel->getActiveSheet()->getStyle('K'.$i)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $objPHPExcel->getActiveSheet()->getStyle('L'.$i)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $objPHPExcel->getActiveSheet()->getStyle('M'.$i)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->getStyle('N'.$i)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
             switch ($value['gender'])
             {
@@ -181,6 +182,16 @@ class Users extends Base {
                     $value['gender'] = '未知';
                     break;
             }
+
+            $objPHPExcel->getActiveSheet()->setCellValue('A'.$i,$value['id']);
+            $objPHPExcel->getActiveSheet()->setCellValue('B'.$i,$value['mobile']);
+            $objPHPExcel->getActiveSheet()->setCellValue('C'.$i,$value['openid']);
+            $objPHPExcel->getActiveSheet()->setCellValue('D'.$i,$value['nickname_unbase']);
+            $objPHPExcel->getActiveSheet()->setCellValue('E'.$i,$value['gender']);
+            $objPHPExcel->getActiveSheet()->setCellValue('F'.$i,$value['language']);
+            $objPHPExcel->getActiveSheet()->setCellValue('G'.$i,$value['city']);
+            $objPHPExcel->getActiveSheet()->setCellValue('H'.$i,$value['province']);
+            $objPHPExcel->getActiveSheet()->setCellValue('I'.$i,$value['country']);
             if($value['avatar_url']==null || empty($value['avatar_url'])){
                 $objPHPExcel->getActiveSheet()->setCellValue('J'.$i,'');
             }else{
@@ -200,16 +211,6 @@ class Users extends Base {
                 $objDrawing->setOffsetY(12);
                 $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
             }
-            $objPHPExcel->getActiveSheet()->setCellValue('A'.$i,$value['id']);
-            $objPHPExcel->getActiveSheet()->setCellValue('B'.$i,$value['mobile']);
-            $objPHPExcel->getActiveSheet()->setCellValue('C'.$i,$value['openid']);
-            $objPHPExcel->getActiveSheet()->setCellValue('D'.$i,base64_decode($value['nickname']));
-            $objPHPExcel->getActiveSheet()->setCellValue('E'.$i,$value['gender']);
-            $objPHPExcel->getActiveSheet()->setCellValue('F'.$i,$value['language']);
-            $objPHPExcel->getActiveSheet()->setCellValue('G'.$i,$value['city']);
-            $objPHPExcel->getActiveSheet()->setCellValue('H'.$i,$value['province']);
-            $objPHPExcel->getActiveSheet()->setCellValue('I'.$i,$value['country']);
-
             //$objPHPExcel->getActiveSheet()->setCellValue('J'.$i,$value['avatar_url']);
 
             $objPHPExcel->getActiveSheet()->setCellValue('K'.$i,date('Y-m-d',$value['timestamp']));
@@ -220,7 +221,7 @@ class Users extends Base {
         }
         //导出execl
         header('Content-Type: application/vnd.ms-excel');//storeSelfTradeTemplatet
-        header('Content-Disposition: attachment;filename="partner_'.date('Y-m-d',time()).'.xls"');
+        header('Content-Disposition: attachment;filename="users_'.date('Y-m-d',time()).'.xls"');
         header('Cache-Control: max-age=0');
         $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
         $objWriter->save('php://output');
@@ -643,7 +644,7 @@ class Users extends Base {
         $this->assign('partnerList',$partnerList);
 
         if(!(empty($partner_id) || $partner_id == null)){
-            $where[] = array('cn_user.partner_id','=',$partner_id);
+            $where[] = array('t1.partner_id','=',$partner_id);
             $this->assign('partner_id',$partner_id);
             $query['partner_id'] = $partner_id;
         }

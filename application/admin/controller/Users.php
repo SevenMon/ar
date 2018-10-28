@@ -448,10 +448,9 @@ class Users extends Base {
                         if(strtotime($value1['create_time']) > strtotime(date('Y-m-d 00:00:00',time())) &&strtotime($value1['create_time']) < strtotime(date('Y-m-d 23:59:59',time()))){
                             $day_ask_show_time++;
                         }
-                    }else{
-                        if(strtotime($value1['create_time']) > strtotime(date('Y-m-d 00:00:00',time())) &&strtotime($value1['create_time']) < strtotime(date('Y-m-d 23:59:59',time()))){
-                            $day_all_show_time++;
-                        }
+                    }
+                    if(strtotime($value1['create_time']) > strtotime(date('Y-m-d 00:00:00',time())) &&strtotime($value1['create_time']) < strtotime(date('Y-m-d 23:59:59',time()))){
+                        $day_all_show_time++;
                     }
                 }
                 $value['show_info'] = array(

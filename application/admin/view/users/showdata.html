@@ -88,8 +88,8 @@
                         </td>
                         <td>
                             昵称：{:urlsafe_b64decode($vo['showed_user_nickname'])}<br/>
-                            状态：{:$vo['showed_user_status'] == 1?'启用':$vo['showed_user_status']==''?'':'黑名单'}<br/>
-                            手机：{$vo['showed_user_phone']}
+                            状态：{:$vo['showed_user_status'] == 1?'启用':($vo['showed_user_status']==''?'':'黑名单')}<br/>
+                            手机：{$vo['showed_user_status']}
                         </td>
                         <td>
                             分享/索要部件:{:$vo['part_num']==''?'':'部件'.$vo['part_num']}<br/>

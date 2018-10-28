@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'appKey' => '00e6b057a44cd6c8bf8a322d6d120c25',
-    'appSecret' => 'JBvqMEiai93uYRb3x2kUyBBjcJTZjCfhzOvICeYc7dDkWTAD34PfF3XWs2RCgi8mSZcOtb2rZk3eH2LmaRqsnDuHr7PWmpKZMtGZVsOviO7ZpzqJuAAM3oQBNqitTwm6',
-    'Server' => 'c36cd061b37a3612ba83f14397ddf61b.cn1.crs.easyar.com:8888',
-    'Client' => 'c36cd061b37a3612ba83f14397ddf61b.cn1.crs.easyar.com:8080',
+    'appKey' => '9687aae3489a14ac7b4197f74b5ad334',
+    'appSecret' => 'EO8IGzYeXr9mXnwGSgFYqY60R2JeDsNpwMT3HZgTXogNmzMuHVYYPSXHCD5SzDNc4cgM6SQQoQsWwwu4R3hd3Mqdl9e9SI4vMmDv94pzJbjh3VphAqoUcNaXDXr2Onrg',
+    'Server' => 'b2bc76ce1207cf63062f5bfce12f4df6.cn1.crs.easyar.com:8888',
+    'Client' => 'b2bc76ce1207cf63062f5bfce12f4df6.cn1.crs.easyar.com:8080',
 ];

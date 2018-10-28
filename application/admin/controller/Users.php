@@ -440,16 +440,16 @@ class Users extends Base {
                 foreach ($showData as $value1){
                     if($value1['type'] == 1){
                         $all_give_show_time++;
-                        if(strtotime($value1['create_time']) > strtotime(date('Y-m-d 00:00:00',time())) &&strtotime($value1['create_time']) > strtotime(date('Y-m-d 23:59:59',time()))){
+                        if(strtotime($value1['create_time']) > strtotime(date('Y-m-d 00:00:00',time())) &&strtotime($value1['create_time']) < strtotime(date('Y-m-d 23:59:59',time()))){
                             $day_give_show_time++;
                         }
                     }elseif ($value1['type'] == 2){
                         $all_ask_show_time++;
-                        if(strtotime($value1['create_time']) > strtotime(date('Y-m-d 00:00:00',time())) &&strtotime($value1['create_time']) > strtotime(date('Y-m-d 23:59:59',time()))){
+                        if(strtotime($value1['create_time']) > strtotime(date('Y-m-d 00:00:00',time())) &&strtotime($value1['create_time']) < strtotime(date('Y-m-d 23:59:59',time()))){
                             $day_ask_show_time++;
                         }
                     }else{
-                        if(strtotime($value1['create_time']) > strtotime(date('Y-m-d 00:00:00',time())) &&strtotime($value1['create_time']) > strtotime(date('Y-m-d 23:59:59',time()))){
+                        if(strtotime($value1['create_time']) > strtotime(date('Y-m-d 00:00:00',time())) &&strtotime($value1['create_time']) < strtotime(date('Y-m-d 23:59:59',time()))){
                             $day_all_show_time++;
                         }
                     }

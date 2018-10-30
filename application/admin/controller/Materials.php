@@ -104,6 +104,7 @@ class Materials extends Base {
         $update['uncomplete_pic'] = $uncomplete;
         $update['completeing_pic'] = $completeing;
         $this->decodeGif($completeing);
+        $this->decodeGif($complete);
 
         for($i = 1;$i <= count($materialsSacn) ;$i++){
             $update['part'.$i] = $materialsImg[$i-1];

@@ -50,6 +50,15 @@ class Argame extends Base {
                 $j++;
             }*/
 	    }
+        //gif 分解图
+        $temp = explode('.',$gameMaterialData['complete_pic']);
+        $temp = $temp[0];
+        $j = 0;
+        while (file_exists('.'.$temp.'/'.$j.'.png')){
+            $gameMaterialData['completed_pic_decode'][] = getUrl().$temp.'/'.$j.'.png';
+            //$gameMaterialData['completeing_pic_decode'][] = 'https://ceshi.hihill.cn/gif/'.$j.'.png';
+            $j++;
+        }
 	    $gameMaterialData['complete_pic']=getUrl().$gameMaterialData['complete_pic'];
         $gameMaterialData['uncomplete_pic']=getUrl().$gameMaterialData['uncomplete_pic'];
         //gif 分解图
@@ -251,6 +260,7 @@ class Argame extends Base {
             $gameMaterialData['complete_pic_decode'][] = getUrl().$temp.'/'.$j.'.png';
             $j++;
         }
+
         $scanPartData = array(
             'part_num' =>$part_num,
             'partgif' =>getUrl().$gameMaterialData['partgif'.$part_num],

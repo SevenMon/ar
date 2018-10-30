@@ -18,15 +18,12 @@ use image\Image;
 use think\Request;
 use think\Db;
 
-class Argame {
+class Argame extends Base {
 
     public function ceshi(){
         phpinfo();
         //$picture = new Imagick('./xiaoxiong.gif');
-
     }
-
-
     //获取游戏素材
     public function getGameMaterials(){
 

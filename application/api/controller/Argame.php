@@ -14,10 +14,18 @@ use app\model\Shop;
 use app\model\Show;
 use app\model\User;
 use app\model\UserGameArData;
+use image\Image;
 use think\Request;
 use think\Db;
 
-class Argame extends Base {
+class Argame {
+
+    public function ceshi(){
+        phpinfo();
+        //$picture = new Imagick('./xiaoxiong.gif');
+
+    }
+
 
     //获取游戏素材
     public function getGameMaterials(){

@@ -116,7 +116,7 @@ class Coupons extends Base
                     'project_id' => $value[2],
                     'project_name' => $value[3],
                     'code' => $value[4],
-                    'time' => $value[5],
+                    'time' => str_replace('/','-',$value[5]),
                 );
                 $where = array();
                 $where[] = array('brand_id','=',$value[0]);

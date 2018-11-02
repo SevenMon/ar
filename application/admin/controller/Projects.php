@@ -241,4 +241,18 @@ class Projects extends Base
             $this->redirect(session('listurl'));
         }
     }
+
+
+    public function ajaxGetProjectByPartner(){
+        $partner_id = input('partner_id');
+        $projectModel = new Project();
+        $where = array();
+        $where[] = array('partner_id','=',$partner_id);
+        $data = $projectModel->where($where)->select();
+        if(empty($data)){
+            ajaxJsonReturn(-1,'没有项目');
+        }else{
+            ajaxJsonReturn(1,'获取成功',$data);
+        }
+    }
 }

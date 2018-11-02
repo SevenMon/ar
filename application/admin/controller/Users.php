@@ -38,29 +38,60 @@ class Users extends Base {
         $partnerId = input('partner_id');
         $nickname = input('nickname');
         $phone = input('phone');
+        $project_id = input('project_id');
         $where = array();
         $query = array();
+        if(!empty($project_id) && $project_id != null){
+            $where[] = array('cn_user_game_ar_data.project_id','=',$project_id);
+            $this->assign('project_id',$project_id);
+            $query['project_id'] = $project_id;
+        }
         if(!empty($partnerId) && $partnerId != null){
-            $where[] = array('partner_id','=',$partnerId);
+            $where[] = array('cn_user.partner_id','=',$partnerId);
             $this->assign('partnerId',$partnerId);
             $query['partner_id'] = $partnerId;
+
+            //获取项目
+            $projectModel = new Project();
+            $wheres = array();
+            $wheres[] = array('partner_id','=',$partnerId);
+            $projectdata = $projectModel->where($wheres)->select();
+            $this->assign('projectdata',$projectdata);
         }
         if(!empty($nickname) && $nickname != null){
-            $where[] = array('nickname_unbase','like','%'.$nickname.'%');
+            $where[] = array('cn_user.nickname_unbase','like','%'.$nickname.'%');
             $this->assign('nickname',$nickname);
             $query['nickname'] = $nickname;
         }
         if(!empty($phone) && $phone != null){
-            $where[] = array('mobile','like','%'.$phone.'%');
+            $where[] = array('cn_user.mobile','like','%'.$phone.'%');
             $this->assign('phone',$phone);
             $query['phone'] = $phone;
         }
         $userModel = new User();
         $limit = input('limit') == null || empty(input('limit')) ? getLimit() : input('limit');
-        $where[] = array('status','=',1);
-        $list = $userModel->where($where)->order('id desc')->paginate($limit,false, [
+        $where[] = array('cn_user.status','=',1);
+
+        $userGameModel = Db::table('cn_user_game_ar_data');
+        /*$list = $userModel->where($where)->order('id desc')->paginate($limit,false, [
+            'query' => $query,
+        ]);*/
+        $count = $userGameModel
+            ->field('distinct(cn_user.id)')
+            ->leftJoin('cn_user','cn_user_game_ar_data.user_id = cn_user.id')
+            ->where($where)
+            ->select();
+        $userGameModel = Db::table('cn_user_game_ar_data');
+        $list = $userGameModel
+            ->distinct(true)
+            ->field('cn_user.*')
+            ->leftJoin('cn_user','cn_user_game_ar_data.user_id = cn_user.id')
+            ->where($where)
+            ->order('cn_user.id desc')
+            ->paginate($limit,count($count), [
             'query' => $query,
         ]);
+
         $this->assign('list', $list);
         $this->assign('query', $query);
         return $this->fetch();
@@ -77,8 +108,14 @@ class Users extends Base {
         $partnerId = input('partner_id');
         $nickname = input('nickname');
         $phone = input('phone');
+        $project_id = input('project_id');
         $where = array();
         $query = array();
+        if(!empty($project_id) && $project_id != null){
+            $where[] = array('cn_user_game_ar_data.project_id','=',$project_id);
+            $this->assign('project_id',$project_id);
+            $query['project_id'] = $project_id;
+        }
         if(!empty($partnerId) && $partnerId != null){
             $where[] = array('partner_id','=',$partnerId);
             $this->assign('partnerId',$partnerId);
@@ -96,7 +133,16 @@ class Users extends Base {
         }
         $userModel = new User();
         $where[] = array('status','=',1);
-        $data = $userModel->where($where)->order('id desc')->select();
+
+        /*$data = $userModel->where($where)->order('id desc')->select();*/
+        $userGameModel = Db::table('cn_user_game_ar_data');
+        $data = $userGameModel
+            ->distinct(true)
+            ->field('cn_user.*')
+            ->leftJoin('cn_user','cn_user_game_ar_data.user_id = cn_user.id')
+            ->where($where)
+            ->order('cn_user.id desc')
+            ->select();
         require '../extend/phpexcel/PHPExcel.php';
         $objPHPExcel  = new \PHPExcel();
         //导出订单模板
@@ -242,12 +288,25 @@ class Users extends Base {
         $partnerId = input('partner_id');
         $nickname = input('nickname');
         $phone = input('phone');
+        $project_id = input('project_id');
         $where = array();
         $query = array();
+        if(!empty($project_id) && $project_id != null){
+            $where[] = array('cn_user_game_ar_data.project_id','=',$project_id);
+            $this->assign('project_id',$project_id);
+            $query['project_id'] = $project_id;
+        }
         if(!empty($partnerId) && $partnerId != null){
             $where[] = array('partner_id','=',$partnerId);
             $this->assign('partnerId',$partnerId);
             $query['partner_id'] = $partnerId;
+
+            //获取项目
+            $projectModel = new Project();
+            $wheres = array();
+            $wheres[] = array('partner_id','=',$partnerId);
+            $projectdata = $projectModel->where($wheres)->select();
+            $this->assign('projectdata',$projectdata);
         }
         if(!empty($nickname) && $nickname != null){
             $where[] = array('nickname_unbase','like','%'.$nickname.'%');
@@ -261,10 +320,27 @@ class Users extends Base {
         }
         $userModel = new User();
         $limit = input('limit') == null || empty(input('limit')) ? getLimit() : input('limit');
-        $where[] = array('status','=',2);
-        $list = $userModel->where($where)->order('id desc')->paginate($limit,false, [
+        $where[] = array('cn_user.status','=',2);
+        $userGameModel = Db::table('cn_user_game_ar_data');
+        /*$list = $userModel->where($where)->order('id desc')->paginate($limit,false, [
             'query' => $query,
-        ]);
+        ]);*/
+        $count = $userGameModel
+            ->field('distinct(cn_user.id)')
+            ->leftJoin('cn_user','cn_user_game_ar_data.user_id = cn_user.id')
+            ->where($where)
+            ->select();
+        $userGameModel = Db::table('cn_user_game_ar_data');
+        $list = $userGameModel
+            ->distinct(true)
+            ->field('cn_user.*')
+            ->leftJoin('cn_user','cn_user_game_ar_data.user_id = cn_user.id')
+            ->where($where)
+            ->order('cn_user.id desc')
+            ->paginate($limit,count($count), [
+                'query' => $query,
+            ]);
+
         $this->assign('list', $list);
         $this->assign('left_menu_active', 'admin_users_blacklist');
         return $this->fetch();

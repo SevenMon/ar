@@ -27,10 +27,19 @@
                 <div class="col-md-12 col-sm-12 col-xs-12 searchwarpper">
                     <div class="searchitem">
                         <span>合作商</span>
-                        <select class="form-control" id="partner_id" name="partner_id">
+                        <select class="form-control" id="partner_id" name="partner_id" onchange="selectPartner(this)">
                             <option value="">全部</option>
                             {volist name="partnerList" id="vo" empty="这里没有数据"}
                             　　<option <?php echo $partnerId == $vo['id'] ? 'selected' : '' ?> value="{$vo['id']}">{$vo['name']}</option>
+                            {/volist}
+                        </select>
+                    </div>
+                    <div class="searchitem">
+                        <span>项目</span>
+                        <select class="form-control" id="project_id" name="project_id">
+                            <option value="">全部</option>
+                            {volist name="projectdata" id="vo"}
+                            　　<option <?php echo $project_id == $vo['id'] ? 'selected' : '' ?> value="{$vo['id']}">{$vo['name']}</option>
                             {/volist}
                         </select>
                     </div>
@@ -94,6 +103,33 @@
     </div>
 </div>
 <script>
+    function selectPartner(obj) {
+        var partner_id = $(obj).val();
+        var url = "{:url('admin/Projects/ajaxGetProjectByPartner')}"+"?partner_id="+partner_id;
+        $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: 'json',
+            success:function(res){
+                if(res.code == 1){
+                    var str =  '<option value="">全部</option>';
+                    console.log(res.data);
+                    for(index in res.data){
+                        str += '<option value="'+res.data[index]['id']+'" >'+res.data[index]['name']+'</option>';
+                    }
+                    $('#project_id').html(str);
+                }
+            },
+            error:function () {
+                $.alert({
+                    title: '系统提示',
+                    content: '网络错误，请稍后再试！',
+                    icon: 'fa fa-comment',
+                    type: 'green',
+                });
+            }
+        });
+    }
     function addblack(user_id) {
         var url = "{:url('admin/Users/ajaxAddBlackLIst')}"+"?user_id="+user_id;
         $.ajax({

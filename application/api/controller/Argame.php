@@ -44,16 +44,16 @@ class Argame extends Base {
 
         for($i = 1;$i <= $gameMaterialData['material_num'];$i++){
             //gif 分解图
-            /*$temp = explode('.',$gameMaterialData['partgif'.$i]);
-            $temp = $temp[0];*/
+            $temp = explode('.',$gameMaterialData['partgif'.$i]);
+            $temp = $temp[0];
             $gameMaterialData['part'.$i] = getUrl().$gameMaterialData['part'.$i];
             $gameMaterialData['scan'.$i] = getUrl().$gameMaterialData['scan'.$i];
             $gameMaterialData['partgif'.$i] = getUrl().$gameMaterialData['partgif'.$i];
-            /*$j = 0;
+            $j = 0;
             while (file_exists('.'.$temp.'/'.$j.'.png')){
                 $gameMaterialData['partgif'.$i.'_decode'][] = getUrl().$temp.$j.'.png';
                 $j++;
-            }*/
+            }
 	    }
         //gif 分解图
         $temp = explode('.',$gameMaterialData['complete_pic']);

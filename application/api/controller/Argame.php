@@ -51,7 +51,7 @@ class Argame extends Base {
             $gameMaterialData['partgif'.$i] = getUrl().$gameMaterialData['partgif'.$i];
             $j = 0;
             while (file_exists('.'.$temp.'/'.$j.'.png')){
-                $gameMaterialData['partgif'.$i.'_decode'][] = getUrl().$temp.$j.'.png';
+                $gameMaterialData['partgif'.$i.'_decode'][] = getUrl().$temp.'/'.$j.'.png';
                 $j++;
             }
 	    }
